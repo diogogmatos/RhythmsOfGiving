@@ -1,0 +1,42 @@
+@inject NavigationManager NavigationManager
+
+<nav class="w-full border-b p-4 text-gray-400 flex place-content-between text-lg font-medium">
+    <a href="/">
+        <img src="images/rog_color.png" alt="Rhythms Of Giving Logo" width="250px">
+    </a>
+    <div class="space-x-6 pr-52">
+        <NavLink class=@hover href="leiloes" ActiveClass="@active"><i class="bi bi-music-note-list"></i> Leilões</NavLink>
+        <NavLink class=@hover href="instituicoes" ActiveClass="@active"><i class="bi bi-heart-fill"></i> Instituições</NavLink>
+        <NavLink class=@hover href="estatisticas" ActiveClass="@active"><i class="bi bi-bar-chart-fill"></i> Estatísticas</NavLink>
+        <NavLink class=@hover href="sobre" ActiveClass="@active"><i class="bi bi-lightbulb-fill"></i> Sobre Nós</NavLink>
+    </div>
+    <div class="space-x-2 text-xl">
+        <button class=@notButtonColor() @onclick=toggleNotificacoes><i class="bi bi-bell-fill"></i></button>
+        <button class=@profileButtonColor()><i class="bi bi-person-circle"></i></button>
+    </div>
+</nav>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public bool IsNotificacoesOpen { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ToggleNotificacoes { get; set; }
+    private void toggleNotificacoes() {
+        IsNotificacoesOpen = !IsNotificacoesOpen;
+        ToggleNotificacoes.InvokeAsync();
+    }
+    private string hover = "hover:text-rhythms transition-colors";
+    private string active = "text-rhythms";
+    private string notButtonColor() {
+        if (IsNotificacoesOpen) {
+            return active;
+        }
+        return hover;
+    }
+    private string profileButtonColor() {
+        // TODO
+        return hover;
+    }
+}

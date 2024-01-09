@@ -1,0 +1,29 @@
+@using RhythmsOfGiving.Controller
+
+<div class="absolute right-4 top-20 w-72 h-fit max-h-96 border p-4 rounded-xl shadow-md transition-all">
+    <h1 class="font-[600] text-2xl pb-2 border-b select-none">Notificações</h1>
+    <div class="space-x-2 pt-2">
+    @foreach (Notificacao not in getNotificacoes()) {
+        <div class="border-b pb-2">
+            <p class="font-medium">@not.getTitle()</p>
+            <p>@not.getMessage()</p>
+            @if (not.getHasButton()) {
+                <button class="my-2 bg-rhythms/20 hover:bg-rhythms text-sm text-rhythms hover:text-white py-1 px-2 rounded-2xl transition-all font-medium">
+                    @not.getButtonTitle() ->
+                </button>
+            }
+            <p class="text-gray-400 text-sm select-none">@not.getDate().ToShortDateString()</p>
+        </div>
+    }
+    </div>
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public List<Notificacao> Notificacoes { get; set; }
+    
+    private List<Notificacao> getNotificacoes() {
+        return Notificacoes;
+    }
+}
