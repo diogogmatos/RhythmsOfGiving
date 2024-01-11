@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Eq3L+UfrDV+2gGFp1Oh5+v4S/nwjwa40LBelHoA77yvI1Qb/W5VILHSAqXZRD/fcrNOy0q1qdPHyH+6lu87SLQ==",
+  "dgSpecHash": "Au7QLQYt0WqW80tkGX8wEnywGPbOL+8a3DgRGRso13h50kuKHIfSEEnOKSLbO6NvwgPLRGGu6tCa372Wg2/gbA==",
   "success": true,
-  "projectFilePath": "/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/RhythmsOfGiving.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\manse\\Universidade\\LI4\\RhythmsOfGiving\\RhythmsOfGiving.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\manse\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\manse\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\manse\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\manse\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
+  ],
   "logs": []
 }
