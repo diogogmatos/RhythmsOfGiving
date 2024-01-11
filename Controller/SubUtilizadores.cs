@@ -1,2 +1,4 @@
 
-public class SubUtilizadores: ISubUtilizadores {}
+public class SubUtilizadores: ISubUtilizadores {
+    
+}
