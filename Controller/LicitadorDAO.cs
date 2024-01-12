@@ -18,6 +18,9 @@ public class LicitadorDAO{
             return 0; // depois usar a query necessária
         }
 
-        
+       public Licitador get(string email){
+            //falta definir a lógica
+            throw new LicitadorNaoExisteException("O licitador com o email, " + email + " não existe!");
+       } 
 }
 }

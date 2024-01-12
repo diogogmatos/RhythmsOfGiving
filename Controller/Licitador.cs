@@ -4,6 +4,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using RhythmsOfGiving.Controller;
 
+namespace RhythmsOfGiving.Controller{
 public class Licitador{
 
     private int idLicitador { get; set; }
@@ -89,12 +90,14 @@ public class Licitador{
 
     // Verifica a igualdade dos atributos
     return (this.idLicitador == other.idLicitador &&
-            this.nome == other.nome &&
+            this.nome.Equals(other.nome) &&
+            this.palavraPasse.Equals(other.palavraPasse) &&
             this.dataNascimento == other.dataNascimento &&
             this.nrCartao == other.nrCartao &&
-            this.email == other.email &&
+            this.email.Equals(other.email) &&
             this.nif == other.nif &&
             this.nCC == other.nCC);
     }
 
+}
 }

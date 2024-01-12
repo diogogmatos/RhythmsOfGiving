@@ -1,4 +1,5 @@
 
+namespace RhythmsOfGiving.Controller{
 public class SubUtilizadores: ISubUtilizadores {
     private LicitacaoDAO licitadores;
     private  Dictionary<int, Administrador> administradores;
@@ -12,5 +13,9 @@ public class SubUtilizadores: ISubUtilizadores {
         //ver classe SubServicos no trabalho DSS para ajudar
     }
 
+    public bool validarAutenticacao(string email, string palavraPasse){
+        return false;
+    }
 
+}
 }
