@@ -40,7 +40,13 @@
                     </p>
                 }
                 else {
-                    @if (@getOwnLicitacao() < @getLastLicitacao()) {
+                    @if (@isAsCegas()) {
+                        <p class="flex font-medium items-center">
+                        <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@getOwnLicitacao().ToString("0.00€")</text>
+                        </p>
+                    }
+                    else if (@getOwnLicitacao() < @getLastLicitacao()) {
                         <p class="flex text-gray-400 font-medium items-center">
                         <text class="w-fit ml-0 m-auto">A sua licitação: </text>
                         <text class="w-fit mr-0 m-auto text-2xl font-medium">@getOwnLicitacao().ToString("0.00€")</text>
@@ -88,7 +94,15 @@
     private float Valor { get; set; }
 
     // TODO: obter informação acerca do leilão da base de dados através de IdLeilao
-    private Leilao Leilao = new Leilao("Taylor Swift", "The Eras Tour: Exclusive VIP Seating", "Lisboa", "Pop", "Inglês", "2023-12-23", "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.", "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.", 6500f, "https://media.seudinheiro.com/uploads/2023/09/Taylor-Swift-The-Eras-Tour-715x402.jpg", "images/taylorswiftperfil.jpg", false);
+    private Leilao Leilao = new Leilao
+    (
+        "Taylor Swift",
+        "The Eras Tour: Exclusive VIP Seating",
+        "Lisboa", "Pop", "Inglês", "2023-12-23",
+        "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.",
+        "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.", 6500f, "https://media.seudinheiro.com/uploads/2023/09/Taylor-Swift-The-Eras-Tour-715x402.jpg",
+        "images/taylorswiftperfil.jpg", false
+    );
 
     private int getId() {
         return Leilao.getId();
@@ -118,33 +132,27 @@
     private float getValorBase() {
         return Leilao.getValorBase();
     }
-
     private float getOwnLicitacao() {
         // ir à base de dados obter informação
         return 7000.00f;
     }
-
     private float getLastLicitacao() {
         // ir à base de dados obter informação
         return 8543.92f;
     }
-
     private string getImagePath() {
         return Leilao.getImagePath();
     }
-
     private string getAuthorImagePath() {
         return Leilao.getAuthorImagePath();
     }
-
     private bool isAsCegas() {
         return Leilao.getAsCegas();
     }
-
     private bool existeLicitacoes() {
         return true;
     }
-
+    
     private void licitar() {
         ;
     }

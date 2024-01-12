@@ -5,15 +5,24 @@
         <img src="images/rog_color.png" alt="Rhythms Of Giving Logo" width="250px">
     </a>
     <div class="space-x-6 pr-52">
-        <NavLink class=@hover href="leiloes" ActiveClass="@active"><i class="bi bi-music-note-list"></i> Leilões</NavLink>
-        <NavLink class=@hover href="instituicoes" ActiveClass="@active"><i class="bi bi-heart-fill"></i> Instituições</NavLink>
-        <NavLink class=@hover href="estatisticas" ActiveClass="@active"><i class="bi bi-bar-chart-fill"></i> Estatísticas</NavLink>
+        @if (!@isLoggedIn()) {
+            <NavLink class=@hover href="leiloes" ActiveClass="@active"><i class="bi bi-music-note-list"></i> Leilões</NavLink>
+            <NavLink class=@hover href="instituicoes" ActiveClass="@active"><i class="bi bi-heart-fill"></i> Instituições</NavLink>
+            <NavLink class=@hover href="estatisticas" ActiveClass="@active"><i class="bi bi-bar-chart-fill"></i> Estatísticas</NavLink>
+        }
         <NavLink class=@hover href="sobre" ActiveClass="@active"><i class="bi bi-lightbulb-fill"></i> Sobre Nós</NavLink>
     </div>
-    <div class="space-x-2 text-xl">
-        <button class=@notButtonColor() @onclick=toggleNotificacoes><i class="bi bi-bell-fill"></i></button>
-        <button class=@profileButtonColor()><i class="bi bi-person-circle"></i></button>
-    </div>
+    @if(!@isLoggedIn()) {
+        <div class="space-x-2 text-xl">
+            <button class=@notButtonColor() @onclick=toggleNotificacoes><i class="bi bi-bell-fill"></i></button>
+            <button class=@profileButtonColor()><i class="bi bi-person-circle"></i></button>
+        </div>
+    } else {
+        <div class="space-x-2 text-sm font-bold">
+            <button onclick="location.href='/login';" class="bg-rhythms text-white py-1 px-4 rounded-xl shadow-sm hover:shadow-md transition-all">Login</button>
+            <button onclick="location.href='/register';" class="bg-rhythms/10 text-rhythms py-1 px-4 rounded-xl shadow-sm hover:shadow-md transition-all">Sign Up</button>
+        </div>
+    }
 </nav>
 
 @code {
@@ -23,6 +32,14 @@
     [EditorRequired]
     [Parameter]
     public EventCallback ToggleNotificacoes { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public bool IsLoggedIn { get; set; }
+
+    private bool isLoggedIn() {
+        return IsLoggedIn;
+    }
+
     private void toggleNotificacoes() {
         IsNotificacoesOpen = !IsNotificacoesOpen;
         ToggleNotificacoes.InvokeAsync();

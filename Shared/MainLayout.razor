@@ -1,15 +1,18 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-@using System.Text.Json
 @inject IWebHostEnvironment Env
 
 @using RhythmsOfGiving.Controller
+@using RhythmsOfGiving.Shared
 
 <PageTitle>RhythmsOfGiving</PageTitle>
 
 <div class="text-gray-900 font-inter">
     @if (!NavigationManager.Uri.EndsWith("/")) {
-        <NavBar IsNotificacoesOpen="IsNotificacoesOpen" ToggleNotificacoes="ToggleNotificacoes"/>
+        <NavBar IsNotificacoesOpen="IsNotificacoesOpen" ToggleNotificacoes="ToggleNotificacoes" IsLoggedIn=false />
+    }
+    else {
+        <NavBar IsNotificacoesOpen="IsNotificacoesOpen" ToggleNotificacoes="ToggleNotificacoes" IsLoggedIn=true />
     }
 
     <main class="lg:px-20 xl:px-64 2xl:px-96 overflow-scroll">
