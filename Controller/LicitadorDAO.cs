@@ -1,5 +1,6 @@
 using System.Drawing;
 
+namespace RhythmsOfGiving.Controller{
 public class LicitadorDAO{
     private static LicitadorDAO? singleton = null;
         private LicitadorDAO() { }
@@ -18,4 +19,5 @@ public class LicitadorDAO{
         }
 
         
+}
 }
