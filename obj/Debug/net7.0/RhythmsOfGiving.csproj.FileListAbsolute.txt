@@ -26,3 +26,5 @@
 /home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/obj/Debug/net7.0/RhythmsOfGiving.pdb
 /home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/obj/Debug/net7.0/RhythmsOfGiving.genruntimeconfig.cache
 /home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/obj/Debug/net7.0/ref/RhythmsOfGiving.dll
+/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/bin/Debug/net7.0/package-lock.json
+/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/bin/Debug/net7.0/package.json

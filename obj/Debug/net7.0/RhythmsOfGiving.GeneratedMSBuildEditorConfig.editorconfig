@@ -40,8 +40,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTGVpbG9lcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/Pages/PaginaLeilao.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUGFnaW5hTGVpbGFvLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/Pages/SobreNos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU29icmVOb3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/Shared/LeilaoBlock.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL0xlaWxhb0Jsb2NrLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/Shared/MainLayout.razor]

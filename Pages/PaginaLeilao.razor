@@ -1,0 +1,151 @@
+@page "/leiloes/{IdLeilao}"
+
+@using RhythmsOfGiving.Controller
+
+<div class="space-y-6 pb-10">
+    @* Capa *@
+    <img class="object-cover w-full h-96" src="https://media.seudinheiro.com/uploads/2023/09/Taylor-Swift-The-Eras-Tour-715x402.jpg" />
+    @* Nome Artista *@
+    <div class="flex space-x-2 items-center select-none">
+        <img class="object-cover w-10 h-10 rounded-full" src="images/taylorswiftperfil.jpg"/>
+        <p class="font-[600] text-xl">@getArtista()</p>
+    </div>
+    @* Título *@
+    <p class="font-[700] text-4xl">@getTitle()</p>
+    @* Informações *@
+    <div class="flex text-gray-400 select-none">
+        <p class="w-fit m-auto ml-0">Localização - <text class="font-medium">@getLocalizacao()</text></p>
+        <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@getGenero()</text></p>
+        <p class="w-fit m-auto">Tipo - <text class="font-medium">@getTipo()</text></p>
+        <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@getFim()</text></p>
+    </div>
+    <div class="flex space-x-8">
+        @* Descrição *@
+        <text class="text-justify">
+            @getDescricao()
+        </text>
+        @* Área de Interação *@
+        <div class="min-w-[25rem] h-fit rounded-xl border p-6 space-y-4">
+            @* Título *@
+            <h1 class="font-[600] text-3xl pb-4 border-b">Leilão</h1>
+            @* Licitações *@
+            <div class="space-y-2 text-xl">                
+                <p class="flex text-gray-400 font-medium items-center">
+                    <text class="w-fit ml-0 m-auto">Valor base: </text>
+                    <text class="w-fit mr-0 m-auto text-2xl font-medium">@getValorBase().ToString("0.00€")</text>
+                </p>
+                @if (!@existeLicitacoes()) {
+                    <p class="text-rhythms font-medium">
+                        Faça a primeira licitação!
+                    </p>
+                }
+                else {
+                    @if (@getOwnLicitacao() < @getLastLicitacao()) {
+                        <p class="flex text-gray-400 font-medium items-center">
+                        <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                        <text class="w-fit mr-0 m-auto text-2xl font-medium">@getOwnLicitacao().ToString("0.00€")</text>
+                        </p>
+                        <p class="flex font-medium items-center">
+                            <text class="w-fit ml-0 m-auto">Última licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@getLastLicitacao().ToString("0.00€")</text>
+                        </p>
+                    }
+                    else {                    
+                        <p class="flex text-gray-400 font-medium items-center">
+                            <text class="w-fit ml-0 m-auto">Última licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-2xl font-medium">@getLastLicitacao().ToString("0.00€")</text>
+                        </p>
+                        <p class="flex font-medium items-center">
+                        <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@getOwnLicitacao().ToString("0.00€")</text>
+                        </p>
+                    }      
+                }                  
+            </div>
+            @* Licitar *@
+            <EditForm Model="@Valor" class="flex w-full space-x-2">
+                <button type="submit" class="ml-0 m-auto min-w-44 hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
+                    Licitar
+                </button>
+                <div class="relative rounded-lg shadow-sm mr-0 m-auto w-fit">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="text-gray-500 sm:text-sm">€</span>
+                    </div>
+                    <InputNumber @bind-Value="Valor" class="block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency" />
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                        <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? IdLeilao { get; set; }
+
+    private float Valor { get; set; }
+
+    // TODO: obter informação acerca do leilão da base de dados através de IdLeilao
+    private Leilao Leilao = new Leilao("Taylor Swift", "The Eras Tour: Exclusive VIP Seating", "Lisboa", "Pop", "Inglês", "2023-12-23", "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.", "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.", 6500f, "https://media.seudinheiro.com/uploads/2023/09/Taylor-Swift-The-Eras-Tour-715x402.jpg", "images/taylorswiftperfil.jpg", false);
+
+    private int getId() {
+        return Leilao.getId();
+    }
+    private string getArtista() {
+        return Leilao.getArtista();
+    }
+    private string getTitle() {
+        return Leilao.getTitle();
+    }
+    private string getLocalizacao() {
+        return Leilao.getLocalizacao();
+    }
+    private string getGenero() {
+        return Leilao.getGenero();
+    }
+    private string getTipo() {
+        return Leilao.getTipo();
+    }
+    private string getFim() {
+        return Leilao.getFim().ToShortDateString();
+    }
+    private string getDescricao() {
+        return Leilao.getDescricao();
+    }
+
+    private float getValorBase() {
+        return Leilao.getValorBase();
+    }
+
+    private float getOwnLicitacao() {
+        // ir à base de dados obter informação
+        return 7000.00f;
+    }
+
+    private float getLastLicitacao() {
+        // ir à base de dados obter informação
+        return 8543.92f;
+    }
+
+    private string getImagePath() {
+        return Leilao.getImagePath();
+    }
+
+    private string getAuthorImagePath() {
+        return Leilao.getAuthorImagePath();
+    }
+
+    private bool isAsCegas() {
+        return Leilao.getAsCegas();
+    }
+
+    private bool existeLicitacoes() {
+        return true;
+    }
+
+    private void licitar() {
+        ;
+    }
+}

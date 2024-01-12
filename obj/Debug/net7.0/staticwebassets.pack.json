@@ -17,6 +17,14 @@
       "PackagePath": "staticwebassets/images/rog_color.png"
     },
     {
+      "Id": "/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/wwwroot/images/taylorswift.jpg",
+      "PackagePath": "staticwebassets/images/taylorswift.jpg"
+    },
+    {
+      "Id": "/home/diogo/LEI/3ano/1sem/LI4/RhythmsOfGiving/wwwroot/images/taylorswiftperfil.jpg",
+      "PackagePath": "staticwebassets/images/taylorswiftperfil.jpg"
+    },
+    {
       "Id": "obj/Debug/net7.0/staticwebassets/msbuild.RhythmsOfGiving.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
