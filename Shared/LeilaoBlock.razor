@@ -1,0 +1,121 @@
+@using RhythmsOfGiving.Controller
+
+<div class="flex border h-fit rounded-2xl shadow-sm overflow-hidden">
+    @* Informações *@
+    <div class="p-8 space-y-4 w-full">
+        @* Nome Artista *@
+        <div class="flex space-x-2 items-center select-none">
+            <img class="object-cover w-8 h-8 rounded-full" src=@getAuthorImagePath()/>
+            <p class="font-[600]">@getArtista()</p>
+        </div>
+        @* Titulo Leilao *@
+        <p class="font-[600] text-2xl">
+            @getTitle()
+        </p>
+        @* Detalhes *@
+        <div class="flex text-gray-400 select-none">
+            <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@getGenero()</text></p>
+            <p class="w-fit m-auto">Tipo - <text class="font-medium">@getTipo()</text></p>
+            <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@getFim()</text></p>
+        </div>
+        @* Descrição *@
+        <p class="text-justify">
+            @getDescricao()
+        </p>
+        @* Botão e Preço *@
+        <div class="flex space-x-4 select-none place-content-between">
+            <button onclick="location.href='/leiloes/@getId()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
+                Licitar ->
+            </button>
+            @if (getOwnLicitacao() != 0) {
+                <div class="text-center min-w-fit">
+                    <p class="text-sm text-gray-400 font-medium">
+                        a sua licitação:
+                    </p>
+                    <p class="text-xl font-[600] text-rhythms/50">
+                        @getOwnLicitacao().ToString("0.00€")
+                    </p>
+                </div>        
+            }
+            <div class="text-center min-w-fit">
+                @if (getLastLicitacao() != 0 && !isAsCegas()) {
+                    <p class="text-sm text-gray-400 font-medium">
+                        última licitação:
+                    </p>
+                    <p class="text-xl font-[600] text-rhythms">
+                        @getLastLicitacao().ToString("0.00€")
+                    </p>
+                }
+                else {
+                    <p class="text-sm text-gray-400 font-medium">
+                        valor base:
+                    </p>
+                    <p class="text-xl font-[600] text-rhythms">
+                        @getValorBase().ToString("0.00€")
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+    @* Imagem *@
+    <div class="min-w-[25rem] w-[25rem] max-w-[25rem] bg-gray-300 hidden lg:block">
+        <img class="object-cover w-[25rem] h-full" src=@getImagePath()/>
+    </div>
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public Leilao Leilao { get; set; }
+
+    private int getId() {
+        return Leilao.getId();
+    }
+    private string getArtista() {
+        return Leilao.getArtista();
+    }
+    private string getTitle() {
+        return Leilao.getTitle();
+    }
+    private string getLocalizacao() {
+        return Leilao.getLocalizacao();
+    }
+    private string getGenero() {
+        return Leilao.getGenero();
+    }
+    private string getTipo() {
+        return Leilao.getTipo();
+    }
+    private string getFim() {
+        return Leilao.getFim().ToShortDateString();
+    }
+    private string getDescricao() {
+        return Leilao.getShortDescricao();
+    }
+
+    private float getValorBase() {
+        return Leilao.getValorBase();
+    }
+
+    private float getOwnLicitacao() {
+        // ir à base de dados obter informação
+        return 7500.00f;
+    }
+
+    private float getLastLicitacao() {
+        // ir à base de dados obter informação
+        return 8543.92f;
+    }
+
+    private string getImagePath() {
+        return Leilao.getImagePath();
+    }
+
+    private string getAuthorImagePath() {
+        return Leilao.getAuthorImagePath();
+    }
+
+    private bool isAsCegas() {
+        return Leilao.getAsCegas();
+    }
+}

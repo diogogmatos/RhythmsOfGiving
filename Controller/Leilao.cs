@@ -1,12 +1,86 @@
 namespace RhythmsOfGiving.Controller {
     public class Leilao {
+        private static int idCounter = 0;
+        private int id;
         private string artista;
         private string title;
         private string localizacao;
         private string genero;
         private string tipo;
-        private string fim;
+        private DateTime fim;
+        private string shortDescricao;
         private string descricao;
+        private float valorBase;
+        private string imagePath;
+        private string authorImagePath;
+        private bool asCegas;
 
+        public Leilao(string artista, string title, string localizacao, string genero, string tipo, string fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas) {
+            this.id = idCounter++;
+            this.artista = artista;
+            this.title = title;
+            this.localizacao = localizacao;
+            this.genero = genero;
+            this.tipo = tipo;
+            this.fim = DateTime.Parse(fim);
+            this.shortDescricao = shortDescricao;
+            this.descricao = descricao;
+            this.valorBase = valorBase;
+            this.imagePath = imagePath;
+            this.authorImagePath = authorImagePath;
+            this.asCegas = asCegas;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public string getArtista() {
+            return artista;
+        }
+
+        public string getTitle() {
+            return title;
+        }
+
+        public string getLocalizacao() {
+            return localizacao;
+        }
+
+        public string getGenero() {
+            return genero;
+        }
+
+        public string getTipo() {
+            return tipo;
+        }
+
+        public DateTime getFim() {
+            return fim;
+        }
+
+        public string getDescricao() {
+            return descricao;
+        }
+
+        public string getShortDescricao() {
+            return shortDescricao;
+        }
+
+        public float getValorBase() {
+            return valorBase;
+        }
+
+        public string getImagePath() {
+            return imagePath;
+        }
+
+        public string getAuthorImagePath() {
+            return authorImagePath;
+        }
+
+        public bool getAsCegas() {
+            return asCegas;
+        }
     }
 }
