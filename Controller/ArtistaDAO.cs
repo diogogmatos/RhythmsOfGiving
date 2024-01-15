@@ -18,9 +18,13 @@ public class ArtistaDAO{
             return 0; // depois usar a query necessária
         }
 
-       public Licitador get(string nome){
+       public Artista get(string nome){
             //falta definir a lógica
             throw new ArtistaNaoExisteException("O artista com o nome, " + nome + " não existe!");
        } 
+
+       public Artista put (int id, Artista a){
+            throw new ArtistaJaExistenteException("O artista com o nome, " + a.getNome() + " já existe!");
+       }
 }
 }
