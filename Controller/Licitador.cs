@@ -7,18 +7,18 @@ using RhythmsOfGiving.Controller;
 namespace RhythmsOfGiving.Controller{
 public class Licitador{
 
-    private int idLicitador { get; set; }
-    private string nome { get; set; }
-    private string palavraPasse { get; set; }
-    private DateOnly dataNascimento { get; set; }
-    private int nrCartao { get; set; }
-    private string email { get; set; }
-    private int nif { get; set; }
-    private int nCC { get; set; }
+    private int idLicitador;
+    private string nome;
+    private string palavraPasse;
+    private DateOnly dataNascimento;
+    private int nrCartao;
+    private string email;
+    private int nif;
+    private int nCC;
     private LicitacaoDAO licitacaoDAO;
-    private HashSet<int> minhasLicitacoes { get; set; }
+    private HashSet<int> minhasLicitacoes;
     private FaturaDAO faturaDAO;
-    private HashSet<int> minhasFaturas { get; set; }
+    private HashSet<int> minhasFaturas;
     private NotificacaoDAO notificacaoDAO;
 
     private static int contadorLicitadores = LicitadorDAO.size();
@@ -75,6 +75,101 @@ public class Licitador{
 
         return sb.ToString();
     }
+
+    public int getIdLicitador()
+        {
+            return idLicitador;
+        }
+
+    public string getNome()
+        {
+            return nome;
+        }
+
+    public string getPalavraPasse()
+        {
+            return palavraPasse;
+        }
+
+    public DateOnly getDataNascimento()
+        {
+            return dataNascimento;
+        }
+
+    public int getNrCartao()
+        {
+            return nrCartao;
+        }
+
+    public string getEmail()
+        {
+            return email;
+        }
+
+    public int getNIF()
+        {
+            return nif;
+        }
+
+    public int getNcc()
+        {
+            return nCC;
+        }
+
+    public HashSet<int> getMinhasLicitacoes()
+        {
+            return minhasLicitacoes;
+        }
+
+    public HashSet<int> getMinhasFaturas()
+        {
+            return minhasFaturas;
+        }
+
+    public void setNome(string nome)
+        {
+            this.nome = nome;
+        }
+
+    public void setPalavraPasse(string palavraPasse)
+        {
+            this.palavraPasse = palavraPasse;
+        }
+
+    public void setDataNascimento(DateOnly data)
+        {
+            this.dataNascimento = data;
+        }
+
+    public void setNrCartao(int nr)
+        {
+            this.nrCartao = nr;
+        }
+
+    public void setEmail(string email)
+        {
+            this.email = email;
+        }
+
+    public void setNIF(int nif)
+        {
+            this.nif = nif;
+        }
+
+    public void setNcc(int ncc)
+        {
+            this.nCC = ncc;
+        }
+
+    public void setMinhasLicitacoes(HashSet<int> licitacoes)
+        {
+            this.minhasLicitacoes = licitacoes;
+        }
+
+    public void setMinhasFaturas(HashSet<int> faturas)
+        {
+            this.minhasFaturas = faturas;
+        }
 
    public override bool Equals(object obj){
     // Verifica se o objeto é o próprio objeto

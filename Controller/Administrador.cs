@@ -4,9 +4,9 @@ using System.Text;
 namespace RhythmsOfGiving.Controller{
 public class Administrador{
 
-    private int idAdmin {get; set;}
-    private string email {get; set;}
-    private string palavraPasse {get; set;}
+    private int idAdmin;
+    private string email;
+    private string palavraPasse;
 
     //Construtor parametrizado
     public Administrador (int idAdmin, string email, string palavraPasse){
