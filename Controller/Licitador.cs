@@ -57,25 +57,6 @@ public class Licitador{
         this.notificacaoDAO = NotificacaoDAO.getInstance();
     }
 
-    //Representar o Licitador em string
-    public override string ToString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.Append("Licitador:: {");
-        sb.Append(" IdLicitador: ").Append(this.idLicitador);
-        sb.Append(" Nome: ").Append(this.nome);
-        sb.Append(" Palavra passe: ").Append(this.palavraPasse);
-        sb.Append(" Data nascimento: ").Append(this.dataNascimento.ToString());
-        sb.Append(" Nr cartão credito: ").Append(this.nrCartao);
-        sb.Append(" Email: ").Append(this.email);
-        sb.Append(" NIF: ").Append(this.nif);
-        sb.Append(" NCC: ").Append(this.nCC);
-        sb.Append(" Ids licitações: ").Append(this.minhasLicitacoes.ToString());
-        sb.Append(" Ids faturas: ").Append(this.minhasFaturas.ToString()).Append(" }");
-
-        return sb.ToString();
-    }
-
     public int getIdLicitador()
         {
             return idLicitador;
@@ -170,6 +151,25 @@ public class Licitador{
         {
             this.minhasFaturas = faturas;
         }
+
+    //Representar o Licitador em string
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("Licitador:: {");
+        sb.Append(" IdLicitador: ").Append(this.idLicitador);
+        sb.Append(" Nome: ").Append(this.nome);
+        sb.Append(" Palavra passe: ").Append(this.palavraPasse);
+        sb.Append(" Data nascimento: ").Append(this.dataNascimento.ToString());
+        sb.Append(" Nr cartão credito: ").Append(this.nrCartao);
+        sb.Append(" Email: ").Append(this.email);
+        sb.Append(" NIF: ").Append(this.nif);
+        sb.Append(" NCC: ").Append(this.nCC);
+        sb.Append(" Ids licitações: ").Append(this.minhasLicitacoes.ToString());
+        sb.Append(" Ids faturas: ").Append(this.minhasFaturas.ToString()).Append(" }");
+
+        return sb.ToString();
+    }    
 
    public override bool Equals(object obj){
     // Verifica se o objeto é o próprio objeto

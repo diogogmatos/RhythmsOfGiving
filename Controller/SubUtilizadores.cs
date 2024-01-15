@@ -23,12 +23,12 @@ public class SubUtilizadores: ISubUtilizadores {
                 {
                     return true;
                 }
-
+        
                 return false;
             }
             catch (LicitadorNaoExisteException ex)
             {
-                throw; // Lança a exceção novamente
+                throw; // LanÃ§a a exceÃ§Ã£oo novamente
             }
         }
 
