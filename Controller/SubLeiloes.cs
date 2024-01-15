@@ -12,7 +12,7 @@ public class SubLeiloes: ISubLeiloes {
         this.leilaoDAO = LeilaoDAO.getInstance();
         this.artistaDAO = ArtistaDAO.getInstance();
         this.generos = new Dictionary<int, GeneroMusical>();
-        this.instituicaoDAO = new InstituicaoDAO.getInstance();
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
         //preencher o map generos
         //ver classe SubServicos no trabalho DSS para ajudar
     }
