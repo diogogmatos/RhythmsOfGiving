@@ -1,3 +1,4 @@
+using System.Data.SqlClient;
 using System.Drawing;
 
 namespace RhythmsOfGiving.Controller{
@@ -23,8 +24,44 @@ public class ArtistaDAO{
             throw new ArtistaNaoExisteException("O artista com o nome, " + nome + " não existe!");
        } 
 
-       public Artista put (int id, Artista a){
-            throw new ArtistaJaExistenteException("O artista com o nome, " + a.getNome() + " já existe!");
+       public Artista put (int id, Artista a)
+       {
+           //falta definir a lógica
+           return null;
+       }
+
+       public bool existeArtista(string nome)
+       {
+           using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+           {
+               try
+               {
+                   connection.Open();
+
+                   string query = "SELECT COUNT(*) FROM Artista WHERE Nome = @Nome";
+                
+                   using (SqlCommand command = new SqlCommand(query, connection))
+                   {
+                       command.Parameters.AddWithValue("@Nome", nome);
+
+                       int count = Convert.ToInt32(command.ExecuteScalar());
+
+                       if (count > 0)
+                       {
+                           return true; // já existe artista na base de dados
+                       }
+                       else
+                       {
+                           return false; // Não existe
+                       }
+                   }
+               }
+               catch (Exception ex)
+               {
+                   // Trate a exceção conforme necessário, ou apenas a lance novamente.
+                   throw;
+               }
+           }
        }
 }
 }

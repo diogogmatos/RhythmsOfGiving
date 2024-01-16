@@ -22,10 +22,8 @@ public class Administrador{
         sb.Append(" IdAdmin: ").Append(this.idAdmin);
         sb.Append(" Email: ").Append(this.email);
         sb.Append(" Palavra Passe: ").Append(this.palavraPasse).Append(" }");
-
         return sb.ToString();
     }
-
    public override bool Equals(object obj){
     // Verifica se o objeto é o próprio objeto
     if (obj == this)

@@ -1,5 +1,9 @@
 
- public interface ISubUtilizadores{
+namespace RhythmsOfGiving.Controller
+{
+    public interface ISubUtilizadores
+    {
 
-    public bool validarAutenticacao(string email, string palavraPasse);
- }
+        public bool validarAutenticacao(string email, string palavraPasse);
+    }
+}

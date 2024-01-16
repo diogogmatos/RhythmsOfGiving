@@ -16,5 +16,18 @@ public class SubLeiloes: ISubLeiloes {
         //preencher o map generos
         //ver classe SubServicos no trabalho DSS para ajudar
     }
+
+    public bool registarArtista(string nome, byte[] imagem, int idAdmin)
+    {
+        bool existe = artistaDAO.existeArtista(nome);
+        if (existe)
+        {
+            Artista artista = new Artista(nome, imagem, idAdmin);
+            artistaDAO.put(artista.getIdArtista(), artista);
+        }
+
+        return existe;
+        
+    }
 }
 }
