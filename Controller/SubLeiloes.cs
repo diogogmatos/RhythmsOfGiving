@@ -19,7 +19,7 @@ public class SubLeiloes: ISubLeiloes {
         //ver classe SubServicos no trabalho DSS para ajudar
     }
 
-    public bool registarArtista(string nome, string imagem, int idAdmin)
+    public bool registarArtista(string nome,String imagem, int idAdmin)
     {
         bool existe = artistaDAO.existeArtista(nome);
         if (existe)
@@ -31,13 +31,19 @@ public class SubLeiloes: ISubLeiloes {
         return existe;
         
     }
+    public bool registarGeneroMusical(string nome, int idAdmin)
+    {
+        GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
 
-    public bool registarGeneroMusical(String nome,int idAdmin ){
-        
+        if (!generos.ContainsKey(novoGenero.getIdGenero()))
+        {
+            generos.Add(novoGenero.getIdGenero(), novoGenero);
+
+            return true;
+        }
+
         return false;
-
-
-
     }
+
 }
 }
