@@ -51,5 +51,13 @@ public class SubUtilizadores: ISubUtilizadores {
             return false;         
             
         }
+
+        public void AdicionarLicitacao(int idLicitacao, int idLicitador)
+        {
+            Licitador l  = this.licitadores.getPorID(idLicitacao);
+            l.getMinhasLicitacoes().Add(idLicitacao);
+            licitadores.put(l.getEmail(),l);
+
+        }   
     }
 }
