@@ -4,6 +4,6 @@ namespace RhythmsOfGiving.Controller
 {
     public interface ISubLeiloes
     {
-        public bool registarArtista(string nome, byte[] imagem, int idAdmin);
+        public bool registarArtista(string nome, string imagem, int idAdmin);
     }
 }

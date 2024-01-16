@@ -7,13 +7,13 @@ public class Artista{
 
     private int idArtista;
     private string nome;
-    private byte[] imagem;
+    private string imagem;
     private int idAdmin;
 
     private static int contadorArtistas = ArtistaDAO.size();
 
     //Construtor para fazer get
-    public Artista (int idArtista, string nome, byte[] imagem, int idAdmin){
+    public Artista (int idArtista, string nome, string imagem, int idAdmin){
         this.idArtista = idArtista;
         this.nome = nome;
         this.imagem = imagem;
@@ -21,7 +21,7 @@ public class Artista{
     }
 
     //Construtor para criar o Licitador
-    public Artista(string nome, byte[] imagem, int idAdmin){
+    public Artista(string nome, string imagem, int idAdmin){
         this.idArtista = ++contadorArtistas;
         this.nome = nome;
         this.imagem = imagem;
@@ -36,7 +36,7 @@ public class Artista{
         return nome;
     }
 
-    public byte[] getImagem(){
+    public string getImagem(){
         return imagem;
     }
 
@@ -52,7 +52,7 @@ public class Artista{
         this.nome = nome;
     }
 
-    public void setImagem(byte[] imagem){
+    public void setImagem(string imagem){
         this.imagem = imagem;
     }
 
