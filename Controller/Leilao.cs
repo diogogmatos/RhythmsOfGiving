@@ -1,6 +1,5 @@
 namespace RhythmsOfGiving.Controller {
     public class Leilao {
-        private static int idCounter = 0;
         private int id;
         private string artista;
         private string title;
@@ -15,8 +14,8 @@ namespace RhythmsOfGiving.Controller {
         private string authorImagePath;
         private bool asCegas;
 
-        public Leilao(string artista, string title, string localizacao, string genero, string tipo, string fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas) {
-            this.id = idCounter++;
+        public Leilao(int id, string artista, string title, string localizacao, string genero, string tipo, string fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas) {
+            this.id = id;
             this.artista = artista;
             this.title = title;
             this.localizacao = localizacao;
