@@ -29,5 +29,13 @@ public class SubLeiloes: ISubLeiloes {
         return existe;
         
     }
+
+    public bool registarGeneroMusical(String nome,int idAdmin ){
+        
+        return false;
+
+
+
+    }
 }
 }

@@ -1,4 +1,6 @@
 
+using System.Reflection.Metadata;
+
 namespace RhythmsOfGiving.Controller{
 public class SubUtilizadores: ISubUtilizadores {
     private LicitacaoDAO licitadores;
@@ -31,5 +33,23 @@ public class SubUtilizadores: ISubUtilizadores {
             }
         }
 
+
+        public bool AlterarInfosPessoais(string email,string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse){
+            // Tenho de pensar o que pode faltar
+            try{
+            Licitador l = this.licitadores.get(email);
+            l.setNome(novoNome);
+            l.setDataNascimento(novaDataNascimento);
+            l.setNcc(novoNumeroCC);
+            l.setPalavraPasse(novaPalavraPasse); 
+            return true;
+            }catch (LicitadorNaoExisteException ex)
+            {
+            
+                throw;
+            }
+            return false;         
+            
+        }
     }
 }

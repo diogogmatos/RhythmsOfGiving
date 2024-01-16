@@ -194,5 +194,9 @@ public class Licitador{
             this.nCC == other.nCC);
     }
 
-}
+        internal void setDataNascimento(DateTime novaDataNascimento)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
