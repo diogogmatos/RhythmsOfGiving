@@ -1,5 +1,20 @@
 @page "/instituicoes"
 
+@using RhythmsOfGiving.Shared
+@using RhythmsOfGiving.Controller
+
 <PageTitle>Instituições</PageTitle>
 
-<h1>Instituições</h1>
+<div class="space-y-6 py-8">
+    @foreach (Instituicao instituicao in getInstituicoes()) {
+        <InstituicaoBlock Instituicao="instituicao" />
+    }
+</div>
+
+@code {
+    private List<Instituicao> getInstituicoes() {
+        List<Instituicao> instituicoes = new List<Instituicao>();
+        instituicoes.Add(new Instituicao(1, "Cruz Vermelha Portuguesa", "A Cruz Vermelha tem vindo a apostar nas actividades de prevenção e preparação para catástrofes.", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Logo_CVP.svg/800px-Logo_CVP.svg.png", "https://www.cruzvermelha.pt/"));
+        return instituicoes;
+    }
+}

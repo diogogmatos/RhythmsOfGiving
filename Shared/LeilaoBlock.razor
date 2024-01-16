@@ -1,8 +1,8 @@
 @using RhythmsOfGiving.Controller
 
-<div class="flex border h-fit rounded-2xl shadow-sm overflow-hidden">
+<div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden">
     @* Informações *@
-    <div class="p-8 space-y-4 w-full">
+    <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
         @* Nome Artista *@
         <div class="flex space-x-2 items-center select-none">
             <img class="object-cover w-8 h-8 rounded-full" src=@getAuthorImagePath()/>
@@ -58,8 +58,8 @@
         </div>
     </div>
     @* Imagem *@
-    <div class="min-w-[25rem] w-[25rem] max-w-[25rem] bg-gray-300 hidden lg:block">
-        <img class="object-cover w-[25rem] h-full" src=@getImagePath()/>
+    <div class="min-w-[25rem] bg-gray-300 hidden xl:block">
+        <img class="object-cover h-full" src=@getImagePath()/>
     </div>
 </div>
 

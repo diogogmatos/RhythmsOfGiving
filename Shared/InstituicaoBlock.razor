@@ -1,0 +1,49 @@
+@using RhythmsOfGiving.Controller
+
+<div class="grid grid-cols-3 border h-80 rounded-2xl shadow-sm overflow-hidden">
+    @* Informações *@
+    <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
+        @* Nome da Instituição *@
+        <p class="font-[600] text-2xl">
+            @getNome()
+        </p>
+        @* Descrição *@
+        <p class="text-justify">
+            @getDescricao()
+        </p>
+        @* Botão Saiba Mais *@
+        <button onclick="location.href='@getLink()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
+            Saiba Mais ->
+        </button>
+    </div>
+    @* Imagem *@
+    <div class="min-w-[25rem] hidden xl:block">
+        <img class="object-cover h-full m-auto" src=@getLogoPath()/>
+    </div>
+</div>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public Instituicao Instituicao { get; set; }
+
+    private string getNome()
+    {
+        return Instituicao.getNome();
+    }
+
+    private string getDescricao()
+    {
+        return Instituicao.getDescricao();
+    }
+
+    private string getLink()
+    {
+        return Instituicao.getLink();
+    }
+
+    private string getLogoPath()
+    {
+        return Instituicao.getLogoPath();
+    }
+}
