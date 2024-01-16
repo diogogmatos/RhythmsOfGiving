@@ -1,4 +1,6 @@
 
+using System.Runtime.CompilerServices;
+
 namespace RhythmsOfGiving.Controller{
 public class SubLeiloes: ISubLeiloes {
 
@@ -17,7 +19,7 @@ public class SubLeiloes: ISubLeiloes {
         //ver classe SubServicos no trabalho DSS para ajudar
     }
 
-    public bool registarArtista(string nome, byte[] imagem, int idAdmin)
+    public bool registarArtista(string nome, string imagem, int idAdmin)
     {
         bool existe = artistaDAO.existeArtista(nome);
         if (existe)

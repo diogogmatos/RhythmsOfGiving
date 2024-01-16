@@ -11,4 +11,8 @@ public class InstituicaoDAO{
             }
             return singleton;
         }
+        
+        public static int size(){
+            return 0; // depois usar a query necessária
+        }
 }
