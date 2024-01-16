@@ -33,9 +33,9 @@ public class SubUtilizadores: ISubUtilizadores {
             }
         }
 
-
-        public bool AlterarInfosPessoais(string email,string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse){
-            // Tenho de pensar o que pode faltar
+        
+        public bool alterarInfosPessoais(string email,string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse){
+            // Tenho de pensar o que pode faltar, visto que não estou a verificar os dados
             try{
             Licitador l = this.licitadores.get(email);
             l.setNome(novoNome);
