@@ -21,5 +21,9 @@ namespace RhythmsOfGiving.Controller
         
          public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
 
+        public string getTituloLeilao(int idLeilao);
+
+        
+
     }
 }
