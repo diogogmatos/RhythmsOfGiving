@@ -38,6 +38,26 @@ namespace RhythmsOfGiving.Controller {
         this.licitacaoDAO = LicitacaoDAO.getInstance();
 
     }
+    
+    public Leilao(int id, string artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas)
+    {
+        this.id = id;
+        this.artista = artista;
+        this.title = title;
+        this.localizacao = localizacao;
+        this.genero = genero;
+        this.tipo = tipo;
+        this.fim = fim;
+        this.shortDescricao = shortDescricao;
+        this.descricao = descricao;
+        this.valorBase = valorBase;
+        this.imagePath = imagePath;
+        this.authorImagePath = authorImagePath;
+        this.asCegas = asCegas;
+        this.minhasLicitacoes = new List<int>();
+        this.licitacaoDAO = LicitacaoDAO.getInstance();
+
+    }
 
     // Método para adicionar uma licitação à lista
     public void AdicionarMinhaLicitacao(int valor)
