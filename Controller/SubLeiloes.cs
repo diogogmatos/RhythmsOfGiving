@@ -188,4 +188,10 @@ public class SubLeiloes: ISubLeiloes {
     
     }
 
+    //DUVIDA é suposto receber um float (valor da licitação atual) ou o Leilão?
+    public float calcularValorMinimo(float valor)
+    {
+        return (float)Math.Round(valor * 1.01f, 2);
+    }
+
 }
