@@ -61,7 +61,7 @@ public class LeilaoDAO{
 
                     string query = @"
                         SELECT Leilao.id AS LeilaoId, Leilao.titulo, Leilao.valorAtual, Leilao.dataHoraFinal, Leilao.tipoLeilao, Leilao.imagem AS imagemLeilao
-                               , Leilao.localizacao, Leilao.descricao, Leilao.Estado, Leilao.idAdministrador AS LeilaoIdAdmin, Artista.*
+                               , Leilao.localizacao, Leilao.descricao, Leilao.estado, Leilao.idAdministrador AS LeilaoIdAdmin, Artista.*
                         FROM Leilao
                         INNER JOIN Artista ON Leilao.idArtista = Artista.id
                         WHERE Leilao.Estado = 1";
@@ -120,5 +120,86 @@ public class LeilaoDAO{
 
             return leiloesAtivosMap;
         }
+
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nomeArtista)
+{
+    Dictionary<Leilao, Artista> leiloesPorArtista = new Dictionary<Leilao, Artista>();
+
+    using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+    {
+        try
+        {
+            connection.Open();
+
+            // Primeiro, obter o ID do artista pelo nome
+            string queryObterIdArtista = "SELECT id FROM Artista WHERE nome = @NomeArtista";
+
+            using (SqlCommand commandObterIdArtista = new SqlCommand(queryObterIdArtista, connection))
+            {
+                commandObterIdArtista.Parameters.AddWithValue("@NomeArtista", nomeArtista);
+
+                int idArtista = Convert.ToInt32(commandObterIdArtista.ExecuteScalar());
+
+                // Em seguida, usar o ID do artista para obter os leilões ativos em que ele participa
+                string queryLeiloesPorArtista = @"
+                     SELECT Leilao.id AS LeilaoId, Leilao.titulo, Leilao.valorAtual, Leilao.dataHoraFinal, Leilao.tipoLeilao, Leilao.imagem AS imagemLeilao
+                               , Leilao.localizacao, Leilao.descricao, Leilao.estado, Leilao.idAdministrador AS LeilaoIdAdmin, Artista.*
+                    FROM Leilao
+                    INNER JOIN Artista ON Leilao.idArtista = Artista.id
+                    WHERE Leilao.Estado = 1 AND Leilao.idArtista = @IdArtista";
+
+                using (SqlCommand commandLeiloesPorArtista = new SqlCommand(queryLeiloesPorArtista, connection))
+                {
+                    commandLeiloesPorArtista.Parameters.AddWithValue("@IdArtista", idArtista);
+
+                    using (SqlDataReader reader = commandLeiloesPorArtista.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Artista artista = null;
+                            {
+                                // Configure os atributos do Artista com base nas colunas do resultado da consulta
+                                int idArtistaLeilao = reader.GetInt32(reader.GetOrdinal("id"));
+                                string nomeArtistaLeilao = reader.GetString(reader.GetOrdinal("nome"));
+                                string imagemArtistaLeilao = reader.GetString(reader.GetOrdinal("imagem"));
+                                int idAdminArtistaLeilao = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
+
+                                artista = new Artista(idArtistaLeilao, nomeArtistaLeilao, imagemArtistaLeilao, idAdminArtistaLeilao);
+                            };
+
+                            Leilao leilao = null;
+                            {
+                                // Configure os atributos do Leilao com base nas colunas do resultado da consulta
+                                int idLeilao = reader.GetInt32(reader.GetOrdinal("LeilaoId"));
+                                string titulo = reader.GetString(reader.GetOrdinal("titulo"));
+                                float licitacaoAtual = reader.GetFloat(reader.GetOrdinal("valorAtual"));
+                                DateTime dataTermina = reader.GetDateTime(reader.GetOrdinal("dataHoraFinal"));
+                                string tipoLeilao = reader.GetString(reader.GetOrdinal("tipoLeilao"));
+                                string imagem = reader.GetString(reader.GetOrdinal("imagemLeilao"));
+                                string localizacao = reader.GetString(reader.GetOrdinal("localizacao"));
+                                string descricao = reader.GetString(reader.GetOrdinal("descricao"));
+
+                                bool asCegas = tipoLeilao.Equals("àsCegas");
+
+                                leilao = new Leilao(idLeilao, artista.getNome(), titulo, localizacao, nomeArtista,
+                                    tipoLeilao, dataTermina,
+                                    descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
+                            };
+
+                            leiloesPorArtista.Add(leilao, artista);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Trate a exceção conforme necessário, ou apenas a lance novamente.
+            throw;
+        }
+    }
+
+    return leiloesPorArtista;
+}
 
 }
