@@ -181,7 +181,7 @@ namespace RhythmsOfGiving.Controller {
     {
         bool contadorBloqueado = false;
         //Verificar se dentro do tempo
-        DateTime atual = DateTime.Now; ;
+        DateTime atual = DateTime.Now; 
         if (atual < this.fim)
         {
             if (valorLicitacao >= valorMinimo)

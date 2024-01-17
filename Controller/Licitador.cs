@@ -198,5 +198,15 @@ public class Licitador{
         {
             throw new NotImplementedException();
         }
-    }
+
+        public Notificacao criarNotificacaoUltrapassada(Licitacao licitacao, string titulo)
+        {
+            DateTime data = DateTime.Now;
+            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo, true,
+                "Aumentar licitação", data.ToString(), 0);
+            this.notificacaoDAO.put(ultrapassada.getId(), ultrapassada);
+
+            return ultrapassada;
+        }
+}
 }

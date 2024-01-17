@@ -81,6 +81,20 @@ namespace RhythmsOfGiving.Controller{
             l.getMinhasLicitacoes().Add(idLicitacao);
             licitadores.put(l.getEmail(),l);
 
-        }   
+        }
+
+        public Notificacao criarNotificacaoUltrapassada(Licitacao licitacao, string titulo)
+        {
+            try
+            {
+                Licitador l = this.licitadores.get(licitacao.GetIdLicitador());
+                return l.criarNotificacaoUltrapassada(licitacao, titulo);
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+            
+        }
     }
 }
