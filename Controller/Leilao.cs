@@ -29,6 +29,23 @@ namespace RhythmsOfGiving.Controller {
             this.authorImagePath = authorImagePath;
             this.asCegas = asCegas;
         }
+        
+        //Para a base de dados
+        public Leilao(int id, string artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas) {
+            this.id = id;
+            this.artista = artista;
+            this.title = title;
+            this.localizacao = localizacao;
+            this.genero = genero;
+            this.tipo = tipo;
+            this.fim = fim;
+            this.shortDescricao = shortDescricao;
+            this.descricao = descricao;
+            this.valorBase = valorBase;
+            this.imagePath = imagePath;
+            this.authorImagePath = authorImagePath;
+            this.asCegas = asCegas;
+        }
 
         public int getId() {
             return id;
