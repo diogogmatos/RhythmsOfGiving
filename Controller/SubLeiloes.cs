@@ -58,6 +58,21 @@ public class SubLeiloes: ISubLeiloes {
         
     }
 
+    public bool registarLeilao(string artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas)
+    {
+        try
+        {
+            Leilao l = new Leilao(artista, title, localizacao, genero, tipo, fim, shortDescricao, descricao, valorBase, imagePath, authorImagePath, asCegas);
+            leilaoDAO.put(l.getId(),l);
+            return true;
+        }
+        catch (DadosInvalidosException ex)
+        {
+            throw;
+            return false;
+        }
+    }
+
     public int GetLicitadorGanhador(int idLeilao)
     {
         Leilao leilao = this.leilaoDAO.get(idLeilao);

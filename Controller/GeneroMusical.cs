@@ -9,7 +9,7 @@ namespace RhythmsOfGiving.Controller
         private string nome;
         private int idAdmin;
         
-        private static int contadorGeneros;
+        private static int contadorGeneros = 0;
         
         //Construtor
         public GeneroMusical(string nome, int idAdmin)

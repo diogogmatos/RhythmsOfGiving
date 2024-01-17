@@ -20,6 +20,8 @@ namespace RhythmsOfGiving.Controller {
 
     private LicitacaoDAO licitacaoDAO;
 
+    //Alterar para ficar com o valor do maior id dos elilões existentes
+    private static int contadorLeiloes = 0;
 
     public Leilao(int id, string artista, string title, string localizacao, string genero, string tipo, string fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas)
     {
@@ -41,9 +43,9 @@ namespace RhythmsOfGiving.Controller {
 
     }
     
-    public Leilao(int id, string artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas)
+    public Leilao(string artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas)
     {
-        this.id = id;
+        this.id = ++contadorLeiloes;
         this.artista = artista;
         this.title = title;
         this.localizacao = localizacao;
