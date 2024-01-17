@@ -23,6 +23,8 @@ namespace RhythmsOfGiving.Controller
 
         public string getTituloLeilao(int idLeilao);
 
+        public float calcularValorMinimo(float valor);
+
         
 
     }
