@@ -18,8 +18,8 @@ namespace RhythmsOfGiving.Controller{
 
 
 
-        //void pois os problemas vão em exceptions(???)
-        //É preciso alguma verificação dos dados???
+        //DUVIDA void pois os problemas vão em exceptions(???)
+        //DUVIDA É preciso alguma verificação dos dados?
         public void registarLicitador (string nome, string email, string palavraPasse, int nCC, int nif, DateOnly dataNascimento, int nrCartao)
         {
             DateOnly idade_adulta = dataNascimento.AddYears(18);
@@ -32,6 +32,7 @@ namespace RhythmsOfGiving.Controller{
             try
             {
                 Licitador l = new Licitador(nome, palavraPasse, data, nrCartao, email, nif, nCC);
+                licitadores.put(email,l);
             }
             catch (DadosInvalidosException ex)
             {
