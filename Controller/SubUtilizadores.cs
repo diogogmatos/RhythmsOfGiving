@@ -45,11 +45,9 @@ public class SubUtilizadores: ISubUtilizadores {
             return true;
             }catch (LicitadorNaoExisteException ex)
             {
-            
+                return false;         
                 throw;
-            }
-            return false;         
-            
+            }            
         }
 
         public void AdicionarLicitacao(int idLicitacao, int idLicitador)

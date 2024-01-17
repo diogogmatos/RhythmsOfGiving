@@ -53,6 +53,23 @@ public class SubLeiloes: ISubLeiloes {
         }
         return -1;
     }
+
+    public List<Instituicao> ApresentarInstituicoes()
+    {
+        List<Instituicao> resultados = new List<Instituicao>();
+
+        foreach (int idInstituicao in instituicaoDAO.containsKeys())
+        {
+            Instituicao i = instituicaoDAO.get(idInstituicao);
+            if (i != null)
+            {
+                resultados.Add(i);
+            }
+        }
+
+        return resultados;
+    }
+
 /*
 
     public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero){
