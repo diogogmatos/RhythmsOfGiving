@@ -15,5 +15,9 @@ namespace RhythmsOfGiving.Controller
         public Dictionary<Leilao, Artista> consultarLeiloesAtivos();
         public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nome);
 
+        public int criarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo);
+
+        public List<Instituicao> ApresentarInstituicoes();
+
     }
 }

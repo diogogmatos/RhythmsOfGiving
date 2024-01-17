@@ -30,14 +30,6 @@ public class LeilaoDAO{
             return 0; // depois usar a query necessária
         }
 
-        public void put(int id, Leilao leilao)
-        {
-            //falta definir a lógica
-
-            //DUVIDA Esta exceção está correta? Há outros casos em que o put seja usado e possa dar erro?
-            throw new DadosInvalidosException("Não foi possível guardar o leilao");
-        }
-
         //Acho que vai ter de alterar por causa dos atributos do leilao, mas a lógica é esta
         public Dictionary<Leilao, Artista> leiloesAtivos(){
 
@@ -113,8 +105,9 @@ public class LeilaoDAO{
 
                                     // Buscar o nome do gênero musical usando o dicionário
                                     string nomeGenero = generoPorLeilao.ContainsKey(idLeilao) ? generoPorLeilao[idLeilao] : string.Empty;
-
-                                    leilao = new Leilao(idLeilao, artista.getNome(), titulo, localizacao, nomeGenero,
+                                    
+                                    //NÃO ESQUECER DE ALTERAR O CONSTRUTOR PARA O CONSTRUTOR DO GET
+                                    leilao = new Leilao(artista.getNome(), titulo, localizacao, nomeGenero,
                                         tipoLeilao, dataTermina,
                                         descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
                                 };
@@ -194,7 +187,8 @@ public class LeilaoDAO{
 
                                 bool asCegas = tipoLeilao.Equals("àsCegas");
 
-                                leilao = new Leilao(idLeilao, artista.getNome(), titulo, localizacao, nomeArtista,
+                                //NÃO ESQUECER DE ALTERAR O CONSTRUTOR PARA O CONSTRUTOR DO GET
+                                leilao = new Leilao(artista.getNome(), titulo, localizacao, nomeArtista,
                                     tipoLeilao, dataTermina,
                                     descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
                             };
