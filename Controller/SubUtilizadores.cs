@@ -3,13 +3,13 @@ using System.Reflection.Metadata;
 
 namespace RhythmsOfGiving.Controller{
 public class SubUtilizadores: ISubUtilizadores {
-    private LicitacaoDAO licitadores;
+    private LicitadorDAO licitadores;
     private  Dictionary<int, Administrador> administradores;
 
 
     //Construtor
     public SubUtilizadores(){
-        this.licitadores = LicitacaoDAO.getInstance();
+        this.licitadores = LicitadorDAO.getInstance();
         this.administradores = new Dictionary<int, Administrador>();
         //preencher o map administradores
         //ver classe SubServicos no trabalho DSS para ajudar
@@ -54,7 +54,7 @@ public class SubUtilizadores: ISubUtilizadores {
 
         public void AdicionarLicitacao(int idLicitacao, int idLicitador)
         {
-            Licitador l  = this.licitadores.getPorID(idLicitacao);
+            Licitador l  = this.licitadores.get(idLicitacao);
             l.getMinhasLicitacoes().Add(idLicitacao);
             licitadores.put(l.getEmail(),l);
 

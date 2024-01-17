@@ -9,5 +9,6 @@ namespace RhythmsOfGiving.Controller
          public bool alterarInfosPessoais(string email,string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse);
 
           public void AdicionarLicitacao(int idLicitacao, int idLicitador);
+
     }
 }

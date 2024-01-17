@@ -44,7 +44,17 @@ public class SubLeiloes: ISubLeiloes {
 
         return false;
     }
+
+    public int GetLicitadorGanhador(int idLeilao)
+    {
+        Leilao leilao = this.leilaoDAO.get(idLeilao);
+        if(leilao != null ){
+        return leilao.GetLicitadorGanhador();
+        }
+        return -1;
+    }
 /*
+
     public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero){
         // Vou fazer esta função no DAOS
         //  List<Leilao> leiloes = leilaoDAO.ObterLeiloes(idsGenero);

@@ -22,6 +22,11 @@ public class LicitadorDAO{
             //falta definir a lógica
             throw new LicitadorNaoExisteException("O licitador com o email, " + email + " não existe!");
        } 
+       
+       public Licitador get(int id){
+            //falta definir a lógica
+            throw new LicitadorNaoExisteException("O licitador com o id " + id + " não existe!");
+       } 
         public void put(String email ,Object l){
             //falta definir a lógica
         }        

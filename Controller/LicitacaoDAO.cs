@@ -14,7 +14,17 @@ public class LicitacaoDAO{
             return singleton;
         }
 
-    internal Licitador get(string email)
+    internal Licitacao get(int idLicitacao)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal Licitacao getPorID(int idLicitacao)
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void put(string v, Licitador l)
     {
         throw new NotImplementedException();
     }
