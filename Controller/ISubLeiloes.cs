@@ -19,5 +19,7 @@ namespace RhythmsOfGiving.Controller
 
         public List<Instituicao> ApresentarInstituicoes();
 
+        public string getTituloLeilao(int idLeilao);
+
     }
 }

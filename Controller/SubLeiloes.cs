@@ -160,5 +160,18 @@ public class SubLeiloes: ISubLeiloes {
         }
     }
 
+    public string getTituloLeilao(int idLeilao)
+    {
+        try
+        {
+            Leilao leilao = this.leilaoDAO.get(idLeilao);
+            return (leilao.getTitle());
+        }
+        catch (LeilaoNaoExiste e)
+        {
+            throw;
+        }
+    }
+
 }
 }
