@@ -6,7 +6,7 @@ public class SubLeiloes: ISubLeiloes {
 
     private LeilaoDAO leilaoDAO;
     private ArtistaDAO artistaDAO;
-    private  Dictionary<int, GeneroMusical> generos;
+    private Dictionary<int, GeneroMusical> generos;
     private InstituicaoDAO instituicaoDAO;
 
     //Construtor
@@ -19,7 +19,7 @@ public class SubLeiloes: ISubLeiloes {
         //ver classe SubServicos no trabalho DSS para ajudar
     }
 
-    public bool registarArtista(string nome,String imagem, int idAdmin)
+    public bool registarArtista(string nome, string imagem, int idAdmin)
     {
         bool existe = artistaDAO.existeArtista(nome);
         if (existe)
@@ -94,6 +94,18 @@ public class SubLeiloes: ISubLeiloes {
         return resultado;       
     }
     */
+
+  //Função definida no DAO do leilao
+    public Dictionary<Leilao, Artista> consultarLeiloesAtivos()
+    {
+        Dictionary<Leilao, Artista> resultado = this.leilaoDAO.leiloesAtivos();
+        if (resultado.Count == 0)
+        {
+            throw new LeiloesAtivosNaoExistemException("Não existem leilões ativos neste momento.");
+        }
+
+        return resultado;
+    }
 
 }
 }
