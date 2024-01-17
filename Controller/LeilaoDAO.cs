@@ -1,4 +1,5 @@
 
+using System.Data.SqlClient;
 using RhythmsOfGiving.Controller;
 
 public class LeilaoDAO{
