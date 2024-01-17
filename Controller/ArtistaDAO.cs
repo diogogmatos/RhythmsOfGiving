@@ -38,7 +38,7 @@ public class ArtistaDAO{
                {
                    connection.Open();
 
-                   string query = "SELECT COUNT(*) FROM Artista WHERE Nome = @Nome";
+                   string query = "SELECT COUNT(*) FROM Artista WHERE nome = @Nome";
                 
                    using (SqlCommand command = new SqlCommand(query, connection))
                    {
