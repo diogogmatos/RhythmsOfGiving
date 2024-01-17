@@ -159,6 +159,19 @@ public class SubLeiloes: ISubLeiloes {
             throw;
         }
     }
+    
+    public string getTituloLeilao(int idLeilao)
+    {
+        try
+        {
+            Leilao leilao = this.leilaoDAO.get(idLeilao);
+            return (leilao.getTitle());
+        }
+        catch (LeilaoNaoExiste e)
+        {
+            throw;
+        }
+    }
 
     public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
     {
@@ -172,11 +185,7 @@ public class SubLeiloes: ISubLeiloes {
         return resultado;
     }    
 
-
-
-
-
-
+    
     }
 
 }

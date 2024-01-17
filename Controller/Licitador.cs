@@ -199,7 +199,7 @@ public class Licitador{
             throw new NotImplementedException();
         }
 
-        public Notificacao criarNotificacaoUltrapassada(Licitacao licitacao, string titulo)
+        public Notificacao criarNotificacaoUltrapassada(string titulo)
         {
             DateTime data = DateTime.Now;
             Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo, true,
@@ -207,6 +207,17 @@ public class Licitador{
             this.notificacaoDAO.put(ultrapassada.getId(), ultrapassada);
 
             return ultrapassada;
+        }
+
+        public Notificacao criarNotificacaoPerdedora(int idLeilao, string titulo, float valor)
+        {
+            DateTime data = DateTime.Now;
+            string mensagem = "Leilão " + idLeilao + " terminado! Infelizmente não ganhou. Obrigado por ter participado.";
+            string titulo2 = titulo + " foi vendido por " + valor;
+            Notificacao perdedora = new Notificacao(mensagem, titulo2, false, null, data.ToString(), 2);
+            this.notificacaoDAO.put(perdedora.getId(), perdedora);
+
+            return perdedora;
         }
 }
 }

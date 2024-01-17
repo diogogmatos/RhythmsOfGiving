@@ -83,12 +83,12 @@ namespace RhythmsOfGiving.Controller{
 
         }
 
-        public Notificacao criarNotificacaoUltrapassada(Licitacao licitacao, string titulo)
+        public Notificacao criarNotificacaoUltrapassada(int idLicitador, string titulo)
         {
             try
             {
-                Licitador l = this.licitadores.get(licitacao.GetIdLicitador());
-                return l.criarNotificacaoUltrapassada(licitacao, titulo);
+                Licitador l = this.licitadores.get(idLicitador);
+                return l.criarNotificacaoUltrapassada(titulo);
             }
             catch (LicitadorNaoExisteException e)
             {
@@ -96,5 +96,27 @@ namespace RhythmsOfGiving.Controller{
             }
             
         }
+        
+        public Dictionary<int, Notificacao> criarNotificacaoPerdedora (HashSet<int> idLicitadores, int idLeilao, string titulo, float valor)
+        {
+            Dictionary<int, Notificacao> notificacoesPerdedoras = new Dictionary<int, Notificacao>();
+            
+            foreach (int id in idLicitadores)
+            {
+                try
+                {
+                    Licitador l = this.licitadores.get(id);
+                    Notificacao n = l.criarNotificacaoPerdedora(idLeilao, titulo, valor);
+                    notificacoesPerdedoras.Add(id, n);
+                }
+                catch (LicitadorNaoExisteException e)
+                {
+                    throw;
+                }
+            }
+
+            return notificacoesPerdedoras;
+        }
+        
     }
 }

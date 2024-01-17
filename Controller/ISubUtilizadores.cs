@@ -11,7 +11,10 @@ namespace RhythmsOfGiving.Controller
 
         public void AdicionarLicitacao(int idLicitacao, int idLicitador);
 
-        public Notificacao criarNotificacaoUltrapassada(Licitacao licitacao, string titulo);
+        public Notificacao criarNotificacaoUltrapassada(int idLicitador, string titulo);
+
+        public Dictionary<int, Notificacao> criarNotificacaoPerdedora(HashSet<int> idLicitadores, int idLeilao,
+            string titulo, float valor);
 
     }
 }
