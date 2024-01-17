@@ -22,7 +22,7 @@ public class SubLeiloes: ISubLeiloes {
     public bool registarArtista(string nome, string imagem, int idAdmin)
     {
         bool existe = artistaDAO.existeArtista(nome);
-        if (existe)
+        if (!existe)
         {
             Artista artista = new Artista(nome, imagem, idAdmin);
             artistaDAO.put(artista.getIdArtista(), artista);
@@ -130,6 +130,17 @@ public class SubLeiloes: ISubLeiloes {
         if (resultado.Count == 0)
         {
             throw new LeiloesAtivosNaoExistemException("Não existem leilões ativos neste momento.");
+        }
+
+        return resultado;
+    }
+
+    public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nome)
+    {
+        Dictionary<Leilao, Artista> resultado = this.leilaoDAO.filtrarLeiloesPorArtista(nome);
+        if (resultado.Count == 0)
+        {
+            throw new LeiloesArtistaNaoExisteException("De momento, não existem leilões ativos com o artista " + nome);
         }
 
         return resultado;

@@ -31,7 +31,7 @@ namespace RhythmsOfGiving.Controller{
             
             try
             {
-                Licitador l = new Licitador(nome, palavraPasse, data, nrCartao, email, nif, nCC);
+                Licitador l = new Licitador(nome, palavraPasse, dataNascimento, nrCartao, email, nif, nCC);
                 licitadores.put(email,l);
             }
             catch (DadosInvalidosException ex)
