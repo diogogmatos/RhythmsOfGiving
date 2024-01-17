@@ -30,8 +30,8 @@ public class InstituicaoDAO{
         }
 
         public void put (int id, Instituicao a)
-       {
+        {
            //falta definir a lógica
-       }
+        }
 
 }

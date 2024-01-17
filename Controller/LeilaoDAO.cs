@@ -24,7 +24,14 @@ public class LeilaoDAO{
             return 0; // depois usar a query necessária
         }
 
-        
+        public void put(int id, Leilao leilao)
+        {
+            //falta definir a lógica
+
+            //DUVIDA Esta exceção está correta? Há outros casos em que o put seja usado e possa dar erro?
+            throw new DadosInvalidosException("Não foi possível guardar o leilao");
+        }
+
         //Acho que vai ter de alterar por causa dos atributos do leilao, mas a lógica é esta
         public Dictionary<Leilao, Artista> leiloesAtivos(){
 
