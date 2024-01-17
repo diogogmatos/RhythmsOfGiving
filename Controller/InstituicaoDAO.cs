@@ -29,4 +29,9 @@ public class InstituicaoDAO{
             throw new NotImplementedException();
         }
 
+        public void put (int id, Instituicao a)
+       {
+           //falta definir a lógica
+       }
+
 }

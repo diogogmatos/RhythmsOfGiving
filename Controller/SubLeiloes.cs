@@ -45,6 +45,19 @@ public class SubLeiloes: ISubLeiloes {
         return false;
     }
 
+    public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin)
+    {
+        bool existe = instituicaoDAO.existeInstituicao(nome);
+        if (!existe)
+        {
+            Instituicao instituicao = new Instituicao(nome, descricao, logoPath, link, iban, idAdmin);
+            instituicaoDAO.put(instituicao.getId(), instituicao);
+        }
+
+        return existe;
+        
+    }
+
     public int GetLicitadorGanhador(int idLeilao)
     {
         Leilao leilao = this.leilaoDAO.get(idLeilao);
