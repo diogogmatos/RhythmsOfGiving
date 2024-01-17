@@ -110,7 +110,7 @@ public class SubLeiloes: ISubLeiloes {
         foreach (var leilao in leiloes)
         {
             // Suponha que há um método ObterArtistaPorId que retorna o Artista correspondente ao idArtista do Leilao
-            Artista artista = artistaDAO.get(leilao.getId());
+            Artista artista = artistaDAO.get(leilao.getIdArtista());
 
             // Verifica se o gênero do artista está na lista de IDs de gênero desejados
             if (artista != null)
@@ -160,5 +160,23 @@ public class SubLeiloes: ISubLeiloes {
         }
     }
 
-}
+    public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
+    {
+        Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
+
+        foreach (int idLeilao in ultimasLicitações.Keys)
+        {
+            resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
+        }
+
+        return resultado;
+    }    
+
+
+
+
+
+
+    }
+
 }

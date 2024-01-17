@@ -18,6 +18,8 @@ namespace RhythmsOfGiving.Controller
         public int criarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo);
 
         public List<Instituicao> ApresentarInstituicoes();
+        
+         public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
 
     }
 }
