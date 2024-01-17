@@ -16,5 +16,7 @@ namespace RhythmsOfGiving.Controller
         public Dictionary<int, Notificacao> criarNotificacaoPerdedora(HashSet<int> idLicitadores, int idLeilao,
             string titulo, float valor);
 
+        public Dictionary<int, Licitacao> saberLeiloesParticipa_Licitacao(int idLicitador);
+
     }
 }

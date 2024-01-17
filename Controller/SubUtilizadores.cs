@@ -117,6 +117,20 @@ namespace RhythmsOfGiving.Controller{
 
             return notificacoesPerdedoras;
         }
+
+        public Dictionary<int, Licitacao> saberLeiloesParticipa_Licitacao(int idLicitador)
+        {
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                Dictionary<int, Licitacao> resultado = l.saberLeiloesParticipa_Licitacao();
+                return resultado;
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
         
     }
 }

@@ -219,5 +219,37 @@ public class Licitador{
 
             return perdedora;
         }
+
+        public Dictionary<int, Licitacao> saberLeiloesParticipa_Licitacao()
+        {
+            Dictionary<int, Licitacao> ultimasLicitacoes = new Dictionary<int, Licitacao>();
+            
+            foreach (int idLicitacao in this.minhasLicitacoes)
+            {
+                try
+                {
+                    Licitacao atual = this.licitacaoDAO.get(idLicitacao);
+                    if (!ultimasLicitacoes.ContainsKey(atual.GetIdLeilao()))
+                    {
+                        ultimasLicitacoes.Add(atual.GetIdLeilao(), atual);
+                    }
+                    else
+                    {
+                        Licitacao presente = ultimasLicitacoes[atual.GetIdLeilao()];
+                        if (atual.GetDataHora() > presente.GetDataHora())
+                            ultimasLicitacoes[atual.GetIdLeilao()] = atual;
+                    }
+
+                }
+                catch (LicitadorNaoExisteException e)
+                {
+                    throw;
+                }
+                
+
+            }
+
+            return ultimasLicitacoes;
+        }
 }
 }
