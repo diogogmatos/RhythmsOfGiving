@@ -10,6 +10,7 @@ namespace RhythmsOfGiving.Controller
         //public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
 
         public int GetLicitadorGanhador(int idLeilao);
+        public Dictionary<Leilao, Artista> consultarLeiloesAtivos();
 
     }
 }
