@@ -2,101 +2,110 @@
 using System.Runtime.CompilerServices;
 
 namespace RhythmsOfGiving.Controller{
-public class SubLeiloes: ISubLeiloes {
-
-    private LeilaoDAO leilaoDAO;
-    private ArtistaDAO artistaDAO;
-    private Dictionary<int, GeneroMusical> generos;
-    private InstituicaoDAO instituicaoDAO;
-
-    //Construtor
-    public SubLeiloes(){
-        this.leilaoDAO = LeilaoDAO.getInstance();
-        this.artistaDAO = ArtistaDAO.getInstance();
-        this.generos = new Dictionary<int, GeneroMusical>();
-        this.instituicaoDAO = InstituicaoDAO.getInstance();
-        //preencher o map generos
-        //ver classe SubServicos no trabalho DSS para ajudar
-    }
-
-    public bool registarArtista(string nome, string imagem, int idAdmin)
+    public class SubLeiloes : ISubLeiloes
     {
-        bool existe = artistaDAO.existeArtista(nome);
-        if (!existe)
+
+        private LeilaoDAO leilaoDAO;
+        private ArtistaDAO artistaDAO;
+        private Dictionary<int, GeneroMusical> generos;
+        private InstituicaoDAO instituicaoDAO;
+
+        //Construtor
+        public SubLeiloes()
         {
-            Artista artista = new Artista(nome, imagem, idAdmin);
-            artistaDAO.put(artista.getIdArtista(), artista);
+            this.leilaoDAO = LeilaoDAO.getInstance();
+            this.artistaDAO = ArtistaDAO.getInstance();
+            this.generos = new Dictionary<int, GeneroMusical>();
+            this.instituicaoDAO = InstituicaoDAO.getInstance();
+            //preencher o map generos
+            //ver classe SubServicos no trabalho DSS para ajudar
         }
 
-        return existe;
-        
-    }
-    public bool registarGeneroMusical(string nome, int idAdmin)
-    {
-        GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
-
-        if (!generos.ContainsKey(novoGenero.getIdGenero()))
+        public bool registarArtista(string nome, string imagem, int idAdmin)
         {
-            generos.Add(novoGenero.getIdGenero(), novoGenero);
+            bool existe = artistaDAO.existeArtista(nome);
+            if (!existe)
+            {
+                Artista artista = new Artista(nome, imagem, idAdmin);
+                artistaDAO.put(artista.getIdArtista(), artista);
+            }
 
-            return true;
+            return existe;
+
         }
 
-        return false;
-    }
-
-    public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin)
-    {
-        bool existe = instituicaoDAO.existeInstituicao(nome);
-        if (!existe)
+        public bool registarGeneroMusical(string nome, int idAdmin)
         {
-            Instituicao instituicao = new Instituicao(nome, descricao, logoPath, link, iban, idAdmin);
-            instituicaoDAO.put(instituicao.getId(), instituicao);
-        }
+            GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
 
-        return existe;
-        
-    }
+            if (!generos.ContainsKey(novoGenero.getIdGenero()))
+            {
+                generos.Add(novoGenero.getIdGenero(), novoGenero);
 
-    public bool registarLeilao(string artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas)
-    {
-        try
-        {
-            Leilao l = new Leilao(artista, title, localizacao, genero, tipo, fim, shortDescricao, descricao, valorBase, imagePath, authorImagePath, asCegas);
-            leilaoDAO.put(l.getId(),l);
-            return true;
-        }
-        catch (DadosInvalidosException ex)
-        {
-            throw;
+                return true;
+            }
+
             return false;
         }
-    }
 
-    public int GetLicitadorGanhador(int idLeilao)
-    {
-        Leilao leilao = this.leilaoDAO.get(idLeilao);
-        if(leilao != null ){
-        return leilao.GetLicitadorGanhador();
-        }
-        return -1;
-    }
-
-    public List<Instituicao> ApresentarInstituicoes()
-    {
-        List<Instituicao> resultados = new List<Instituicao>();
-
-        foreach (int idInstituicao in instituicaoDAO.containsKeys())
+        public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban,
+            int idAdmin)
         {
-            Instituicao i = instituicaoDAO.get(idInstituicao);
-            if (i != null)
+            bool existe = instituicaoDAO.existeInstituicao(nome);
+            if (!existe)
             {
-                resultados.Add(i);
+                Instituicao instituicao = new Instituicao(nome, descricao, logoPath, link, iban, idAdmin);
+                instituicaoDAO.put(instituicao.getId(), instituicao);
+            }
+
+            return existe;
+
+        }
+
+        public bool registarLeilao(string artista, string title, string localizacao, string genero, string tipo,
+            DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath,
+            string authorImagePath, bool asCegas)
+        {
+            try
+            {
+                Leilao l = new Leilao(artista, title, localizacao, genero, tipo, fim, shortDescricao, descricao,
+                    valorBase, imagePath, authorImagePath, asCegas);
+                leilaoDAO.put(l.getId(), l);
+                return true;
+            }
+            catch (DadosInvalidosException ex)
+            {
+                throw;
+                return false;
             }
         }
 
-        return resultados;
-    }
+        public int GetLicitadorGanhador(int idLeilao)
+        {
+            Leilao leilao = this.leilaoDAO.get(idLeilao);
+            if (leilao != null)
+            {
+                return leilao.GetLicitadorGanhador();
+            }
+
+            return -1;
+        }
+
+        public List<Instituicao> ApresentarInstituicoes()
+        {
+            List<Instituicao> resultados = new List<Instituicao>();
+
+            foreach (int idInstituicao in instituicaoDAO.containsKeys())
+            {
+                Instituicao i = instituicaoDAO.get(idInstituicao);
+                if (i != null)
+                {
+                    resultados.Add(i);
+                }
+            }
+
+            return resultados;
+        }
 
 /*
 
@@ -119,79 +128,80 @@ public class SubLeiloes: ISubLeiloes {
             }
         }
 
-        return resultado;       
+        return resultado;
     }
     */
 
-  //Função definida no DAO do leilao
-    public Dictionary<Leilao, Artista> consultarLeiloesAtivos()
-    {
-        Dictionary<Leilao, Artista> resultado = this.leilaoDAO.leiloesAtivos();
-        if (resultado.Count == 0)
+        //Função definida no DAO do leilao
+        public Dictionary<Leilao, Artista> consultarLeiloesAtivos()
         {
-            throw new LeiloesAtivosNaoExistemException("Não existem leilões ativos neste momento.");
+            Dictionary<Leilao, Artista> resultado = this.leilaoDAO.leiloesAtivos();
+            if (resultado.Count == 0)
+            {
+                throw new LeiloesAtivosNaoExistemException("Não existem leilões ativos neste momento.");
+            }
+
+            return resultado;
         }
 
-        return resultado;
-    }
-
-    public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nome)
-    {
-        Dictionary<Leilao, Artista> resultado = this.leilaoDAO.filtrarLeiloesPorArtista(nome);
-        if (resultado.Count == 0)
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nome)
         {
-            throw new LeiloesArtistaNaoExisteException("De momento, não existem leilões ativos com o artista " + nome);
+            Dictionary<Leilao, Artista> resultado = this.leilaoDAO.filtrarLeiloesPorArtista(nome);
+            if (resultado.Count == 0)
+            {
+                throw new LeiloesArtistaNaoExisteException("De momento, não existem leilões ativos com o artista " +
+                                                           nome);
+            }
+
+            return resultado;
         }
 
-        return resultado;
-    }
-
-    public int criarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo)
-    {
-        try
+        public int criarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo)
         {
-            Leilao leilao = this.leilaoDAO.get(idLeilao);
-            int idLicitacao = leilao.verificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
-            return idLicitacao;
-        }
-        catch (LeilaoNaoExiste ex)
-        {
-            throw;
-        }
-    }
-    
-    public string getTituloLeilao(int idLeilao)
-    {
-        try
-        {
-            Leilao leilao = this.leilaoDAO.get(idLeilao);
-            return (leilao.getTitle());
-        }
-        catch (LeilaoNaoExiste e)
-        {
-            throw;
-        }
-    }
-
-    public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
-    {
-        Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
-
-        foreach (int idLeilao in ultimasLicitações.Keys)
-        {
-            resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
+            try
+            {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                int idLicitacao = leilao.verificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
+                return idLicitacao;
+            }
+            catch (LeilaoNaoExiste ex)
+            {
+                throw;
+            }
         }
 
-        return resultado;
-    }    
+        public string getTituloLeilao(int idLeilao)
+        {
+            try
+            {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                return (leilao.getTitle());
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+        }
 
-    
-    }
+        public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
+        {
+            Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
 
-    //DUVIDA é suposto receber um float (valor da licitação atual) ou o Leilão?
-    public float calcularValorMinimo(float valor)
-    {
-        return (float)Math.Round(valor * 1.01f, 2);
+            foreach (int idLeilao in ultimasLicitações.Keys)
+            {
+                resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
+            }
+
+            return resultado;
+        }
+
+
+        //DUVIDA é suposto receber um float (valor da licitação atual) ou o Leilão?
+        public float calcularValorMinimo(float valor)
+        {
+            return (float)Math.Round(valor * 1.01f, 2);
+        }
+
     }
 
 }
