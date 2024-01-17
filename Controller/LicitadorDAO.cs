@@ -29,6 +29,7 @@ public class LicitadorDAO{
        } 
         public void put(String email ,Object l){
             //falta definir a lógica
+            throw new DadosInvalidosException("Não foi possível inserir o licitador pretendido");
         }         
 }
 }
