@@ -131,5 +131,19 @@ public class SubLeiloes: ISubLeiloes {
         return resultado;
     }
 
+    public int criarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo)
+    {
+        try
+        {
+            Leilao leilao = this.leilaoDAO.get(idLeilao);
+            int idLicitacao = leilao.verificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
+            return idLicitacao;
+        }
+        catch (LeilaoNaoExiste ex)
+        {
+            throw;
+        }
+    }
+
 }
 }

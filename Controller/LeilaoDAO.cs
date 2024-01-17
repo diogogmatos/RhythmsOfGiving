@@ -15,6 +15,12 @@ public class LeilaoDAO{
             return singleton;
         }
 
+        public Leilao put(int id, Leilao l)
+        {
+            return null;
+            //Falta definir a lógica
+        }
+
         public Leilao get(int idLeilao){
             throw new LeilaoNaoExiste("O leilão de id" + idLeilao + "não existe!");
             

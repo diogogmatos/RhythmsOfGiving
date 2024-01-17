@@ -5,55 +5,70 @@ using System.Text;
 public class Licitacao
 {
     // Propriedades
-    public int IdLicitacao;
-    public DateTime DataHora;
-    public float Valor;
-    public int IdLeilao;
-    public int IdLicitador;
+    private int idLicitacao;
+    private DateTime dataHora;
+    private float valor;
+    private int idLeilao;
+    private int idLicitador;
+
+    private static int contadorID = LicitacaoDAO.size();
+    
+    //Para o get
     public Licitacao(int idLicitacao, DateTime dataHora, float valor, int idLeilao, int idLicitador)
     {
-        IdLicitacao = idLicitacao;
-        DataHora = dataHora;
-        Valor = valor;
-        IdLeilao = idLeilao;
-        IdLicitador = idLicitador;
+        this.idLicitacao = idLicitacao;
+        this.dataHora = dataHora;
+        this.valor = valor;
+        this.idLeilao = idLeilao;
+        this.idLicitador = idLicitador;
     }
+    
+    //Para criar
+    public Licitacao(DateTime dataHora, float valor, int idLeilao, int idLicitador)
+    {
+        this.idLicitacao = ++contadorID;
+        this.dataHora = dataHora;
+        this.valor = valor;
+        this.idLeilao = idLeilao;
+        this.idLicitador = idLicitador;
+    }
+    
 
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder();
         sb.Append("Licitacao:: { ");
-        sb.Append("IdLicitacao: ").Append(IdLicitacao).Append(", ");
-        sb.Append("DataHora: ").Append(DataHora).Append(", ");
-        sb.Append("Valor: ").Append(Valor).Append(", ");
-        sb.Append("IdLeilao: ").Append(IdLeilao).Append(", ");
-        sb.Append("IdLicitador: ").Append(IdLicitador).Append(" }");
+        sb.Append(" IdLicitacao: ").Append(this.idLeilao).Append(", ");
+        sb.Append(" DataHora: ").Append(this.dataHora).Append(", ");
+        sb.Append(" Valor: ").Append(this.valor).Append(", ");
+        sb.Append(" IdLeilao: ").Append(this.idLeilao).Append(", ");
+        sb.Append(" IdLicitador: ").Append(this.idLicitador).Append(" }");
 
         return sb.ToString();
     }
 
      public int GetIdLicitacao()
     {
-        return IdLicitacao;
+        return idLeilao;
     }
 
     public DateTime GetDataHora()
     {
-        return DataHora;
+        return dataHora;
     }
 
     public float GetValor()
     {
-        return Valor;
+        return valor;
     }
 
     public int GetIdLeilao()
     {
-        return IdLeilao;
+        return idLeilao;
     }
 
     public int GetIdLicitador()
     {
-        return IdLicitador;
+        return idLicitador;
     }
 }

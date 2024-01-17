@@ -24,8 +24,12 @@ public class LicitacaoDAO{
         throw new NotImplementedException();
     }
 
-    internal void put(string v, Licitador l)
+    internal void put(int v, Licitacao l)
     {
         throw new NotImplementedException();
+    }
+    
+    public static int size(){
+        return 0; // depois usar a query necessária
     }
 }

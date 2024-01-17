@@ -11,9 +11,11 @@ namespace RhythmsOfGiving.Controller {
     private string shortDescricao;
     private string descricao;
     private float valorBase;
+    private float valorAtual; // falta adicionar ao construtor, não fiz porque muda o PaginaLeiloes
     private string imagePath;
     private string authorImagePath;
     private bool asCegas;
+    private int contador; // falta adicionar ao construtor, não fiz porque muda o PaginaLeiloes
     private List<int> minhasLicitacoes;
 
     private LicitacaoDAO licitacaoDAO;
@@ -109,6 +111,11 @@ namespace RhythmsOfGiving.Controller {
             return valorBase;
         }
 
+        public float getValorAtual()
+        {
+            return valorAtual;
+        }
+
         public string getImagePath() {
             return imagePath;
         }
@@ -119,6 +126,16 @@ namespace RhythmsOfGiving.Controller {
 
         public bool getAsCegas() {
             return asCegas;
+        }
+
+        public int getContador()
+        {
+            return contador;
+        }
+
+        public void setContador(int m)
+        {
+            this.contador = m;
         }
     public int GetLicitadorGanhador()
     {
@@ -148,5 +165,84 @@ namespace RhythmsOfGiving.Controller {
 
         return idLicitadorVencedor;
     }
+
+    public int criarLicitacao(float valorLicitacao, int idLicitador)
+    {
+        Licitacao novaLicitacao = new Licitacao(DateTime.Now, valorLicitacao, this.id, idLicitador);
+        this.minhasLicitacoes.Add(novaLicitacao.GetIdLicitacao());
+        this.licitacaoDAO.put(novaLicitacao.GetIdLicitacao(), novaLicitacao);
+        return novaLicitacao.GetIdLicitacao();
     }
+
+    //Verifiquem se está certo
+    public int verificarLicitacao(int idLicitador, float valorLicitacao, float valorMinimo)
+    {
+        bool contadorBloqueado = false;
+        //Verificar se dentro do tempo
+        DateTime atual = DateTime.Now; ;
+        if (atual < this.fim)
+        {
+            if (valorLicitacao >= valorMinimo)
+            {
+                //Calcular a diferença entre a atual e o tempo final
+                TimeSpan diferenca = this.fim - atual;
+                if (diferenca.TotalMinutes > 5)
+                {
+                    //criar a licitação
+                    return this.criarLicitacao(valorLicitacao, idLicitador);
+                }
+                else
+                {
+                    //Acrescentar no contador
+                    this.contador = 5; // DUVIDA: 5 + TEMPO QUE FALTA PARA TERMINAR
+                    //criar a licitação
+                    return this.criarLicitacao(valorLicitacao, idLicitador);
+                }
+            }
+
+            throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                              "O valor mínimo da licitação é de: " + valorMinimo);
+
+        }
+        else
+        {
+            if(this.contador == 0)
+                throw new TempoExcedidoException("O tempo do leilão " + this.id + " foi excedido.");
+            else
+            {
+                TimeSpan diferenca = atual - this.fim;
+                if (diferenca.TotalHours < 24 && diferenca.TotalMinutes < (24 * 60 - 5))
+                {
+                    if (contadorBloqueado == false)
+                    {
+                        DateTime dataAnterior = atual.AddHours(-24);
+                        TimeSpan diferenca2 = this.fim - dataAnterior;
+                        this.contador = Convert.ToInt32(diferenca2.TotalMinutes);
+                        contadorBloqueado = true;
+                    }
+                    
+                    if(valorLicitacao >= valorMinimo){
+                        //criar a licitação
+                        return this.criarLicitacao(valorLicitacao, idLicitador);
+                    }
+
+                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+
+                }
+                else
+                {
+                    this.contador = 5;
+                    if(valorLicitacao >= valorMinimo){
+                        //criar a licitação
+                        return this.criarLicitacao(valorLicitacao, idLicitador);
+                    }
+
+                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+                }
+            }
+        }
+    }
+}
 }
