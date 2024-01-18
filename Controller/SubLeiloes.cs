@@ -209,7 +209,7 @@ namespace RhythmsOfGiving.Controller{
             catch (LeilaoNaoExiste e)
             {
                 throw;
-                return -1 //DUVIDA é preciso retornar na mesma alguma coisa, certo?
+                return -1; //DUVIDA é preciso retornar na mesma alguma coisa, certo?
             }
         }
 
