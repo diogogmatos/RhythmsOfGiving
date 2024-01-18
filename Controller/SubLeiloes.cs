@@ -35,22 +35,22 @@ namespace RhythmsOfGiving.Controller{
 
         }
         
+        
         public bool registarGeneroMusical(string nome, int idAdmin)
         {
-            
-            GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
-            // Mudar a condição
-            if (!generos.ContainsKey(novoGenero.getIdGenero()))
+            foreach (var generoExistente in generos.Values)
             {
-                
-                generos.Add(novoGenero.getIdGenero(), novoGenero);
-                // Aqui fazer put
-                
-
-                return true;
+                if (generoExistente.getNome().Equals(nome, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
             }
+            GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
+    
+            generos.Add(novoGenero.getIdGenero(), novoGenero);
+            //this.putGeneroMusical(novoGenero);
 
-            return false;
+            return true;
         }
 
         public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban,
