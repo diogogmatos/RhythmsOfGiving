@@ -80,6 +80,12 @@ namespace RhythmsOfGiving.Controller
         {
             return idLicitador;
         }
+
+        public float getValor()
+        {
+            Licitacao l = this.licitacaoDAO.get(this.idLicitacao);
+            return (l.GetValor());
+        }
         
         public override string ToString()
         {

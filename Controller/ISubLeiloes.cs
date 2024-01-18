@@ -31,5 +31,11 @@ namespace RhythmsOfGiving.Controller
 
         public Dictionary<Leilao, Artista> filtrarLeiloesPorTipo(List<int> tipos);
 
+        public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
+
+        public Dictionary<Instituicao, float> getValoresInstituicoes();
+
+        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
+
     }
 }
