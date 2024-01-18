@@ -1,8 +1,8 @@
 
 namespace RhythmsOfGiving.Controller {
     public class Notificacao {
-        private bool hasButton;
-        private string buttonTitle;
+        private bool hasButton; // tirar
+        private string buttonTitle; // tirar
         private int idNotificacao;
         private string title;
         private string message;

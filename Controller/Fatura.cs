@@ -11,29 +11,35 @@ namespace RhythmsOfGiving.Controller
         private int idInstituicao;
         private string nomeLicitador;
         private int nif;
+        private int idLicitacao;
+        private LicitacaoDAO licitacaoDAO;
         private InstituicaoDAO instituicaoDAO;
 
         private static int contadorFat = FaturaDAO.size();
 
         //Construtor para criar
-        public Fatura(DateTime dataHora, int idInstituicao, string nomeLicitador, int nif)
+        public Fatura(DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao)
         {
             this.idFatura = ++contadorFat;
             this.dataHoraEmissao = dataHora;
             this.idInstituicao = idInstituicao;
             this.nomeLicitador = nomeLicitador;
             this.nif = nif;
+            this.idLicitacao = idLicitacao;
+            this.licitacaoDAO = LicitacaoDAO.getInstance();
             this.instituicaoDAO = InstituicaoDAO.getInstance();
         }
 
         //Construtor para get
-        public Fatura(int id, DateTime dataHora, int idInstituicao, string nomeLicitador, int nif)
+        public Fatura(int id, DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao)
         {
             this.idFatura = id;
             this.dataHoraEmissao = dataHora;
             this.idInstituicao = idInstituicao;
             this.nomeLicitador = nomeLicitador;
             this.nif = nif;
+            this.idLicitacao = idLicitacao;
+            this.licitacaoDAO = LicitacaoDAO.getInstance();
             this.instituicaoDAO = InstituicaoDAO.getInstance();
         }
 
@@ -62,6 +68,11 @@ namespace RhythmsOfGiving.Controller
             return nif;
         }
 
+        public int getIdLicitacao()
+        {
+            return idLicitacao;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -70,6 +81,7 @@ namespace RhythmsOfGiving.Controller
             sb.Append(" Data e hora emissão: ").Append(this.dataHoraEmissao.ToString());
             sb.Append(" IdInstituição: ").Append(this.idInstituicao);
             sb.Append(" Nome do licitador: ").Append(this.nomeLicitador);
+            sb.Append(" IdLicitação: ").Append(this.idLicitacao);
             sb.Append(" NIF licitador: ").Append(this.nif).Append(" }");
 
             return sb.ToString();
@@ -90,10 +102,11 @@ namespace RhythmsOfGiving.Controller
 
             // Verifica a igualdade dos atributos
             return (this.idFatura == other.getIdFatura() &&
-                    this.dataHoraEmissao.Equals(other.dataHoraEmissao) &&
+                    this.dataHoraEmissao.Equals(other.getDataHoraEmissao()) &&
                     this.idInstituicao == other.getIdInstituicao() &&
                     this.nomeLicitador.Equals(other.getNomeLicitador()) &&
-                    this.nif == other.getNIF()
+                    this.nif == other.getNIF() &&
+                    this.idLicitacao == other.getIdLicitacao()
                 );
 
         }
