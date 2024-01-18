@@ -25,6 +25,17 @@ namespace RhythmsOfGiving.Controller
         {
             return 0; // depois usar a query necessária
         }
+        
+        public Fatura get(int id){
+            //falta definir a lógica
+            return null;
+        } 
+
+        public Fatura put (int id, Fatura f)
+        {
+            //falta definir a lógica
+            return null;
+        }
 
     }
 }

@@ -18,5 +18,7 @@ namespace RhythmsOfGiving.Controller
 
         public Dictionary<int, Licitacao> saberLeiloesParticipa_Licitacao(int idLicitador);
 
+        public SortedSet<Fatura> minhasFaturas(int idLicitador);
+
     }
 }

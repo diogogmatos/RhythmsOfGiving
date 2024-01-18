@@ -4,7 +4,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class Fatura
+    public class Fatura : IComparable<Fatura>
     {
         private int idFatura;
         private DateTime dataHoraEmissao;
@@ -109,6 +109,12 @@ namespace RhythmsOfGiving.Controller
                     this.idLicitacao == other.getIdLicitacao()
                 );
 
+        }
+        
+        public int CompareTo(Fatura other)
+        {
+            // Comparação com base na data invertida para ordenar em ordem decrescente
+            return other.getDataHoraEmissao().CompareTo(this.dataHoraEmissao);
         }
 
     }

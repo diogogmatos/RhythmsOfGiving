@@ -150,6 +150,26 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+
+        public SortedSet<Fatura> minhasFaturas(int idLicitador)
+        {
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                SortedSet<Fatura> resultado = l.getFaturas();
+
+                if (resultado.Count == 0)
+                {
+                    throw new SemFaturasException("Não tem faturas disponíveis.");
+                }
+                
+                return resultado;
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
         
     }
 }
