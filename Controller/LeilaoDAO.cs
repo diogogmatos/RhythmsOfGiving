@@ -251,65 +251,177 @@ public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
                         {
                             while (reader.Read())
                             {
+                                string query2 = "SELECT * FROM GeneroMusical  WHERE id = @IdGenero";
+                                using (SqlCommand command2 = new SqlCommand(query2, connection))
                                 {
-                                    string query2 = "SELECT * FROM GeneroMusical  WHERE id = @IdGenero";
-                                    using (SqlCommand command2 = new SqlCommand(query2, connection))
+                                    command2.Parameters.AddWithValue("@IdGenero", idGenero);
+
+                                    using (SqlDataReader readerGenero = command.ExecuteReader())
                                     {
-                                        command2.Parameters.AddWithValue("@IdGenero", idGenero);
-
-                                        using (SqlDataReader readerGenero = command.ExecuteReader())
+                                        if (readerGenero.Read())
                                         {
-                                            if (reader.Read())
+                                            Boolean ativo = Convert.ToBoolean(reader["ativo"]);
+                                            if (ativo)
                                             {
-                                                Boolean ativo = Convert.ToBoolean(reader["ativo"]);
-                                                if (ativo)
+                                                string nomeGenero = Convert.ToString(readerGenero["nome"]);
+                                                int idAdmistradoGenero =
+                                                    Convert.ToInt32(readerGenero["idAdministrador "]);
+                                                GeneroMusical generoMusical =
+                                                    new GeneroMusical(idGenero, nomeGenero, idAdmistradoGenero);
+                                                string discricao = Convert.ToString(reader["descricao"]);
+                                                string imagem = Convert.ToString(reader["imagem"]);
+                                                string localizacao = Convert.ToString(reader["localizacao"]);
+                                                int idArtista = Convert.ToInt32(reader["idArtista"]);
+
+                                                Experiencia experiencia = new Experiencia(discricao, imagem,
+                                                    localizacao,
+                                                    idArtista, generoMusical);
+                                                int idLeilao = Convert.ToInt32((reader["id"]));
+                                                float valorAtual = Convert.ToSingle(reader["valorAtual"]);
+                                                float valorBase = Convert.ToSingle(reader["valorMinimo"]);
+                                                DateTime dataHoraFinal =
+                                                    Convert.ToDateTime((reader["dataHoraFinal"]));
+                                                string titulo  = Convert.ToString(reader["titulo"]);
+                                                DateTime dataHoraContador =
+                                                    Convert.ToDateTime((reader["dataHoraContador"]));
+                                                int idAdmin = Convert.ToInt32((reader["idAdministrador"]));
+                                                string query3 = "SELECT * FROM Licitacao  WHERE idLeilao  = @IdLeilao";
+                                                List<int> minhasLicitacoes = new List<int>();
+                                                using (SqlCommand command3 = new SqlCommand(query, connection))
                                                 {
-                                                    string nomeGenero = Convert.ToString(readerGenero["nome"]);
-                                                    int idAdmistradoGenero =
-                                                        Convert.ToInt32(readerGenero["idAdministrador "]);
-                                                    GeneroMusical generoMusical =
-                                                        new GeneroMusical(idGenero, nomeGenero, idAdmistradoGenero);
-                                                    string discricao = Convert.ToString(reader["descricao"]);
-                                                    string imagem = Convert.ToString(reader["imagem"]);
-                                                    string localizacao = Convert.ToString(reader["localizacao"]);
-                                                    int idArtista = Convert.ToInt32(reader["idArtista"]);
+                                                    command.Parameters.AddWithValue("@IdLeilao", idLeilao);
 
-                                                    Experiencia experiencia = new Experiencia(discricao, imagem,
-                                                        localizacao,
-                                                        idArtista, generoMusical);
-                                                    int idLeilao = Convert.ToInt32((reader["id"]));
-                                                    int valorAtual = Convert.ToInt32((reader["valorAtual"]));
-                                                    int valorBase =  Convert.ToInt32((reader["valorAtual"]));
-                                                    DateTime dataHoraFinal =
-                                                        Convert.ToDateTime((reader["dataHoraFinal"]));
-                                                    string titulo  = Convert.ToString(reader["titulo"]);
-                                                    DateTime dataHoraContador =
-                                                        Convert.ToDateTime((reader["dataHoraContador"]));
-                                                    int idAdmin = Convert.ToInt32((reader["idAdministrador"]));
-                                                    string query3 = "SELECT * FROM Licitacao  WHERE idLeilao  = @IdLeilao";
-                                                    List<int> minhasLicitacoes = new List<int>();
-                                                    using (SqlCommand command3 = new SqlCommand(query, connection))
+                                                    using (SqlDataReader readerLicitacoes = command.ExecuteReader())
                                                     {
-                                                        command.Parameters.AddWithValue("@IdLeilao", idLeilao);
-
-                                                        using (SqlDataReader readerLicitacoes = command.ExecuteReader())
+                                                        while (reader.Read())
                                                         {
-                                                            while (reader.Read())
-                                                            {
-                                                                minhasLicitacoes.Add(Convert.ToInt32(readerLicitacoes["id"]));
-                                                            }
+                                                            minhasLicitacoes.Add(Convert.ToInt32(readerLicitacoes["id"]));
                                                         }
                                                     }
-
-                                                    Leilao leilao = new Leilao(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,minhasLicitacoes,experiencia);
-                                                    leiloes.Add(leilao);
                                                 }
-                                                
-                                            }
 
+                                                int tipoLeilao = Convert.ToInt32((reader["tipoLeilao"]));
+                                                if (tipoLeilao == 0)
+                                                {
+                                                    Leilao leilao = new LeilaoAsCegas(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia); 
+                                                }
+                                                else
+                                                {
+                                                    Leilao leilao = new LeilaoIngles(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia);
+                                                }
+                                                leiloes.Add(leilao);
+                                            }
+                                            
                                         }
+
                                     }
-                                };
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Lidar com exceções, se necessário
+            Console.WriteLine("Erro ao obter leilões: " + ex.Message);
+        }
+
+        return leiloes;
+    }
+
+
+
+    public List<Leilao> obterLeiloesPorTipo(List<int> tipos)
+    {
+        List<Leilao> leiloes = new List<Leilao>();
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                connection.Open();
+
+                foreach (int tipoLeilao in tipos)
+                {
+                    string query = "SELECT * FROM Leilao WHERE tipo = @Tipo";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Tipo", tipoLeilao);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int idGeneroMusical = Convert.ToInt32(reader["idGeneroMusical"]);
+
+                                string query2 = "SELECT * FROM GeneroMusical  WHERE id = @IdGenero";
+
+                                using (SqlCommand command2 = new SqlCommand(query2, connection))
+                                {
+                                    command2.Parameters.AddWithValue("@IdGenero", idGeneroMusical);
+
+                                    using (SqlDataReader readerGenero = command.ExecuteReader())
+                                    {
+                                        if (readerGenero.Read())
+                                        {
+                                            Boolean ativo = Convert.ToBoolean(reader["ativo"]);
+                                            if (ativo)
+                                            {
+                                                string nomeGenero = Convert.ToString(readerGenero["nome"]);
+                                                int idAdmistradoGenero =
+                                                    Convert.ToInt32(readerGenero["idAdministrador "]);
+                                                GeneroMusical generoMusical =
+                                                    new GeneroMusical(idGeneroMusical, nomeGenero, idAdmistradoGenero);
+                                                string discricao = Convert.ToString(reader["descricao"]);
+                                                string imagem = Convert.ToString(reader["imagem"]);
+                                                string localizacao = Convert.ToString(reader["localizacao"]);
+                                                int idArtista = Convert.ToInt32(reader["idArtista"]);
+
+                                                Experiencia experiencia = new Experiencia(discricao, imagem,
+                                                    localizacao,
+                                                    idArtista, generoMusical);
+                                                int idLeilao = Convert.ToInt32((reader["id"]));
+                                                float valorAtual = Convert.ToSingle(reader["valorAtual"]);
+                                                float valorBase = Convert.ToSingle(reader["valorMinimo"]);
+                                                DateTime dataHoraFinal =
+                                                    Convert.ToDateTime((reader["dataHoraFinal"]));
+                                                string titulo  = Convert.ToString(reader["titulo"]);
+                                                DateTime dataHoraContador =
+                                                    Convert.ToDateTime((reader["dataHoraContador"]));
+                                                int idAdmin = Convert.ToInt32((reader["idAdministrador"]));
+                                                string query3 = "SELECT * FROM Licitacao  WHERE idLeilao  = @IdLeilao";
+                                                List<int> minhasLicitacoes = new List<int>();
+                                                using (SqlCommand command3 = new SqlCommand(query, connection))
+                                                {
+                                                    command.Parameters.AddWithValue("@IdLeilao", idLeilao);
+
+                                                    using (SqlDataReader readerLicitacoes = command.ExecuteReader())
+                                                    {
+                                                        while (reader.Read())
+                                                        {
+                                                            minhasLicitacoes.Add(Convert.ToInt32(readerLicitacoes["id"]));
+                                                        }
+                                                    }
+                                                }
+
+                                                if (tipoLeilao == 0)
+                                                {
+                                                    Leilao leilao = new LeilaoAsCegas(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia); 
+                                                }
+                                                else
+                                                {
+                                                    Leilao leilao = new LeilaoIngles(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia);
+                                                }
+                                                leiloes.Add(leilao);
+                                            }
+                                            
+                                        }
+
+                                    }
+                                }
 
                             }
                         }

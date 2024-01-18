@@ -29,5 +29,7 @@ namespace RhythmsOfGiving.Controller
 
         public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
 
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorTipo(List<int> tipos);
+
     }
 }
