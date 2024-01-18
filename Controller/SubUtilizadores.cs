@@ -24,7 +24,7 @@ namespace RhythmsOfGiving.Controller{
             DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Now);
             if (dataAtual < idade_adulta)
             {
-                throw new DadosInvalidosException("O utilizador é menor de idade");
+                throw new DataNascimentoMenor18("O utilizador é menor de idade");
             }
             
             try
@@ -74,6 +74,7 @@ namespace RhythmsOfGiving.Controller{
 
                             l.setDataNascimento(novaDataNascimento);
                         }
+                        // Ver se é necessario
                         if (licitadores.verificarUnicoNumeroCC(novoNumeroCC))
                         {
 
