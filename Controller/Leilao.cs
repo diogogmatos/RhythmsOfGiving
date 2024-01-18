@@ -6,7 +6,7 @@ public class Leilao
 {
     // Atributos privados
     private int idLeilao;
-    private bool ativo;
+    private bool estado;
     private float valorAtual;
     private float valorBase;
     private DateTime dataHoraFinal;
@@ -23,12 +23,12 @@ public class Leilao
     
 
     // Construtor
-    public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
+    public Leilao( bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
                   string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
                   int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = ++contador;
-        this.ativo = ativo;
+        this.estado = estado;
         this.valorAtual = valorAtual;
         this.valorBase = valorBase;
         this.dataHoraFinal = dataHoraFinal;
@@ -42,12 +42,12 @@ public class Leilao
         this.experiencia = experiencia;
     }
     
-    public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
+    public Leilao(int idLeilao, bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
         string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
         int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
-        this.ativo = ativo;
+        this.estado = estado;
         this.valorAtual = valorAtual;
         this.valorBase = valorBase;
         this.dataHoraFinal = dataHoraFinal;
@@ -67,10 +67,10 @@ public class Leilao
         get { return idLeilao; }
         set { idLeilao = value; }
     }
-    public bool Ativo
+    public bool Estado
     {
-        get { return ativo; }
-        set { ativo = value; }
+        get { return estado; }
+        set { estado = value; }
     }
 
     public float ValorAtual
@@ -137,7 +137,7 @@ public class Leilao
     // Sobrescreva o método ToString
     public override string ToString()
     {
-        return $"Leilao [Id: {IdLeilao}, Ativo: {ativo}, Valor Atual: {valorAtual}, " +
+        return $"Leilao [Id: {IdLeilao}, Estado: {estado}, Valor Atual: {valorAtual}, " +
                $"Valor Base: {valorBase}, Data/Hora Final: {dataHoraFinal}, Título: {titulo}, " +
                $"Data/Hora Contador: {dataHoraContador}, Id Admin: {idAdmin}, " +
                $"Percentagem Aumento: {percentagemAumento}, Id Instituicao: {idInstituicao}, " +
@@ -250,6 +250,58 @@ public class Leilao
                                                       "O valor mínimo da licitação é de: " + valorMinimo);
                 }
             }
+        }
+    }
+
+    public float getValorFim()
+    {
+        if (minhasLicitacoes.Count == 0)
+        {
+            throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+        }
+        else
+        {
+            float resultado = -1
+            foreach (int idLicitacao in minhasLicitacoes)
+            {
+                try
+                {
+                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
+                    valorAtual = licitacao.GetValor();
+                    if (valorAtual>resultado)
+                    {
+                        resultado = valorAtual;
+                    }
+                }
+                catch (LicitacaoNaoExisteException ex){
+                    throw;
+                }
+            }
+            return resultado;
+        }
+    }
+
+    public HashSet<int> getLicitadores()
+    {
+        if (minhasLicitacoes.Count == 0)
+        {
+            throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+        }
+        else
+        {
+            HashSet<int> licitadores = new HashSet<int>();
+            foreach (int idLicitacao in minhasLicitacoes)
+            {
+                try
+                {
+                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
+                    licitadores.Add(licitacao.GetIdLicitador());
+                }
+                catch (LicitacaoNaoExisteException ex){
+                    throw;
+                }
+            }
+            return licitadores;
         }
     }
 }

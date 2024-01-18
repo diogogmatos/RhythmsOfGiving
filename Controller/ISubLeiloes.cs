@@ -23,7 +23,9 @@ namespace RhythmsOfGiving.Controller
 
         public float calcularValorMinimo(int idLeilao);
 
-        
+        public float getValorFimLeilao (int idLeilao);
+
+        public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
 
     }
 }

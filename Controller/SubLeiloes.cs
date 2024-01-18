@@ -216,6 +216,53 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+
+
+        public float getValorFimLeilao (int idLeilao)
+        {
+            try
+            {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                return (leilao.getValorFim());
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+            catch (NaoExistemLicitacoesException e)
+            {
+                throw;
+            }
+            catch (LicitacaoNaoExisteException e)
+            {
+                throw;
+            }
+        }
+
+
+        public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou)
+        {
+            try
+            {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                HashSet<int> licitadores = leilao.getLicitadores();
+                licitadores.Remove(idLicitadorGanhou);
+                return licitadores;
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+            catch (NaoExistemLicitacoesException e)
+            {
+                throw;
+            }
+            catch (LicitacaoNaoExisteException e)
+            {
+                throw;
+            }
+        }
+
     }
 
 }
