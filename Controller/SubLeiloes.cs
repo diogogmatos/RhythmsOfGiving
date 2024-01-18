@@ -319,13 +319,6 @@ namespace RhythmsOfGiving.Controller{
             return valoresInstituicoes;
         }
 
-            
-            
-
-
-            return valoresInstituicoes;
-        }
-
     }
 
 }
