@@ -31,7 +31,7 @@ namespace RhythmsOfGiving.Controller
 
         public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
 
-        public Dictionary<string, float> getValoresInstituicoes();
+        public Dictionary<Instituicao, float> getValoresInstituicoes();
 
     }
 }
