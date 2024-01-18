@@ -22,7 +22,7 @@ namespace RhythmsOfGiving.Controller {
             this.tipo = tipo;
         }
 
-        public Notificacao(string title, string message, int idLicatdor, DateTime date, int tipo)
+        public Notificacao( string message,string title, int idLicatdor, DateTime date, int tipo)
         {
             this.idNotificacao = ++contadorId;
             this.title = title;

@@ -202,7 +202,7 @@ public class Licitador{
         public Notificacao criarNotificacaoUltrapassada(string titulo)
         {
             DateTime data = DateTime.Now;
-            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo, data, 0);
+            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo,this.idLicitador, data, 0);
             this.notificacaoDAO.put(ultrapassada.getId(), ultrapassada);
             //  Fazer put do licitador
 
@@ -214,7 +214,7 @@ public class Licitador{
             DateTime data = DateTime.Now;
             string mensagem = "Leilão " + idLeilao + " terminado! Infelizmente não ganhou. Obrigado por ter participado.";
             string titulo2 = titulo + " foi vendido por " + valor;
-            Notificacao perdedora = new Notificacao(mensagem, titulo2, data, 2);
+            Notificacao perdedora = new Notificacao(mensagem, titulo2,this.idLicitador, data, 2);
             this.notificacaoDAO.put(perdedora.getId(), perdedora);
             //  Fazer put do licitador
 
@@ -229,7 +229,7 @@ public class Licitador{
                               "Obrigado por participar e por sua oferta de " + valor + ".";
 
             string tituloNotificacao = "Você é o Vencedor - " + titulo;
-            Notificacao vencedora = new Notificacao(mensagem, tituloNotificacao, data, 1);
+            Notificacao vencedora = new Notificacao(mensagem, tituloNotificacao,this.idLicitador, data, 1);
             this.notificacaoDAO.put(vencedora.getId(), vencedora);
             return vencedora;
         }
