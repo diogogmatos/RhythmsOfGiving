@@ -13,7 +13,6 @@ public class Leilao
     private string titulo;
     private DateTime dataHoraContador;
     private int idAdmin;
-    private int percentagemAumento;
     private int idInstituicao;
     private List<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
@@ -56,6 +55,24 @@ public class Leilao
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
         this.idInstituicao = idInstituicao;
+        this.minhasLicitacoes = minhasLicitacoes;
+        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.experiencia = experiencia;
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
+    }
+    // Contrutor para leilões que não terminaram
+    public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
+        string titulo, DateTime dataHoraContador, int idAdmin,
+        List<int> minhasLicitacoes,  Experiencia experiencia)
+    {
+        this.idLeilao = idLeilao;
+        this.ativo = ativo;
+        this.valorAtual = valorAtual;
+        this.valorBase = valorBase;
+        this.dataHoraFinal = dataHoraFinal;
+        this.titulo = titulo;
+        this.dataHoraContador = dataHoraContador;
+        this.idAdmin = idAdmin;
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
