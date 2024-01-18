@@ -211,6 +211,21 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+
+
+        public float getValorFimLeilao (int idLeilao)
+        {
+            try
+            {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                return (leilao.getValorFim());
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+        }
+
     }
 
 }

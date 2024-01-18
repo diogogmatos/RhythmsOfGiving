@@ -123,4 +123,32 @@ public class Leilao
                $"Minhas Licitacoes: {string.Join(", ", minhasLicitacoes)}, " +
                $"Experiencia: {Experiencia}]";
     }
+
+    public float getValorFim()
+    {
+        if (minhasLicitacoes.Count == 0)
+        {
+            throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+        }
+        else
+        {
+            float resultado = -1
+            foreach (int idLicitacao in minhasLicitacoes)
+            {
+                try
+                {
+                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
+                    valorAtual = licitacao.GetValor();
+                    if (valorAtual>resultado)
+                    {
+                        resultado = valorAtual;
+                    }
+                }
+                catch (LicitacaoNaoExisteException ex){
+                    throw;
+                }
+            }
+            return resultado;
+        }
+    }
 }

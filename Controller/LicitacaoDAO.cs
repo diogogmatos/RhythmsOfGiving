@@ -16,7 +16,7 @@ public class LicitacaoDAO{
 
     internal Licitacao get(int idLicitacao)
     {
-        throw new NotImplementedException();
+        throw new LicitacaoNaoExisteException();
     }
 
     internal Licitacao getPorID(int idLicitacao)
