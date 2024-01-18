@@ -69,15 +69,11 @@ namespace RhythmsOfGiving.Controller{
                     // Check if the person is at least 18 years old
                     if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
                     {
-                        if (licitadores.verificarUnicaDataNasciomento(novaDataNascimento))
-                        {
+                        l.setDataNascimento(novaDataNascimento);
 
-                            l.setDataNascimento(novaDataNascimento);
-                        }
                         // Ver se é necessario
-                        if (licitadores.verificarUnicoNumeroCC(novoNumeroCC))
+                        if (licitadores.VerificarUnicoNumeroCC(novoNumeroCC))
                         {
-
                             l.setNcc(novoNumeroCC);
                         }
                         licitadores.put(l.getEmail(), l);
