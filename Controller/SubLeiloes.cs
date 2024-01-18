@@ -67,6 +67,7 @@ namespace RhythmsOfGiving.Controller{
 
         }
         
+        /*
 
         public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
         {
@@ -78,7 +79,7 @@ namespace RhythmsOfGiving.Controller{
             {
                 throw;
             }
-        }
+        } */
 
         public int GetLicitadorGanhador(int idLeilao)
         {
@@ -181,7 +182,7 @@ namespace RhythmsOfGiving.Controller{
             try
             {
                 Leilao leilao = this.leilaoDAO.get(idLeilao);
-                return (leilao.getTitle());
+                return (leilao.Titulo);
             }
             catch (LeilaoNaoExiste e)
             {
@@ -209,7 +210,7 @@ namespace RhythmsOfGiving.Controller{
             try
             {
                 Leilao leilao = this.leilaoDAO.get(idLeilao);
-                return (float)Math.Round(leilao.getValorAtual() * 1.01f, 2);
+                return (float)Math.Round(leilao.ValorAtual * 1.01f, 2);
             }
             catch (LeilaoNaoExiste e)
             {

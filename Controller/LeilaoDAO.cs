@@ -107,9 +107,9 @@ public class LeilaoDAO{
                                     string nomeGenero = generoPorLeilao.ContainsKey(idLeilao) ? generoPorLeilao[idLeilao] : string.Empty;
                                     
                                     //NÃO ESQUECER DE ALTERAR O CONSTRUTOR PARA O CONSTRUTOR DO GET
-                                    leilao = new Leilao(artista.getNome(), titulo, localizacao, nomeGenero,
-                                        tipoLeilao, dataTermina,
-                                        descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
+                                    //leilao = new Leilao(artista.getNome(), titulo, localizacao, nomeGenero,
+                                      //  tipoLeilao, dataTermina,
+                                        //descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
                                 };
 
                                 leiloesAtivosMap.Add(leilao, artista);
@@ -189,9 +189,9 @@ public class LeilaoDAO{
                                 bool asCegas = tipoLeilao.Equals("àsCegas");
 
                                 //NÃO ESQUECER DE ALTERAR O CONSTRUTOR PARA O CONSTRUTOR DO GET
-                                leilao = new Leilao(artista.getIdArtista(), titulo, localizacao, nomeArtista,
-                                    tipoLeilao, dataTermina,
-                                    descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
+                               // leilao = new Leilao(artista.getIdArtista(), titulo, localizacao, nomeArtista,
+                                 //   tipoLeilao, dataTermina,
+                                   // descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
                             };
 
                             leiloesPorArtista.Add(leilao, artista); 
