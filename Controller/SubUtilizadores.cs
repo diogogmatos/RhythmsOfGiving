@@ -146,6 +146,20 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+        
+        public  Notificacao criarNotificacaoVencedora(int idLicitador, int idLeilao, string titulo, float valor)
+        {
+            try
+            {
+                Licitador l = licitadores.get(idLicitador);
+                Notificacao notificacao = l.criarNotificacaoVencedora(idLeilao, titulo, valor);
+                return notificacao;
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
 
         public SortedSet<Fatura> minhasFaturas(int idLicitador)
         {

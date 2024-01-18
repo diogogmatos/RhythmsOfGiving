@@ -203,13 +203,14 @@ namespace RhythmsOfGiving.Controller{
         {
             Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
 
-            //Tens que filtrar pelos leiloes que já estão terminados
-            // No map que recebes tens que verficar so o leilão está terminado
             foreach (int idLeilao in ultimasLicitações.Keys)
             {
-                resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
+                Leilao leilao= leilaoDAO.get(idLeilao);
+                if (leilao.Ativo == false)
+                {
+                    resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
+                }
             }
-
             return resultado;
         }
 
@@ -271,6 +272,51 @@ namespace RhythmsOfGiving.Controller{
             {
                 throw;
             }
+        }
+        
+        
+        public Dictionary<Leilao, Licitacao>  getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes)  
+        {
+            Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
+
+            foreach (int idLeilao in leiloesLicitacoes.Keys)
+            {
+                Leilao leilao= leilaoDAO.get(idLeilao);
+                if (leilao.Ativo == true)
+                {
+                    resultado.Add(leilaoDAO.get(idLeilao), leiloesLicitacoes[idLeilao]);
+                }
+            }
+            return resultado;
+        }
+        
+        public Dictionary<Instituicao, float> getValoresInstituicoes()
+        {
+            Dictionary<Instituicao, float> valoresInstituicoes = new Dictionary<Instituicao, float>();
+
+            foreach (int idLeilao in leilaoDAO.keySet())
+            {
+                Leilao leilao = leilaoDAO.get(idLeilao);
+                
+                if (leilao.Ativo == false)
+                {
+                    if (leilao.IdInstituicao != -1)
+                    {
+                        Instituicao analisarInstituicao = instituicaoDAO.get(leilao.IdInstituicao);
+
+                        if (valoresInstituicoes.ContainsKey(analisarInstituicao))
+                        {
+                            valoresInstituicoes[analisarInstituicao] += leilao.ValorAtual;
+                        }
+                        else
+                        {
+                            valoresInstituicoes[analisarInstituicao] = leilao.ValorAtual;
+                        }
+                    }
+                }
+            }
+
+            return valoresInstituicoes;
         }
 
     }

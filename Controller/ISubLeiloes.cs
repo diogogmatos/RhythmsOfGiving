@@ -29,5 +29,9 @@ namespace RhythmsOfGiving.Controller
 
         public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
 
+        public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
+
+        public Dictionary<Instituicao, float> getValoresInstituicoes();
+
     }
 }

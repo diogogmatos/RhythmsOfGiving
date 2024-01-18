@@ -325,4 +325,9 @@ public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
 
         return leiloes;
     }
+
+    public HashSet<int> keySet()
+    {
+        throw new NotImplementedException();
+    }
 }

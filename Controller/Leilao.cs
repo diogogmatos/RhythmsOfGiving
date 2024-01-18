@@ -74,6 +74,7 @@ public class Leilao
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
         this.minhasLicitacoes = minhasLicitacoes;
+        this.IdInstituicao = -1;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
         this.instituicaoDAO = InstituicaoDAO.getInstance();
