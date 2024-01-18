@@ -14,7 +14,7 @@ public class Licitador{
     private int nrCartao;
     private string email;
     private int nif;
-    private int nCC;
+    private Int64 nCC;
     private LicitacaoDAO licitacaoDAO;
     private HashSet<int> minhasLicitacoes;
     private FaturaDAO faturaDAO;
@@ -24,7 +24,7 @@ public class Licitador{
     private static int contadorLicitadores = LicitadorDAO.size();
 
     //Construtor para fazer get
-    public Licitador (int idLicitador, string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, int nCC, HashSet<int> minhasLicitacoes, HashSet<int> minhasFaturas){
+    public Licitador (int idLicitador, string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCC, HashSet<int> minhasLicitacoes, HashSet<int> minhasFaturas){
         this.idLicitador = idLicitador;
         this.nome = nome;
         this.palavraPasse = palavraPasse;
@@ -41,7 +41,7 @@ public class Licitador{
     }
 
     //Construtor para criar o Licitador
-    public Licitador(string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, int nCC){
+    public Licitador(string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCC){
         this.idLicitador = ++contadorLicitadores;
         this.nome = nome;
         this.palavraPasse = palavraPasse;
@@ -92,7 +92,7 @@ public class Licitador{
             return nif;
         }
 
-    public int getNcc()
+    public Int64 getNcc()
         {
             return nCC;
         }
