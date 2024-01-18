@@ -15,10 +15,15 @@ namespace RhythmsOfGiving.Controller{
         {
             this.leilaoDAO = LeilaoDAO.getInstance();
             this.artistaDAO = ArtistaDAO.getInstance();
-            this.generos = new Dictionary<int, GeneroMusical>(); // Prencher Map de Generos no leilãoDAO
+            this.preencherGeneros(); // Prencher Map de Generos no leilãoDAO
             this.instituicaoDAO = InstituicaoDAO.getInstance();
             //preencher o map generos
             //ver classe SubServicos no trabalho DSS para ajudar
+        }
+
+        private void preencherGeneros()
+        {
+            this.generos = this.leilaoDAO.preencherGeneros();
         }
         
 
@@ -48,7 +53,7 @@ namespace RhythmsOfGiving.Controller{
             GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
     
             generos.Add(novoGenero.getIdGenero(), novoGenero);
-            //this.putGeneroMusical(novoGenero);
+            this.leilaoDAO.putGeneroMusical(novoGenero.getIdGenero(), novoGenero);
 
             return true;
         }

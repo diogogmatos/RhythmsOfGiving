@@ -220,4 +220,13 @@ public Leilao putEspecial(int lIdLeilao, Leilao leilao, int idArtista, int getId
     throw new NotImplementedException();
 }
 
+public Dictionary<int, GeneroMusical> preencherGeneros()
+{
+    throw new NotImplementedException();
+}
+
+public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
+{
+    throw new NotImplementedException();
+}
 }
