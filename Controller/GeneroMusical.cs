@@ -19,6 +19,13 @@ namespace RhythmsOfGiving.Controller
             this.idAdmin = idAdmin;
         }
 
+        public GeneroMusical(int idGenero, string nome, int idAdmin)
+        {
+            this.idGenero = idGenero;
+            this.nome = nome;
+            this.idAdmin = idAdmin;
+        }
+
         public int getIdGenero()
         {
             return this.idGenero;

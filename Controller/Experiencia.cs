@@ -6,10 +6,10 @@ namespace RhythmsOfGiving.Controller
 {
     public class Experiencia
     {
+        private int idArtista;
         private string descricao;
         private string imagem;
         private string localizacao;
-        private int idArtista;
         private GeneroMusical generoMusical;
         private ArtistaDAO artistaDao;
 
