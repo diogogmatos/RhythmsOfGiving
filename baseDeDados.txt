@@ -1,0 +1,110 @@
+/* Lógico_1_li4v22: */
+
+CREATE TABLE Licitador (
+    id INT PRIMARY KEY,
+    nome VARCHAR(45),
+    palavraPasse VARCHAR(45),
+    dataNascimento DATE,
+    nrCartao INT,
+    email VARCHAR(100),
+    nif INT,
+    numeroCC BIGINT,
+    UNIQUE (nif, email, numeroCC, id)
+);
+
+CREATE TABLE Licitacao (
+    id INT PRIMARY KEY UNIQUE,
+    dataHora DATATIME,
+    valor DECIMAL(7, 2),
+    idLicitador INT,
+    idLeilao INT
+);
+
+CREATE TABLE Leilao (
+    id INT PRIMARY KEY UNIQUE,
+    titulo VARCHAR(45),
+    valorAtual DECIMAL(7, 2),
+    valorMinimo DECIMAL(7, 2),
+    dataHoraFinal DATATIME,
+    localizacao VARCHAR(100),
+    estado BIT ,
+    tipoLeilao VARCHAR(45),
+    descricao VARCHAR(MAX),
+    imagem VARBINARY(MAX),
+    idArtista INT,
+    idGeneroMusical INT,
+    idAdministrador INT
+);
+
+CREATE TABLE Administrador (
+    id INT PRIMARY KEY,
+    palavraPasse VARCHAR(45),
+    email VARCHAR(100),
+    UNIQUE (id, email)
+);
+
+CREATE TABLE Instituicao (
+    id INT PRIMARY KEY,
+    nome VARCHAR(45),
+    descricao VARCHAR(MAX),
+    logotipo VARBINARY(MAX),
+    hiperligacao VARCHAR(100),
+    idAdministrador INT,
+    UNIQUE (id, nome)
+);
+
+CREATE TABLE Artista (
+    id INT PRIMARY KEY,
+    imagem VARBINARY(MAX),
+    nome VARCHAR(45),
+    idAdministrador INT,
+    UNIQUE (id, nome)
+);
+
+CREATE TABLE Fatura (
+    id INT PRIMARY KEY UNIQUE,
+    dataHora DATATIME,
+    idLicitador INT,
+    idLicitacao INT,
+    idInstituicao INT
+);
+
+CREATE TABLE GeneroMusical (
+    id INT PRIMARY KEY,
+    nome VARCHAR(45),
+    idAdministrador INT,
+    UNIQUE (nome, id)
+);
+
+CREATE TABLE Notificação (
+    idNotificacao INT PRIMARY KEY,
+    mensagem VARCHAR(100),
+    titulo VARCHAR(45),
+    dataHora DATATIME,
+    tipo INT,
+    idLicitador INT
+);
+ 
+ALTER TABLE Licitacao ADD CONSTRAINT FK_Licitacao_2
+    FOREIGN KEY (idLicitador, ???)
+    REFERENCES Licitador (id, ???);
+ 
+ALTER TABLE Licitacao ADD CONSTRAINT FK_Licitacao_4
+    FOREIGN KEY (idLeilao)
+    REFERENCES Leilao (id);
+ 
+ALTER TABLE Leilao ADD CONSTRAINT FK_Leilao_3
+    FOREIGN KEY (idArtista)
+    REFERENCES Artista (id);
+ 
+ALTER TABLE Leilao ADD CONSTRAINT FK_Leilao_4
+    FOREIGN KEY (idGeneroMusical)
+    REFERENCES GeneroMusical (id);
+ 
+ALTER TABLE Leilao ADD CONSTRAINT FK_Leilao_5
+    FOREIGN KEY (idAdministrador)
+    REFERENCES Administrador (id);
+ 
+ALTER TABLE Instituicao ADD CONSTRAINT FK_Instituicao_3
+    FOREIGN KEY (idAdministrador)
+    REFERENCES Administrador (id);
