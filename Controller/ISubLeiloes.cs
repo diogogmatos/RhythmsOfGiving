@@ -33,5 +33,7 @@ namespace RhythmsOfGiving.Controller
 
         public Dictionary<Instituicao, float> getValoresInstituicoes();
 
+        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
+
     }
 }

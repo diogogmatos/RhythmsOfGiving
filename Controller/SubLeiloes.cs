@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace RhythmsOfGiving.Controller{
+namespace RhythmsOfGiving.Controller
+{
     public class SubLeiloes : ISubLeiloes
     {
 
@@ -26,7 +27,7 @@ namespace RhythmsOfGiving.Controller{
         {
             this.generos = this.leilaoDAO.preencherGeneros();
         }
-        
+
 
         public bool registarArtista(string nome, string imagem, int idAdmin)
         {
@@ -40,8 +41,8 @@ namespace RhythmsOfGiving.Controller{
             return existe;
 
         }
-        
-        
+
+
         public bool registarGeneroMusical(string nome, int idAdmin)
         {
             foreach (var generoExistente in generos.Values)
@@ -51,8 +52,9 @@ namespace RhythmsOfGiving.Controller{
                     return false;
                 }
             }
+
             GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
-    
+
             generos.Add(novoGenero.getIdGenero(), novoGenero);
             this.leilaoDAO.putGeneroMusical(novoGenero.getIdGenero(), novoGenero);
 
@@ -72,12 +74,13 @@ namespace RhythmsOfGiving.Controller{
             return existe;
 
         }
-        
-        
 
-        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
+
+
+        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
+            string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
         {
-            
+
             try
             {
                 GeneroMusical g = this.leilaoDAO.getGenero(idGenero);
@@ -89,11 +92,11 @@ namespace RhythmsOfGiving.Controller{
             }
             catch (GeneroMusicalNaoExisteException e)
             {
-                
+
                 throw;
             }
-            
-        } 
+
+        }
 
         public int GetLicitadorGanhador(int idLeilao)
         {
@@ -101,13 +104,13 @@ namespace RhythmsOfGiving.Controller{
             {
                 Leilao leilao = this.leilaoDAO.get(idLeilao);
                 this.leilaoDAO.put(leilao.IdLeilao, leilao);
-                
+
                 return leilao.GetLicitadorGanhador();
 
             }
             catch (LeilaoNaoExiste ex)
             {
-                
+
                 throw;
             }
         }
@@ -130,23 +133,24 @@ namespace RhythmsOfGiving.Controller{
 
 
 
-    public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero){
-        List<Leilao> leiloes = leilaoDAO.obterLeiloesPorIdsGenero(idsGenero);
-        Dictionary<Leilao, Artista> resultado = new Dictionary<Leilao, Artista>();
-
-        foreach (var leilao in leiloes)
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero)
         {
-            Experiencia ex = leilao.Experiencia;
-            Artista artista = artistaDAO.get(ex.getIdArtista());
+            List<Leilao> leiloes = leilaoDAO.obterLeiloesPorIdsGenero(idsGenero);
+            Dictionary<Leilao, Artista> resultado = new Dictionary<Leilao, Artista>();
 
-            if (artista != null)
+            foreach (var leilao in leiloes)
             {
-                resultado.Add(leilao, artista);
-            }
-        }
+                Experiencia ex = leilao.Experiencia;
+                Artista artista = artistaDAO.get(ex.getIdArtista());
 
-        return resultado;
-    }
+                if (artista != null)
+                {
+                    resultado.Add(leilao, artista);
+                }
+            }
+
+            return resultado;
+        }
 
         //Função definida no DAO do leilao
         public Dictionary<Leilao, Artista> consultarLeiloesAtivos()
@@ -205,12 +209,13 @@ namespace RhythmsOfGiving.Controller{
 
             foreach (int idLeilao in ultimasLicitações.Keys)
             {
-                Leilao leilao= leilaoDAO.get(idLeilao);
+                Leilao leilao = leilaoDAO.get(idLeilao);
                 if (leilao.Ativo == false)
                 {
                     resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
                 }
             }
+
             return resultado;
         }
 
@@ -229,7 +234,7 @@ namespace RhythmsOfGiving.Controller{
         }
 
 
-        public float getValorFimLeilao (int idLeilao)
+        public float getValorFimLeilao(int idLeilao)
         {
             try
             {
@@ -273,23 +278,24 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
-        
-        
-        public Dictionary<Leilao, Licitacao>  getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes)  
+
+
+        public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes)
         {
             Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
 
             foreach (int idLeilao in leiloesLicitacoes.Keys)
             {
-                Leilao leilao= leilaoDAO.get(idLeilao);
+                Leilao leilao = leilaoDAO.get(idLeilao);
                 if (leilao.Ativo == true)
                 {
                     resultado.Add(leilaoDAO.get(idLeilao), leiloesLicitacoes[idLeilao]);
                 }
             }
+
             return resultado;
         }
-        
+
         public Dictionary<Instituicao, float> getValoresInstituicoes()
         {
             Dictionary<Instituicao, float> valoresInstituicoes = new Dictionary<Instituicao, float>();
@@ -297,7 +303,7 @@ namespace RhythmsOfGiving.Controller{
             foreach (int idLeilao in leilaoDAO.keySet())
             {
                 Leilao leilao = leilaoDAO.get(idLeilao);
-                
+
                 if (leilao.Ativo == false)
                 {
                     if (leilao.IdInstituicao != -1)
@@ -319,6 +325,20 @@ namespace RhythmsOfGiving.Controller{
             return valoresInstituicoes;
         }
 
-    }
 
+        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao)
+        {
+            try
+            {
+                Leilao l = this.leilaoDAO.get(idLeilao);
+                l.setIdInstituicao(idInstituicao);
+                this.leilaoDAO.put(l.IdLeilao, l);
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+        }
+
+    }
 }

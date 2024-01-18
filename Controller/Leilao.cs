@@ -140,6 +140,11 @@ public class Leilao
         set { idInstituicao = value; }
     }
 
+    public void setIdInstituicao(int id)
+    {
+        this.idInstituicao = id;
+    }
+
     public List<int> MinhasLicitacoes
     {
         get { return minhasLicitacoes; }
