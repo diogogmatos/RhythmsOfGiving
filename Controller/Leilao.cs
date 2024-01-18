@@ -18,12 +18,33 @@ public class Leilao
     private List<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
     private Experiencia experiencia;
+
+    private static int contador = LeilaoDAO.size();
     
 
     // Construtor
-    public Leilao(int idLeilao, bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
+    public Leilao( bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
                   string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
                   int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
+    {
+        this.idLeilao = ++contador;
+        this.estado = estado;
+        this.valorAtual = valorAtual;
+        this.valorBase = valorBase;
+        this.dataHoraFinal = dataHoraFinal;
+        this.titulo = titulo;
+        this.dataHoraContador = dataHoraContador;
+        this.idAdmin = idAdmin;
+        this.percentagemAumento = percentagemAumento;
+        this.idInstituicao = idInstituicao;
+        this.minhasLicitacoes = minhasLicitacoes;
+        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.experiencia = experiencia;
+    }
+    
+    public Leilao(int idLeilao, bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
+        string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
+        int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
         this.estado = estado;

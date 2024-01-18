@@ -63,14 +63,12 @@ namespace RhythmsOfGiving.Controller{
 
         }
 
-        public bool registarLeilao(string artista, string title, string localizacao, string genero, string tipo,
+        public bool registarLeilao(int artista, string title, string localizacao, string genero, string tipo,
             DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath,
             string authorImagePath, bool asCegas)
         {
             try
             {
-                Leilao l = new Leilao(artista, title, localizacao, genero, tipo, fim, shortDescricao, descricao,
-                    valorBase, imagePath, authorImagePath, asCegas);
                 leilaoDAO.put(l.getId(), l);
                 return true;
             }

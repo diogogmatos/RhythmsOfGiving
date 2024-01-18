@@ -135,6 +135,7 @@ public class LeilaoDAO{
     {
         try
         {
+            
             connection.Open();
 
             // Primeiro, obter o ID do artista pelo nome
@@ -188,12 +189,12 @@ public class LeilaoDAO{
                                 bool asCegas = tipoLeilao.Equals("àsCegas");
 
                                 //NÃO ESQUECER DE ALTERAR O CONSTRUTOR PARA O CONSTRUTOR DO GET
-                                leilao = new Leilao(artista.getNome(), titulo, localizacao, nomeArtista,
+                                leilao = new Leilao(artista.getIdArtista(), titulo, localizacao, nomeArtista,
                                     tipoLeilao, dataTermina,
                                     descricao, descricao, licitacaoAtual, imagem, artista.getImagem(), asCegas);
                             };
 
-                            leiloesPorArtista.Add(leilao, artista);
+                            leiloesPorArtista.Add(leilao, artista); 
                         }
                     }
                 }
