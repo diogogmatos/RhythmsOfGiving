@@ -95,7 +95,7 @@ namespace RhythmsOfGiving.Controller{
         {
             List<Instituicao> resultados = new List<Instituicao>();
 
-            foreach (int idInstituicao in instituicaoDAO.containsKeys())
+            foreach (int idInstituicao in instituicaoDAO.keySet())
             {
                 Instituicao i = instituicaoDAO.get(idInstituicao);
                 if (i != null)
@@ -198,7 +198,6 @@ namespace RhythmsOfGiving.Controller{
         }
 
 
-        //DUVIDA é suposto receber um float (valor da licitação atual) ou o Leilão?
         public float calcularValorMinimo(int idLeilao)
         {
             try
@@ -209,7 +208,6 @@ namespace RhythmsOfGiving.Controller{
             catch (LeilaoNaoExiste e)
             {
                 throw;
-                return -1; //DUVIDA é preciso retornar na mesma alguma coisa, certo?
             }
         }
 

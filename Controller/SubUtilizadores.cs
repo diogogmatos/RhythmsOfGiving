@@ -17,8 +17,6 @@ namespace RhythmsOfGiving.Controller{
         }
 
 
-
-        //DUVIDA void pois os problemas vão em exceptions(???)
         //DUVIDA É preciso alguma verificação dos dados?
         public void registarLicitador (string nome, string email, string palavraPasse, int nCC, int nif, DateOnly dataNascimento, int nrCartao)
         {
@@ -26,7 +24,7 @@ namespace RhythmsOfGiving.Controller{
             DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Now);
             if (dataAtual < idade_adulta)
             {
-                throw new DadosInvalidosException("O utilizaaaaador é menor de idade");
+                throw new DadosInvalidosException("O utilizador é menor de idade");
             }
             
             try

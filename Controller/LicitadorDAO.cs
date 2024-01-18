@@ -30,8 +30,7 @@ public class LicitadorDAO{
         public void put(String email ,Object l){
             //falta definir a lógica
 
-            //DUVIDA Esta exceção está correta? Há outros casos em que o put seja usado e possa dar erro?
-            throw new DadosInvalidosException("Não foi possível inserir o licitador pretendido");
+            throw new DadosInvalidosException("Foram inseridos dados que já estão associados a outra conta");
         }         
 }
 }

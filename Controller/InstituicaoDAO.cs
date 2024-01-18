@@ -28,7 +28,7 @@ namespace RhythmsOfGiving.Controller
             return 0; // depois usar a query necessária
         }
 
-        internal List<int> containsKeys()
+        internal List<int> keySet()
         {
             List<int> r = new List<int>();
 
