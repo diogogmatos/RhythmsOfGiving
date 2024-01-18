@@ -1,4 +1,5 @@
 
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace RhythmsOfGiving.Controller{
@@ -114,21 +115,17 @@ namespace RhythmsOfGiving.Controller{
             return resultados;
         }
 
-/*
+
 
     public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero){
-        // Vou fazer esta função no DAOS
-        //  List<Leilao> leiloes = leilaoDAO.ObterLeiloes(idsGenero);
-
+        List<Leilao> leiloes = leilaoDAO.obterLeiloesPorIdsGenero(idsGenero);
         Dictionary<Leilao, Artista> resultado = new Dictionary<Leilao, Artista>();
 
-        // Substitua o código abaixo conforme a lógica específica da sua aplicação
         foreach (var leilao in leiloes)
         {
-            // Suponha que há um método ObterArtistaPorId que retorna o Artista correspondente ao idArtista do Leilao
-            Artista artista = artistaDAO.get(leilao.getIdArtista());
+            Experiencia ex = leilao.Experiencia;
+            Artista artista = artistaDAO.get(ex.getIdArtista());
 
-            // Verifica se o gênero do artista está na lista de IDs de gênero desejados
             if (artista != null)
             {
                 resultado.Add(leilao, artista);
@@ -137,7 +134,6 @@ namespace RhythmsOfGiving.Controller{
 
         return resultado;
     }
-    */
 
         //Função definida no DAO do leilao
         public Dictionary<Leilao, Artista> consultarLeiloesAtivos()

@@ -22,6 +22,10 @@ public class ArtistaDAO{
        public Artista get(string nome){
             //falta definir a lógica
             throw new ArtistaNaoExisteException("O artista com o nome, " + nome + " não existe!");
+       }
+       public Artista get(int nome){
+           //falta definir a lógica
+           throw new ArtistaNaoExisteException("O artista com o nome, " + nome + " não existe!");
        } 
 
        public Artista put (int id, Artista a)

@@ -27,7 +27,7 @@ CREATE TABLE Leilao (
     valorMinimo DECIMAL(7, 2),
     dataHoraFinal DATATIME,
     localizacao VARCHAR(100),
-    estado BIT ,
+    ativo BIT ,
     tipoLeilao VARCHAR(45),
     descricao VARCHAR(MAX),
     imagem VARBINARY(MAX),
