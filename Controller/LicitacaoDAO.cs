@@ -16,8 +16,10 @@ public class LicitacaoDAO{
 
     internal Licitacao get(int idLicitacao)
     {
-        throw new LicitacaoNaoExisteException();
+        throw new NotImplementedException();
     }
+
+
 
     internal void put(int v, Licitacao l)
     {

@@ -61,7 +61,7 @@ namespace RhythmsOfGiving.Controller
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        
+                        // Adicionando parâmetro
                        // command.Parameters.AddWithValue("@NovoNumeroCC", novoNumeroCC);
 
                         int count = (int)command.ExecuteScalar();
