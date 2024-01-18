@@ -19,11 +19,6 @@ public class LicitacaoDAO{
         throw new NotImplementedException();
     }
 
-    internal Licitacao getPorID(int idLicitacao)
-    {
-        throw new NotImplementedException();
-    }
-
     internal void put(int v, Licitacao l)
     {
         throw new NotImplementedException();

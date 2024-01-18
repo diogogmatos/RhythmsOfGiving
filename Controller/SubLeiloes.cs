@@ -15,11 +15,12 @@ namespace RhythmsOfGiving.Controller{
         {
             this.leilaoDAO = LeilaoDAO.getInstance();
             this.artistaDAO = ArtistaDAO.getInstance();
-            this.generos = new Dictionary<int, GeneroMusical>();
+            this.generos = new Dictionary<int, GeneroMusical>(); // Prencher Map de Generos no leilãoDAO
             this.instituicaoDAO = InstituicaoDAO.getInstance();
             //preencher o map generos
             //ver classe SubServicos no trabalho DSS para ajudar
         }
+        
 
         public bool registarArtista(string nome, string imagem, int idAdmin)
         {
@@ -33,15 +34,18 @@ namespace RhythmsOfGiving.Controller{
             return existe;
 
         }
-
+        
         public bool registarGeneroMusical(string nome, int idAdmin)
         {
             
             GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
-
+            // Mudar a condição
             if (!generos.ContainsKey(novoGenero.getIdGenero()))
             {
+                
                 generos.Add(novoGenero.getIdGenero(), novoGenero);
+                // Aqui fazer put
+                
 
                 return true;
             }
@@ -62,32 +66,35 @@ namespace RhythmsOfGiving.Controller{
             return existe;
 
         }
+        
 
-        public bool registarLeilao(int artista, string title, string localizacao, string genero, string tipo,
-            DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath,
-            string authorImagePath, bool asCegas)
+        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
         {
             try
             {
                 leilaoDAO.put(l.getId(), l);
-                return true;
             }
             catch (DadosInvalidosException ex)
             {
                 throw;
-                return false;
             }
         }
 
         public int GetLicitadorGanhador(int idLeilao)
         {
-            Leilao leilao = this.leilaoDAO.get(idLeilao);
-            if (leilao != null)
+            try
             {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                this.leilaoDAO.put(leilao.IdLeilao, leilao);
+                
                 return leilao.GetLicitadorGanhador();
-            }
 
-            return -1;
+            }
+            catch (LeilaoNaoExiste ex)
+            {
+                
+                throw;
+            }
         }
 
         public List<Instituicao> ApresentarInstituicoes()

@@ -12,13 +12,14 @@ namespace RhythmsOfGiving.Controller
         private string nomeLicitador;
         private int nif;
         private int idLicitacao;
+        private int idLicitador;
         private LicitacaoDAO licitacaoDAO;
         private InstituicaoDAO instituicaoDAO;
 
         private static int contadorFat = FaturaDAO.size();
 
         //Construtor para criar
-        public Fatura(DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao)
+        public Fatura(DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao, int idLicitador)
         {
             this.idFatura = ++contadorFat;
             this.dataHoraEmissao = dataHora;
@@ -26,12 +27,13 @@ namespace RhythmsOfGiving.Controller
             this.nomeLicitador = nomeLicitador;
             this.nif = nif;
             this.idLicitacao = idLicitacao;
+            this.idLicitador = idLicitador;
             this.licitacaoDAO = LicitacaoDAO.getInstance();
             this.instituicaoDAO = InstituicaoDAO.getInstance();
         }
 
         //Construtor para get
-        public Fatura(int id, DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao)
+        public Fatura(int id, DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao, int idLicitador)
         {
             this.idFatura = id;
             this.dataHoraEmissao = dataHora;
@@ -39,6 +41,7 @@ namespace RhythmsOfGiving.Controller
             this.nomeLicitador = nomeLicitador;
             this.nif = nif;
             this.idLicitacao = idLicitacao;
+            this.idLicitador = idLicitador;
             this.licitacaoDAO = LicitacaoDAO.getInstance();
             this.instituicaoDAO = InstituicaoDAO.getInstance();
         }
@@ -72,7 +75,12 @@ namespace RhythmsOfGiving.Controller
         {
             return idLicitacao;
         }
-
+        
+        public int getIdLicitador()
+        {
+            return idLicitador;
+        }
+        
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -82,6 +90,7 @@ namespace RhythmsOfGiving.Controller
             sb.Append(" IdInstituição: ").Append(this.idInstituicao);
             sb.Append(" Nome do licitador: ").Append(this.nomeLicitador);
             sb.Append(" IdLicitação: ").Append(this.idLicitacao);
+            sb.Append(" IdLicitador: ").Append(this.idLicitador);
             sb.Append(" NIF licitador: ").Append(this.nif).Append(" }");
 
             return sb.ToString();

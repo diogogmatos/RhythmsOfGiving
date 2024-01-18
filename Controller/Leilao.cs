@@ -6,7 +6,7 @@ public class Leilao
 {
     // Atributos privados
     private int idLeilao;
-    private bool estado;
+    private bool ativo;
     private float valorAtual;
     private float valorBase;
     private DateTime dataHoraFinal;
@@ -23,12 +23,12 @@ public class Leilao
     
 
     // Construtor
-    public Leilao( bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
+    public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
                   string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
                   int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = ++contador;
-        this.estado = estado;
+        this.ativo = ativo;
         this.valorAtual = valorAtual;
         this.valorBase = valorBase;
         this.dataHoraFinal = dataHoraFinal;
@@ -42,12 +42,12 @@ public class Leilao
         this.experiencia = experiencia;
     }
     
-    public Leilao(int idLeilao, bool estado, float valorAtual, float valorBase, DateTime dataHoraFinal,
+    public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
         string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
         int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
-        this.estado = estado;
+        this.ativo = ativo;
         this.valorAtual = valorAtual;
         this.valorBase = valorBase;
         this.dataHoraFinal = dataHoraFinal;
@@ -67,10 +67,10 @@ public class Leilao
         get { return idLeilao; }
         set { idLeilao = value; }
     }
-    public bool Estado
+    public bool Ativo
     {
-        get { return estado; }
-        set { estado = value; }
+        get { return ativo; }
+        set { ativo = value; }
     }
 
     public float ValorAtual
@@ -137,11 +137,119 @@ public class Leilao
     // Sobrescreva o método ToString
     public override string ToString()
     {
-        return $"Leilao [Id: {IdLeilao}, Estado: {estado}, Valor Atual: {valorAtual}, " +
+        return $"Leilao [Id: {IdLeilao}, Ativo: {ativo}, Valor Atual: {valorAtual}, " +
                $"Valor Base: {valorBase}, Data/Hora Final: {dataHoraFinal}, Título: {titulo}, " +
                $"Data/Hora Contador: {dataHoraContador}, Id Admin: {idAdmin}, " +
                $"Percentagem Aumento: {percentagemAumento}, Id Instituicao: {idInstituicao}, " +
                $"Minhas Licitacoes: {string.Join(", ", minhasLicitacoes)}, " +
                $"Experiencia: {Experiencia}]";
+    }
+    
+    
+      public int GetLicitadorGanhador()
+    {
+        int idLicitadorVencedor = -1;
+        this.ativo = false;
+        
+
+            List<int> licitacoes = this.minhasLicitacoes;
+            float valorMaior = 0;
+
+            foreach (int idLicitacao in licitacoes)
+            {
+                Licitacao l = licitacaoDAO.get(idLicitacao);
+
+                if (l != null)
+                {
+                    float valorAtual = l.GetValor();
+
+                    if (valorAtual > valorMaior)
+                    {
+                        valorMaior = valorAtual;
+                        idLicitadorVencedor = l.GetIdLicitador();
+                    }
+                }
+            }
+
+        return idLicitadorVencedor;
+    }
+
+    public int criarLicitacao(float valorLicitacao, int idLicitador)
+    {
+        Licitacao novaLicitacao = new Licitacao(DateTime.Now, valorLicitacao, this.id, idLicitador);
+        this.minhasLicitacoes.Add(novaLicitacao.GetIdLicitacao());
+        this.licitacaoDAO.put(novaLicitacao.GetIdLicitacao(), novaLicitacao);
+        return novaLicitacao.GetIdLicitacao();
+    }
+
+    //Verifiquem se está certo
+    public int verificarLicitacao(int idLicitador, float valorLicitacao, float valorMinimo)
+    {
+        bool contadorBloqueado = false;
+        //Verificar se dentro do tempo
+        DateTime atual = DateTime.Now; 
+        if (atual < this.fim)
+        {
+            if (valorLicitacao >= valorMinimo)
+            {
+                //Calcular a diferença entre a atual e o tempo final
+                TimeSpan diferenca = this.fim - atual;
+                if (diferenca.TotalMinutes > 5)
+                {
+                    //criar a licitação
+                    return this.criarLicitacao(valorLicitacao, idLicitador);
+                }
+                else
+                {
+                    //Acrescentar no contador
+                    this.contador = 5; // DUVIDA: 5 + TEMPO QUE FALTA PARA TERMINAR
+                    //criar a licitação
+                    return this.criarLicitacao(valorLicitacao, idLicitador);
+                }
+            }
+
+            throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                              "O valor mínimo da licitação é de: " + valorMinimo);
+
+        }
+        else
+        {
+            if(this.contador == 0)
+                throw new TempoExcedidoException("O tempo do leilão " + this.id + " foi excedido.");
+            else
+            {
+                TimeSpan diferenca = atual - this.fim;
+                if (diferenca.TotalHours < 24 && diferenca.TotalMinutes < (24 * 60 - 5))
+                {
+                    if (contadorBloqueado == false)
+                    {
+                        DateTime dataAnterior = atual.AddHours(-24);
+                        TimeSpan diferenca2 = this.fim - dataAnterior;
+                        this.contador = Convert.ToInt32(diferenca2.TotalMinutes);
+                        contadorBloqueado = true;
+                    }
+                    
+                    if(valorLicitacao >= valorMinimo){
+                        //criar a licitação
+                        return this.criarLicitacao(valorLicitacao, idLicitador);
+                    }
+
+                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+
+                }
+                else
+                {
+                    this.contador = 5;
+                    if(valorLicitacao >= valorMinimo){
+                        //criar a licitação
+                        return this.criarLicitacao(valorLicitacao, idLicitador);
+                    }
+
+                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+                }
+            }
+        }
     }
 }

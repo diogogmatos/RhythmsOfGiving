@@ -10,13 +10,15 @@ namespace RhythmsOfGiving.Controller
         private string imagem;
         private string localizacao;
         private int idArtista;
+        private GeneroMusical generoMusical;
 
-        public Experiencia(string descricao, string imagem, string localizacao, int idArtista)
+        public Experiencia(string descricao, string imagem, string localizacao, int idArtista, GeneroMusical generoMusical)
         {
             this.descricao = descricao;
             this.imagem = imagem;
             this.localizacao = localizacao;
             this.idArtista = idArtista;
+            this.generoMusical = generoMusical;
         }
 
         public string getDescricao()
@@ -65,6 +67,7 @@ namespace RhythmsOfGiving.Controller
             sb.Append("Experiencia:: {");
             sb.Append(" Descrição: ").Append(this.descricao);
             sb.Append(" Localização: ").Append(this.localizacao);
+            sb.Append(" Genero Musical: ").Append(this.generoMusical.ToString());
             sb.Append(" Id Artista: ").Append(this.idArtista).Append(" }");
 
             return sb.ToString();

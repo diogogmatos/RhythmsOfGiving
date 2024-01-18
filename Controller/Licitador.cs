@@ -205,6 +205,7 @@ public class Licitador{
             Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo, true,
                 "Aumentar licitação", data.ToString(), 0);
             this.notificacaoDAO.put(ultrapassada.getId(), ultrapassada);
+            //  Fazer put do licitador
 
             return ultrapassada;
         }
@@ -216,6 +217,8 @@ public class Licitador{
             string titulo2 = titulo + " foi vendido por " + valor;
             Notificacao perdedora = new Notificacao(mensagem, titulo2, false, null, data.ToString(), 2);
             this.notificacaoDAO.put(perdedora.getId(), perdedora);
+            //  Fazer put do licitador
+
 
             return perdedora;
         }
