@@ -149,6 +149,20 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+
+        public SortedSet<Fatura> minhasFaturas(int idLicitador)
+        {
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                SortedSet<Fatura> resultado = l.getFaturas();
+                return resultado;
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
         
     }
 }

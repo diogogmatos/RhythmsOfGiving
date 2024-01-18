@@ -251,5 +251,18 @@ public class Licitador{
 
             return ultimasLicitacoes;
         }
+
+        public SortedSet<Fatura> getFaturas()
+        {
+            SortedSet<Fatura> faturasOrdenadas = new SortedSet<Fatura>();
+            
+            foreach (int id in this.minhasFaturas)
+            {
+                Fatura f = this.faturaDAO.get(id);
+                faturasOrdenadas.Add(f);
+            }
+
+            return faturasOrdenadas;
+        }
 }
 }
