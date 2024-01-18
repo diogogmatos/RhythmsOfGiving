@@ -199,9 +199,18 @@ namespace RhythmsOfGiving.Controller{
 
 
         //DUVIDA é suposto receber um float (valor da licitação atual) ou o Leilão?
-        public float calcularValorMinimo(float valor)
+        public float calcularValorMinimo(int idLeilao)
         {
-            return (float)Math.Round(valor * 1.01f, 2);
+            try
+            {
+                Leilao leilao = this.leilaoDAO.get(idLeilao);
+                return (float)Math.Round(leilao.getValorAtual() * 1.01f, 2);
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+                return -1 //DUVIDA é preciso retornar na mesma alguma coisa, certo?
+            }
         }
 
     }
