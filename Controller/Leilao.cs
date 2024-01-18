@@ -203,7 +203,60 @@ public class Leilao
     //Verifiquem se está certo
     public int verificarLicitacao(int idLicitador, float valorLicitacao, float valorMinimo)
     {
-        return -1;
+        DateTime atual = DateTime.Now;
+        if (atual < this.dataHoraFinal)
+        {
+            if (valorLicitacao >= valorMinimo)
+            {
+
+                //Acrescentar 5 min ao contador
+                this.dataHoraContador = atual.AddMinutes(5);
+                return this.criarLicitacao(valorLicitacao, idLicitador);
+            }
+
+            throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                              "O valor mínimo da licitação é de: " + valorMinimo);
+        }
+        else
+        {
+            TimeSpan diferenca = this.dataHoraContador - (this.dataHoraFinal.AddHours(24));
+            double diferencaEmMinutos = diferenca.TotalMinutes;
+            
+            if (atual < this.dataHoraContador)
+            {
+                if (diferencaEmMinutos >= 5)
+                {
+                    if (valorLicitacao >= valorMinimo)
+                    {
+
+                        //Acrescentar 5 min ao contador
+                        this.dataHoraContador = atual.AddMinutes(5);
+                        return this.criarLicitacao(valorLicitacao, idLicitador);
+                    }
+
+                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+                }
+                else
+                {
+                    if (valorLicitacao >= valorMinimo)
+                    {
+
+                        //Acrescentar diferençaTempo ao contador
+                        this.dataHoraContador = atual.AddMinutes(diferencaEmMinutos);
+                        return this.criarLicitacao(valorLicitacao, idLicitador);
+                    }
+
+                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+                }
+                
+            }
+            else
+            {
+                throw new TempoExcedidoException("O tempo do leilão " + this.idLeilao + " foi excedido.");
+            }
+        }
     }
 
     public float getValorFim()
