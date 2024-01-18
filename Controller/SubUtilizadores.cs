@@ -180,6 +180,38 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+
+        public Dictionary<Licitador, float> licitadoresTop10()
+        {
+            Dictionary<Licitador, float> resultado = new Dictionary<Licitador, float>();
+            
+            foreach (int id in this.licitadores.keySet())
+            {
+                Licitador l = this.licitadores.get(id);
+                float valorTotal = l.valorTotalDoado();
+                resultado.Add(l, valorTotal);
+
+            }
+
+            if (resultado.Count == 0)
+                throw new NaoExistemLicitadoresDoacoesException("Não existem licitadores que fizeram doações.");
+            
+            // Ordenar o dicionário por valores em ordem decrescente
+            Dictionary<Licitador, float> resultadoOrdenado = resultado
+                .OrderByDescending(x => x.Value)
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            Dictionary<Licitador, float> top10 = new Dictionary<Licitador, float>();
+            int tamanho = Math.Min(resultadoOrdenado.Count, 10);
+
+            for (int i = 0; i < tamanho; i++)
+            {
+                var elemento = resultadoOrdenado.ElementAt(i);
+                top10.Add(elemento.Key, elemento.Value);
+            }
+
+            return top10;
+        }
         
     }
 }

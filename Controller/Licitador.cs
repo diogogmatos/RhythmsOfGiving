@@ -279,5 +279,17 @@ public class Licitador{
 
             return faturasOrdenadas;
         }
+
+        public float valorTotalDoado()
+        {
+            float valorTotal = 0;
+            foreach (int idFatura in this.minhasFaturas)
+            {
+                Fatura f = this.faturaDAO.get(idFatura);
+                valorTotal += f.getValor();
+            }
+
+            return valorTotal;
+        }
 }
 }

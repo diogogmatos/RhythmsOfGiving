@@ -79,5 +79,9 @@ namespace RhythmsOfGiving.Controller
             return numeroCCUnico;
         }
 
+        public IEnumerable<int> keySet()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
