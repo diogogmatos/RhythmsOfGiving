@@ -36,6 +36,7 @@ namespace RhythmsOfGiving.Controller{
 
         public bool registarGeneroMusical(string nome, int idAdmin)
         {
+            
             GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
 
             if (!generos.ContainsKey(novoGenero.getIdGenero()))
