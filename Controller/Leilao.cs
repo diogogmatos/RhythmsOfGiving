@@ -13,20 +13,19 @@ public class Leilao
     private string titulo;
     private DateTime dataHoraContador;
     private int idAdmin;
-    private int percentagemAumento;
     private int idInstituicao;
     private List<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
     private Experiencia experiencia;
     private InstituicaoDAO instituicaoDAO;
 
+    public static int percentagemAumento = 1;
     private static int contador = LeilaoDAO.size();
     
 
     // Construtor
     public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-                  string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
-                  int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
+                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = ++contador;
         this.ativo = ativo;
@@ -36,7 +35,6 @@ public class Leilao
         this.titulo = titulo;
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
-        this.percentagemAumento = percentagemAumento;
         this.idInstituicao = idInstituicao;
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
@@ -45,7 +43,7 @@ public class Leilao
     }
     
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-        string titulo, DateTime dataHoraContador, int idAdmin, int percentagemAumento,
+        string titulo, DateTime dataHoraContador, int idAdmin,
         int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
@@ -56,7 +54,6 @@ public class Leilao
         this.titulo = titulo;
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
-        this.percentagemAumento = percentagemAumento;
         this.idInstituicao = idInstituicao;
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();

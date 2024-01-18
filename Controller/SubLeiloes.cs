@@ -67,19 +67,27 @@ namespace RhythmsOfGiving.Controller{
 
         }
         
-        /*
+        
 
         public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
         {
+            
             try
             {
-                leilaoDAO.put(l.getId(), l);
+                GeneroMusical g = this.leilaoDAO.getGenero(idGenero);
+                Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista, g);
+                Leilao l = new Leilao(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, -1,
+                    new List<int>(), e);
+                this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+
             }
-            catch (DadosInvalidosException ex)
+            catch (GeneroMusicalNaoExisteException e)
             {
+                
                 throw;
             }
-        } */
+            
+        } 
 
         public int GetLicitadorGanhador(int idLeilao)
         {
