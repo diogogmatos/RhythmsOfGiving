@@ -1,8 +1,15 @@
 
-public class FaturaDAO{
 
-    private static FaturaDAO? singleton = null;
-        private FaturaDAO() { }
+namespace RhythmsOfGiving.Controller
+{
+    public class FaturaDAO
+    {
+
+        private static FaturaDAO? singleton = null;
+
+        private FaturaDAO()
+        {
+        }
 
         public static FaturaDAO getInstance()
         {
@@ -10,7 +17,14 @@ public class FaturaDAO{
             {
                 singleton = new FaturaDAO();
             }
+
             return singleton;
         }
+        
+        public static int size()
+        {
+            return 0; // depois usar a query necessária
+        }
 
+    }
 }
