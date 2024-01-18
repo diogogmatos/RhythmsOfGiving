@@ -13,52 +13,39 @@ public class Leilao
     private string titulo;
     private DateTime dataHoraContador;
     private int idAdmin;
-    private static int percentagemAumento =10;
+    private int percentagemAumento;
     private int idInstituicao;
     private List<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
     private Experiencia experiencia;
+    private InstituicaoDAO instituicaoDAO;
 
+    public static int percentagemAumento = 1;
     private static int contador = LeilaoDAO.size();
     
 
     // Construtor
-
-    public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal, string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes, LicitacaoDAO licitacaoDao, Experiencia experiencia)
-    {
-        this.idLeilao = idLeilao;
-        this.ativo = ativo;
-        this.valorAtual = valorAtual;
-        this.valorBase = valorBase;
-        this.dataHoraFinal = dataHoraFinal;
-        this.titulo = titulo;
-        this.dataHoraContador = dataHoraContador;
-        this.idAdmin = idAdmin;
-        this.idInstituicao = idInstituicao;
-        this.minhasLicitacoes = minhasLicitacoes;
-        licitacaoDAO = licitacaoDao;
-        this.experiencia = experiencia;
-    }
-
-    public Leilao(bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-        string titulo, DateTime dataHoraContador, int idAdmin,int idInstituicao ,List<int> minhasLicitacoes,  Experiencia experiencia)
+    public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
+                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = ++contador;
         this.ativo = ativo;
         this.valorAtual = valorAtual;
         this.valorBase = valorBase;
         this.dataHoraFinal = dataHoraFinal;
-        this.idInstituicao = idInstituicao;
         this.titulo = titulo;
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
+        this.idInstituicao = idInstituicao;
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
     
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-        string titulo, DateTime dataHoraContador, int idAdmin, List<int> minhasLicitacoes,  Experiencia experiencia)
+        string titulo, DateTime dataHoraContador, int idAdmin,
+        int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
         this.ativo = ativo;
@@ -68,9 +55,11 @@ public class Leilao
         this.titulo = titulo;
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
+        this.idInstituicao = idInstituicao;
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
 
     // Propriedades Get e Set

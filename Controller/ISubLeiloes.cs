@@ -5,7 +5,9 @@ namespace RhythmsOfGiving.Controller
         public bool registarArtista(string nome,String imagem, int idAdmin);
         public bool registarGeneroMusical(string nome,int idAdmin );
         public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin);
-       // public bool registarLeilao(int artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas);
+
+        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
+            string imagem, string localizacao, int idArtista, int idGenero, int idAdmin);
 
         //public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
 

@@ -16,10 +16,15 @@ namespace RhythmsOfGiving.Controller{
         {
             this.leilaoDAO = LeilaoDAO.getInstance();
             this.artistaDAO = ArtistaDAO.getInstance();
-            this.generos = new Dictionary<int, GeneroMusical>(); // Prencher Map de Generos no leilãoDAO
+            this.preencherGeneros(); // Prencher Map de Generos no leilãoDAO
             this.instituicaoDAO = InstituicaoDAO.getInstance();
             //preencher o map generos
             //ver classe SubServicos no trabalho DSS para ajudar
+        }
+
+        private void preencherGeneros()
+        {
+            this.generos = this.leilaoDAO.preencherGeneros();
         }
         
 
@@ -49,7 +54,7 @@ namespace RhythmsOfGiving.Controller{
             GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
     
             generos.Add(novoGenero.getIdGenero(), novoGenero);
-            //this.putGeneroMusical(novoGenero);
+            this.leilaoDAO.putGeneroMusical(novoGenero.getIdGenero(), novoGenero);
 
             return true;
         }
@@ -68,19 +73,27 @@ namespace RhythmsOfGiving.Controller{
 
         }
         
-        /*
+        
 
         public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
         {
+            
             try
             {
-                leilaoDAO.put(l.getId(), l);
+                GeneroMusical g = this.leilaoDAO.getGenero(idGenero);
+                Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista, g);
+                Leilao l = new Leilao(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, -1,
+                    new List<int>(), e);
+                this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+
             }
-            catch (DadosInvalidosException ex)
+            catch (GeneroMusicalNaoExisteException e)
             {
+                
                 throw;
             }
-        } */
+            
+        } 
 
         public int GetLicitadorGanhador(int idLeilao)
         {

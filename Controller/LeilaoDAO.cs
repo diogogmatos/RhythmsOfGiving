@@ -210,6 +210,25 @@ public class LeilaoDAO{
     return leiloesPorArtista;
 }
 
+public GeneroMusical getGenero(int idGenero)
+{
+    throw new GeneroMusicalNaoExisteException("O género musical com o id " + idGenero + " não existe");
+}
+
+public Leilao putEspecial(int lIdLeilao, Leilao leilao, int idArtista, int getIdGenero)
+{
+    throw new NotImplementedException();
+}
+
+public Dictionary<int, GeneroMusical> preencherGeneros()
+{
+    throw new NotImplementedException();
+}
+
+public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
+{
+    throw new NotImplementedException();
+}
 
     public List<Leilao> obterLeiloesPorIdsGenero(List<int> idsGenero)
     {
