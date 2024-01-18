@@ -249,7 +249,26 @@ namespace RhythmsOfGiving.Controller
 
         public IEnumerable<int> keySet()
         {
-            throw new NotImplementedException();
+            List<int> keySet = new List<int>();
+
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                connection.Open();
+
+                string query = "SELECT id FROM Licitador";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            keySet.Add(id);
+                        }
+                    }
+                }
+            }
+            return keySet;
         }
     }
 }
