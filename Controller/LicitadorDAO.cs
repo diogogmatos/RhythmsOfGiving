@@ -31,6 +31,16 @@ public class LicitadorDAO{
             //falta definir a lógica
 
             throw new DadosInvalidosException("Foram inseridos dados que já estão associados a outra conta");
-        }         
+        }
+
+        public bool verificarUnicaDataNasciomento(DateTime novaDataNascimento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool verificarUnicoNumeroCC(int novoNumeroCc)
+        {
+            throw new NotImplementedException();
+        }
 }
 }

@@ -57,20 +57,40 @@ namespace RhythmsOfGiving.Controller{
         }
 
         
-        public bool alterarInfosPessoais(string email,string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse){
-            // Tenho de pensar o que pode faltar, visto que não estou a verificar os dados
-            try{
-                Licitador l = this.licitadores.get(email);
-                l.setNome(novoNome);
-                l.setDataNascimento(novaDataNascimento);
-                l.setNcc(novoNumeroCC);
-                l.setPalavraPasse(novaPalavraPasse); 
-                return true;
-            }catch (LicitadorNaoExisteException ex)
+        public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse)
+        {
+            try
             {
-                return false;         
+                Licitador l = licitadores.get(email);
+                l.setNome(novoNome);
+                l.setPalavraPasse(novaPalavraPasse);
+
+
+                    // Check if the person is at least 18 years old
+                    if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
+                    {
+                        if (licitadores.verificarUnicaDataNasciomento(novaDataNascimento))
+                        {
+
+                            l.setDataNascimento(novaDataNascimento);
+                        }
+                        if (licitadores.verificarUnicoNumeroCC(novoNumeroCC))
+                        {
+
+                            l.setNcc(novoNumeroCC);
+                        }
+                        licitadores.put(l.getEmail(), l);
+
+                    }
+                    else
+                    {
+                        throw new DataNascimentoMenor18("A pessoa deve ter pelo menos 18 anos.");
+                    }
+            }
+            catch (LicitadorNaoExisteException ex)
+            {
                 throw;
-            }            
+            }
         }
 
         public void AdicionarLicitacao(int idLicitacao, int idLicitador)
