@@ -18,6 +18,7 @@ public class Leilao
     private List<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
     private Experiencia experiencia;
+    private InstituicaoDAO instituicaoDAO;
 
     private static int contador = LeilaoDAO.size();
     
@@ -40,6 +41,7 @@ public class Leilao
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
     
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
@@ -59,6 +61,7 @@ public class Leilao
         this.minhasLicitacoes = minhasLicitacoes;
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
 
     // Propriedades Get e Set

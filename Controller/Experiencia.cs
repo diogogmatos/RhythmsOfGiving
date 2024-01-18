@@ -11,6 +11,7 @@ namespace RhythmsOfGiving.Controller
         private string localizacao;
         private int idArtista;
         private GeneroMusical generoMusical;
+        private ArtistaDAO artistaDao;
 
         public Experiencia(string descricao, string imagem, string localizacao, int idArtista, GeneroMusical generoMusical)
         {
@@ -19,6 +20,7 @@ namespace RhythmsOfGiving.Controller
             this.localizacao = localizacao;
             this.idArtista = idArtista;
             this.generoMusical = generoMusical;
+            this.artistaDao = ArtistaDAO.getInstance();
         }
 
         public string getDescricao()
