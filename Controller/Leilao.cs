@@ -172,4 +172,28 @@ public class Leilao
             return resultado;
         }
     }
+
+    public HashSet<int> getLicitadores()
+    {
+        if (minhasLicitacoes.Count == 0)
+        {
+            throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+        }
+        else
+        {
+            HashSet<int> licitadores = new HashSet<int>();
+            foreach (int idLicitacao in minhasLicitacoes)
+            {
+                try
+                {
+                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
+                    licitadores.Add(licitacao.GetIdLicitador());
+                }
+                catch (LicitacaoNaoExisteException ex){
+                    throw;
+                }
+            }
+            return licitadores;
+        }
+    }
 }

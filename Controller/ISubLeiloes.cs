@@ -25,5 +25,7 @@ namespace RhythmsOfGiving.Controller
 
         public float getValorFimLeilao (int idLeilao);
 
+        public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
+
     }
 }
