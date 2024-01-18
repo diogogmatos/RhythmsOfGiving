@@ -187,6 +187,8 @@ namespace RhythmsOfGiving.Controller{
         {
             Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
 
+            //Tens que filtrar pelos leiloes que já estão terminados
+            // No map que recebes tens que verficar so o leilão está terminado
             foreach (int idLeilao in ultimasLicitações.Keys)
             {
                 resultado.Add(leilaoDAO.get(idLeilao), ultimasLicitações[idLeilao]);
