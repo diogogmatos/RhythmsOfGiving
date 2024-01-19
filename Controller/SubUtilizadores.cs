@@ -240,7 +240,18 @@ namespace RhythmsOfGiving.Controller{
             
         }
         
-        
+        public SortedSet<Licitacao> pesquisarLicitacoes (int idLicitador, int idLeilao)
+        {
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                return l.getLicitacoesLeilao(int idLeilao);
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
         
     }
 }

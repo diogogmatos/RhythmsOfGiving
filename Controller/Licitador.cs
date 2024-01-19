@@ -303,5 +303,21 @@ public class Licitador{
                 throw;
             }
         }
+
+        public SortedSet<Licitacao> getLicitacoesLeilao(int idLeilao)
+        {
+            SortedSet<Licitacao> licitacoes = new SortedSet<Licitacao>;
+
+            foreach (int idLicitacao in minhasLicitacoes)
+            {
+                Licitacao l = licitacaoDAO.get(idLicitacao);
+                if (l.GetIdLeilao() == idLeilao)
+                {
+                    licitacoes.Add(l);
+                }
+            }
+
+            return licitacoes;
+        }
 }
 }
