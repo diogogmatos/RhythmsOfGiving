@@ -14,7 +14,7 @@ public class Leilao
     private DateTime dataHoraContador;
     private int idAdmin;
     private int idInstituicao;
-    private List<int> minhasLicitacoes;
+    private HashSet<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
     private Experiencia experiencia;
     private InstituicaoDAO instituicaoDAO;
@@ -25,7 +25,7 @@ public class Leilao
 
     // Construtor
     public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
+                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, HashSet<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = ++contador;
         this.ativo = ativo;
@@ -44,7 +44,7 @@ public class Leilao
     
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
         string titulo, DateTime dataHoraContador, int idAdmin,
-        int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
+        int idInstituicao, HashSet<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
         this.ativo = ativo;
@@ -63,7 +63,7 @@ public class Leilao
     // Contrutor para leilões que não terminaram
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
         string titulo, DateTime dataHoraContador, int idAdmin,
-        List<int> minhasLicitacoes,  Experiencia experiencia)
+        HashSet<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
         this.ativo = ativo;
@@ -145,7 +145,7 @@ public class Leilao
         this.idInstituicao = id;
     }
 
-    public List<int> MinhasLicitacoes
+    public HashSet<int> MinhasLicitacoes
     {
         get { return minhasLicitacoes; }
         set { minhasLicitacoes = value; }
@@ -176,7 +176,7 @@ public class Leilao
         this.ativo = false;
         
 
-            List<int> licitacoes = this.minhasLicitacoes;
+            HashSet<int> licitacoes = this.minhasLicitacoes;
             float valorMaior = 0;
 
             foreach (int idLicitacao in licitacoes)

@@ -86,7 +86,7 @@ namespace RhythmsOfGiving.Controller
                 GeneroMusical g = this.leilaoDAO.getGenero(idGenero);
                 Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista, g);
                 Leilao l = new Leilao(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, -1,
-                    new List<int>(), e);
+                    new HashSet<int>(), e);
                 this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
 
             }
