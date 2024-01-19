@@ -1,4 +1,4 @@
-/*namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller
 {
     public interface ISubLeiloes
     {
@@ -44,4 +44,4 @@
         public float getTotalValorDoado();
 
     }
-}*/
+}

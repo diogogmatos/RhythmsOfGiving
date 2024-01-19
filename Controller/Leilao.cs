@@ -1,4 +1,3 @@
-/*
 using System;
 using System.Collections.Generic;
 using RhythmsOfGiving.Controller;
@@ -378,4 +377,3 @@ public abstract class Leilao
         }
     }
 }
-*/
