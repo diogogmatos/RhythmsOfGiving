@@ -423,5 +423,24 @@ namespace RhythmsOfGiving.Controller
             }
         }
 
+        public float getTotalValorDoado()
+        {
+            float valor = 0;
+
+            foreach (int idLeilao in leilaoDAO.keySet())
+            {
+                Leilao leilao = leilaoDAO.get(idLeilao);
+
+                if (leilao.Ativo == false)
+                {
+                    if (leilao.IdInstituicao != -1) //A instituição pode ainda não ter sido escolhida
+                    {
+                        valor += leilao.ValorAtual;
+                    }
+                }
+            }
+            return valor;
+        }
+
     }
 }

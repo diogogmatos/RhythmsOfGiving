@@ -41,5 +41,7 @@ namespace RhythmsOfGiving.Controller
 
         public Licitacao procurarLicitacaoAtual(int idLeilao);
 
+        public float getTotalValorDoado();
+
     }
 }
