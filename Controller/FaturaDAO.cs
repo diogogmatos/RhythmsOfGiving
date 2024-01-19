@@ -31,10 +31,10 @@ namespace RhythmsOfGiving.Controller
             return null;
         } 
 
-        public Fatura put (int id, Fatura f)
+        public void put (int id, Fatura f)
         {
             //falta definir a lógica
-            return null;
+            throw new DadosInvalidosException("Não foi possível realizar a fatura");
         }
 
     }
