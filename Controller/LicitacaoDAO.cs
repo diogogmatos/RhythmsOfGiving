@@ -18,37 +18,28 @@ public class LicitacaoDAO{
     
         internal Licitacao get(int idLicitacao)
         {
-            // Create a new instance of Licitacao to hold the result
             Licitacao result = null;
             try
             {
-                // SQL query to retrieve Licitacao by idLicitacao
                 string query = "SELECT * FROM Licitacao WHERE id = @idLicitacao";
 
-                // Create a SqlConnection and a SqlCommand
                 using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Add the parameter for idLicitacao
                     command.Parameters.AddWithValue("@idLicitacao", idLicitacao);
 
-                    // Open the connection
                     connection.Open();
 
-                    // Execute the query
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        // Check if there are any rows
                         if (reader.Read())
                         {
-                            // Retrieve values from the database
                             int id = reader.GetInt32(reader.GetOrdinal("id"));
                             DateTime dataHora = reader.GetDateTime(reader.GetOrdinal("dataHora"));
                             float valor = (float)reader.GetDecimal(reader.GetOrdinal("valor"));
                             int idLicitador = reader.GetInt32(reader.GetOrdinal("idLicitador"));
                             int idLeilao = reader.GetInt32(reader.GetOrdinal("idLeilao"));
 
-                            // Create a new Licitacao object
                             result = new Licitacao(id, dataHora, valor, idLeilao, idLicitador);
                         }
                     }
@@ -68,21 +59,19 @@ public class LicitacaoDAO{
         {
             try
             {
-                // SQL query to insert a new Licitacao
-                string query =  @"
-                        MERGE INTO Licitacao AS target
-                        USING (VALUES (@id, @dataHora, @valor, @idLicitador, @idLeilao)) AS source (id, dataHora, valor, idLicitador, idLeilao)
-                        ON target.id = source.id
-                        WHEN MATCHED THEN
-                            UPDATE SET
-                                dataHora = source.dataHora,
-                                valor = source.valor,
-                                idLicitador = source.idLicitador,
-                                idLeilao = source.idLeilao
-                        WHEN NOT MATCHED THEN
-                            INSERT (id, dataHora, valor, idLicitador, idLeilao)
-                            VALUES (source.id, source.dataHora, source.valor, source.idLicitador, source.idLeilao);";
-                // Create a SqlConnection and a SqlCommand
+                string query = "MERGE INTO Licitacao AS Target\n"
+                               + "USING (VALUES (@id, @dataHora, @valor, @idLicitador, @idLeilao)) AS Source (id, dataHora, valor, idLicitador, idLeilao)\n"
+                               + "ON Target.id = Source.id -- Considering 'id' as the primary key\n"
+                               + "WHEN MATCHED THEN\n"
+                               + "    UPDATE SET\n"
+                               + "        dataHora = Source.dataHora,\n"
+                               + "        valor = Source.valor,\n"
+                               + "        idLicitador = Source.idLicitador,\n"
+                               + "        idLeilao = Source.idLeilao\n"
+                               + "WHEN NOT MATCHED THEN\n"
+                               + "    INSERT (id, dataHora, valor, idLicitador, idLeilao)\n"
+                               + "    VALUES (Source.id, Source.dataHora, Source.valor, Source.idLicitador, Source.idLeilao);";
+
                 using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -102,7 +91,7 @@ public class LicitacaoDAO{
             }
             catch
             {
-                throw new Exception();
+                throw new Exception("Não fui possivel fazer o put licitação");
 
             }
         }
