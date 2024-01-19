@@ -1,4 +1,3 @@
-
 using System.Data;
 using System.Data.SqlClient;
 using RhythmsOfGiving.Controller;
@@ -778,7 +777,6 @@ namespace RhythmsOfGiving.Controller
                             while (reader.Read())
                             {
                                 int idGeneroMusical = Convert.ToInt32(reader["idGeneroMusical"]);
-
                                 string query2 = "SELECT * FROM GeneroMusical  WHERE id = @IdGenero";
 
                                 using (SqlCommand command2 = new SqlCommand(query2, connection))
