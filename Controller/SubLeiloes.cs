@@ -85,12 +85,14 @@ namespace RhythmsOfGiving.Controller
                 Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista, g);
                 if (tipoLeilao == 0)
                 {
-                    Leilao l = new LeilaoAsCegas(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, e);
+                    Leilao l = new LeilaoAsCegas(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now,
+                        idAdmin, -1, new List<int>(), e);
                     this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
                 }
                 else
                 {
-                    Leilao l = new LeilaoIngles(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, e);
+                    Leilao l = new LeilaoIngles(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now,
+                        idAdmin, -1, new List<int>(), e);
                     this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
                 }
                 
