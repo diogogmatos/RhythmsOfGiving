@@ -225,7 +225,7 @@ namespace RhythmsOfGiving.Controller{
                 
                 try
                 {
-                    Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, int idLicitacao, int idLicitador);
+                    Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, idLicitacao, idLicitador);
                     l.adicionarFatura(f);
                 }
                 catch (DadosInvalidosException e)

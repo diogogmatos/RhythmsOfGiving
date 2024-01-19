@@ -70,7 +70,7 @@ public class NotificacaoDAO{
             return null;
         }
          
-         public void Put(int id, Notificacao n)
+         public void put(int id, Notificacao n)
 {
     using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
     {
