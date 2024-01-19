@@ -43,6 +43,11 @@ namespace RhythmsOfGiving.Controller
             return this.idArtista;
         }
 
+        public GeneroMusical getGeneroMusical()
+        {
+            return this.generoMusical;
+        }
+
         public void setDescricao(string descricao)
         {
             this.descricao = descricao;

@@ -89,13 +89,13 @@ namespace RhythmsOfGiving.Controller
                 {
                     Leilao l = new LeilaoAsCegas(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now,
                         idAdmin, -1, new List<int>(), e);
-                    this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+                    this.leilaoDAO.put(l.IdLeilao, l);
                 }
                 else
                 {
                     Leilao l = new LeilaoIngles(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now,
                         idAdmin, -1, new List<int>(), e);
-                    this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+                    this.leilaoDAO.put(l.IdLeilao, l);
                 }
                 
 

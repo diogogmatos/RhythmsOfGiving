@@ -25,8 +25,78 @@ namespace RhythmsOfGiving.Controller
 
         public Leilao put(int id, Leilao l)
         {
-            return null;
-            //Falta definir a lógica
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                connection.Open();
+
+                Experiencia e = l.Experiencia;
+                GeneroMusical g = e.getGeneroMusical();
+                
+                string sql = "MERGE INTO Leilao AS target " +
+                     "USING (VALUES (@IdLeilao, @Titulo, @ValorAtual, @ValorMinimo, @DataHoraFinal, " +
+                     "@Localizacao, @Ativo, @TipoLeilao, @Descricao, @Imagem, @IdArtista, @IdGenero, " +
+                     "@IdInstituicao, @IdAdministrador)) " +
+                     "AS source (id, titulo, valorAtual, valorMinimo, dataHoraFinal, " +
+                     "localizacao, estado, tipoLeilao, descricao, imagem, idArtista, idGeneroMusical, " +
+                     "idInstituicao, idAdministrador) " +
+                     "ON target.id = @Id " +
+                     "WHEN MATCHED THEN " +
+                     "    UPDATE SET " +
+                     "    titulo = source.titulo, " +
+                     "    valorAtual = source.valorAtual, " +
+                     "    valorMinimo = source.valorMinimo, " +
+                     "    dataHoraFinal = source.dataHoraFinal, " +
+                     "    localizacao = source.localizacao, " +
+                     "    estado = source.estado, " +
+                     "    tipoLeilao = source.tipoLeilao, " +
+                     "    descricao = source.descricao, " +
+                     "    imagem = source.imagem, " +
+                     "    idArtista = source.idArtista, " +
+                     "    idGenero = source.idGenero, " +
+                     "    idInstituicao = source.idInstituicao, " +
+                     "    idAdministrador = source.idAdministrador " +
+                     "WHEN NOT MATCHED THEN " +
+                     "    INSERT (idLeilao, titulo, valorAtual, valorMinimo, dataHoraFinal, " +
+                     "    localizacao, estado, tipoLeilao, descricao, imagem, idArtista, idGenero, " +
+                     "    idInstituicao, idAdministrador) " +
+                     "    VALUES (source.idLeilao, source.titulo, source.valorAtual, source.valorMinimo, " +
+                     "    source.dataHoraFinal, source.localizacao, source.estado, source.tipoLeilao, " +
+                     "    source.descricao, source.imagem, source.idArtista, source.idGenero, " +
+                     "    source.idInstituicao, source.idAdministrador);";
+
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@IdLeilao", l.IdLeilao);
+                    cmd.Parameters.AddWithValue("@Titulo", l.Titulo);
+                    cmd.Parameters.AddWithValue("@ValorAtual", l.ValorAtual);
+                    cmd.Parameters.AddWithValue("@ValorMinimo", l.ValorBase);
+                    cmd.Parameters.AddWithValue("@DataHoraFinal", l.DataHoraFinal);
+                    cmd.Parameters.AddWithValue("@Localizacao", e.getLocalizacao());
+                    cmd.Parameters.AddWithValue("@Ativo", l.Ativo);
+                    if (l.GetTipo() == 0)
+                    {
+                        cmd.Parameters.AddWithValue("@tipoLeilao", "asCegas");
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@tipoLeilao", "ingles");
+                    }
+
+                    cmd.Parameters.AddWithValue("@Descricao", e.getDescricao());
+                    cmd.Parameters.AddWithValue("@Imagem", e.getImagem());
+                    cmd.Parameters.AddWithValue("@IdArtista", e.getIdArtista());
+                    cmd.Parameters.AddWithValue("@IdGenero", g.getIdGenero());
+                    cmd.Parameters.AddWithValue("@idInstituicao", l.IdInstituicao);
+                    cmd.Parameters.AddWithValue("@idAdministrador", l.IdAdmin);
+                    
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return l;
         }
 
         public Leilao get(int idLeilao)
@@ -524,11 +594,6 @@ namespace RhythmsOfGiving.Controller
             return totalRows;
         }
 
-        public Leilao putEspecial(int IdLeilao, Leilao leilao, int idArtista, int getIdGenero)
-        {
-            throw new NotImplementedException();
-        }
-
         //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
         public Dictionary<int, GeneroMusical> preencherGeneros()
         {
@@ -545,7 +610,7 @@ namespace RhythmsOfGiving.Controller
                 catch (GeneroMusicalNaoExisteException)
                 {
                     // Lide com a exceção, se necessário, por exemplo, registre-a
-                    Console.WriteLine($"GeneroMusical com o id {i} não existe.");
+                    Console.WriteLine($"GeneroMusical com o id {i+1} não existe.");
                 }
             }
 
@@ -554,7 +619,33 @@ namespace RhythmsOfGiving.Controller
 
         public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                connection.Open();
+                
+                string sql = "MERGE INTO GeneroMusical AS target " +
+                              "USING (VALUES (@IdGenero, @Nome, @IdAdmin)) " +
+                              "AS source (id, nome, idAdmin) " +
+                              "ON target.id = @Id " +
+                              "WHEN MATCHED THEN " +
+                              "    UPDATE SET nome = source.nome, idAdmin = source.idAdmin " +
+                              "WHEN NOT MATCHED THEN " +
+                              "    INSERT (id, nome, idAdmin) VALUES (source.id, source.nome, source.idAdmin);";
+
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@IdGenero", novoGenero.getIdGenero());
+                    cmd.Parameters.AddWithValue("@Nome", novoGenero.getNome());
+                    cmd.Parameters.AddWithValue("@IdAdmin", novoGenero.getIdAdmin());
+                    
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return novoGenero;
         }
 
         public List<Leilao> obterLeiloesPorIdsGenero(List<int> idsGenero)
