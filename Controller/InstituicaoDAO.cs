@@ -34,17 +34,55 @@ namespace RhythmsOfGiving.Controller
 
             return r;
         }
+        
+         public Instituicao get(int idInstituicao)
+    {
 
-        internal Instituicao get(int idLicitacao)
+        using SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString());
+        connection.Open();
+
+        string query = "SELECT * FROM Instituicao WHERE id = @id";
+        using SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@id", idInstituicao);
+
+        using SqlDataReader reader = command.ExecuteReader();
+        if (reader.Read())
         {
-            // A exception está mal, só para funcionar o get
-            throw new NotImplementedException();
+
+            int id = reader.GetInt32(reader.GetOrdinal("id"));
+            string nome = reader.GetString(reader.GetOrdinal("nome"));
+            string descricao = reader.GetString(reader.GetOrdinal("descricao"));
+            string logoPath = reader.GetString(reader.GetOrdinal("logotipo"));
+            string link = reader.GetString(reader.GetOrdinal("hiperligacao"));
+            string iban = reader.GetString(reader.GetOrdinal("iban"));
+            int idAdmin = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
+            return new Instituicao(id,nome,descricao,logoPath,link,iban,idAdmin);
         }
 
-        public void put(int id, Instituicao a)
-        {
-            //falta definir a lógica
-        }
+        return null; // Retorna null se a instituição não for encontrada
+    }
+
+    public void put(int id, Instituicao instituicao)
+    {
+
+        using SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString());
+        connection.Open();
+
+        string query = "UPDATE Instituicao SET nome = @nome, descricao = @descricao, " +
+                       "logotipo = @logotipo, hiperligacao = @hiperligacao, iban = @iban, " +
+                       "idAdministrador = @idAdministrador WHERE id = @id";
+
+        using SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@id", id);
+        command.Parameters.AddWithValue("@nome", instituicao.getNome());
+        command.Parameters.AddWithValue("@descricao", instituicao.getDescricao());
+        command.Parameters.AddWithValue("@logotipo", instituicao.getLogoPath());
+        command.Parameters.AddWithValue("@hiperligacao", instituicao.getLink());
+        command.Parameters.AddWithValue("@iban", instituicao.getIban());
+        command.Parameters.AddWithValue("@idAdministrador", instituicao.getIdAdmin());
+
+        command.ExecuteNonQuery();
+    }
 
         public bool existeInstituicao(string nome)
         {
