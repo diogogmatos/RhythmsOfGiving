@@ -291,5 +291,17 @@ public class Licitador{
 
             return valorTotal;
         }
+
+        public void adicionarFatura(Fatura f)
+        {
+            try
+            {
+                faturaDAO.put(f.getIdFatura(),f);
+            }
+            catch (DadosInvalidosException e)
+            {
+                throw;
+            }
+        }
 }
 }

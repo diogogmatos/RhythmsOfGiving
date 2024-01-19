@@ -212,6 +212,33 @@ namespace RhythmsOfGiving.Controller{
 
             return top10;
         }
+
+        public void criarFatura (int idInstituicao, int idLicitacao, int idLicitador)
+        {
+            DateTime dataHoraAtual = DateTime.Now;
+
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                string nomeLicitador = l.getNome();
+                int nif = l.getNIF();
+                
+                try
+                {
+                    Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, int idLicitacao, int idLicitador);
+                    l.adicionarFatura(f);
+                }
+                catch (DadosInvalidosException e)
+                {
+                    throw;
+                }
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+            
+        }
         
     }
 }
