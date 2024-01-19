@@ -39,5 +39,7 @@ namespace RhythmsOfGiving.Controller
 
         public TimeSpan calcularTempoRestante (int idLeilao);
 
+        public Licitacao procurarLicitacaoAtual(int idLeilao);
+
     }
 }

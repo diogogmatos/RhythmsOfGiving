@@ -322,4 +322,57 @@ public abstract class Leilao
             return licitadores;
         }
     }
+
+    public Licitacao LicitacaoAtualAnterior()
+    {
+        if (minhasLicitacoes.Count <= 1)
+        {
+            throw new NaoExistemLicitacoesException("Não houve uma licitaçao atual anterior");
+        }
+        else
+        {
+            Licitacao atual = null;
+            Licitacao anterior = null;
+            foreach (int idLicitacao in minhasLicitacoes)
+            {
+                try
+                {
+                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
+                    valor = licitacao.GetValor();
+                    if (atual == null)
+                    {
+                        atual = licitacao;
+                    }
+                    else if (anterior = null)
+                    {
+                        if (valor < atual.GetValor())
+                        {
+                            anterior = licitacao;
+                        }
+                        else
+                        {
+                            anterior = atual;
+                            atual = licitacao;
+                        }
+                    }
+                    else
+                    {
+                        if (valor > atual.GetValor())
+                        {
+                            anterior = atual;
+                            atual = licitacao;
+                        }
+                        else if (valor > anterior.GetValor())
+                        {
+                            anterior = licitacao;
+                        }
+                    }
+                }
+                catch (LicitacaoNaoExisteException ex){
+                    throw;
+                }
+            }
+            return anterior;
+        }
+    }
 }

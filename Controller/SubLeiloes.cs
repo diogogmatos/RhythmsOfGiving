@@ -410,5 +410,18 @@ namespace RhythmsOfGiving.Controller
             }
         }
 
+        public Licitacao procurarLicitacaoAtual(int idLeilao)
+        {
+            try
+            {
+                Leilao l = this.leilaoDAO.get(idLeilao);
+                return (l.LicitacaoAtualAnterior());
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+        }
+
     }
 }
