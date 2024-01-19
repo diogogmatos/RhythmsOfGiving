@@ -63,7 +63,7 @@ CREATE TABLE Artista (
 
 CREATE TABLE Fatura (
     id INT PRIMARY KEY UNIQUE,
-    dataHora DATATIME,
+    dataHora DATETIME,
     idLicitador INT,
     idLicitacao INT,
     idInstituicao INT
@@ -80,7 +80,7 @@ CREATE TABLE Notificação (
     idNotificacao INT PRIMARY KEY,
     mensagem VARCHAR(100),
     titulo VARCHAR(45),
-    dataHora DATATIME,
+    dataHora DATETIME,
     tipo INT,
     idLicitador INT
 );

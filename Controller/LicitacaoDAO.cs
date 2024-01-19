@@ -69,8 +69,19 @@ public class LicitacaoDAO{
             try
             {
                 // SQL query to insert a new Licitacao
-                string query = "INSERT INTO Licitacao (id, dataHora, valor, idLicitador, idLeilao) VALUES (@id, @dataHora, @valor, @idLicitador, @idLeilao)";
-
+                string query =  @"
+                        MERGE INTO Licitacao AS target
+                        USING (VALUES (@id, @dataHora, @valor, @idLicitador, @idLeilao)) AS source (id, dataHora, valor, idLicitador, idLeilao)
+                        ON target.id = source.id
+                        WHEN MATCHED THEN
+                            UPDATE SET
+                                dataHora = source.dataHora,
+                                valor = source.valor,
+                                idLicitador = source.idLicitador,
+                                idLeilao = source.idLeilao
+                        WHEN NOT MATCHED THEN
+                            INSERT (id, dataHora, valor, idLicitador, idLeilao)
+                            VALUES (source.id, source.dataHora, source.valor, source.idLicitador, source.idLeilao);";
                 // Create a SqlConnection and a SqlCommand
                 using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -89,9 +100,10 @@ public class LicitacaoDAO{
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                // Handle exceptions appropriately, log, etc.
+                throw new Exception();
+
             }
         }
     
