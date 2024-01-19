@@ -21,6 +21,21 @@ public class Licitador{
     private HashSet<int> minhasFaturas;
     private NotificacaoDAO notificacaoDAO;
 
+
+    public Licitador()
+    {
+        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.notificacaoDAO = NotificacaoDAO.getInstance();
+
+
+    }
+
+    public Licitacao teste()
+    {
+        return licitacaoDAO.get(1);
+    }
+    
+
     private static int contadorLicitadores = LicitadorDAO.size();
 
     //Construtor para fazer get
