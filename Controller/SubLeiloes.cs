@@ -1,4 +1,5 @@
 
+/*
 using System.Runtime.CompilerServices;
 
 namespace RhythmsOfGiving.Controller{
@@ -136,7 +137,7 @@ namespace RhythmsOfGiving.Controller{
 
         return resultado;
     }
-    */
+    #1#
 
         //Função definida no DAO do leilao
         public Dictionary<Leilao, Artista> consultarLeiloesAtivos()
@@ -265,4 +266,4 @@ namespace RhythmsOfGiving.Controller{
 
     }
 
-}
+}*/

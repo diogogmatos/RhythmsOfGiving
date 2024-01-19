@@ -1,4 +1,4 @@
-namespace RhythmsOfGiving.Controller
+/*namespace RhythmsOfGiving.Controller
 {
     public interface ISubLeiloes
     {
@@ -28,4 +28,4 @@ namespace RhythmsOfGiving.Controller
         public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
 
     }
-}
+}*/

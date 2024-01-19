@@ -64,6 +64,5 @@ namespace RhythmsOfGiving.Controller {
         {
             return tipo;
         }
-        
     }
 }

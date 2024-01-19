@@ -5,45 +5,45 @@
     <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
         @* Nome Artista *@
         <div class="flex space-x-2 items-center select-none">
-            <img class="object-cover w-8 h-8 rounded-full" src=@getAuthorImagePath()/>
-            <p class="font-[600]">@getArtista()</p>
+            <img class="object-cover w-8 h-8 rounded-full" src=@GetAuthorImagePath()/>
+            <p class="font-[600]">@GetArtista()</p>
         </div>
         @* Titulo Leilao *@
         <p class="font-[600] text-2xl">
-            @getTitle()
+            @GetTitle()
         </p>
         @* Detalhes *@
         <div class="flex text-gray-400 select-none">
-            <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@getGenero()</text></p>
-            <p class="w-fit m-auto">Tipo - <text class="font-medium">@getTipo()</text></p>
-            <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@getFim()</text></p>
+            <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
+            <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
+            <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
         </div>
         @* Descrição *@
         <p class="text-justify">
-            @getDescricao()
+            @GetDescricao()
         </p>
         @* Botão e Preço *@
         <div class="flex space-x-4 select-none place-content-between">
-            <button onclick="location.href='/leiloes/@getId()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
+            <button onclick="location.href='/leiloes/@GetId()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
                 Licitar ->
             </button>
-            @if (getOwnLicitacao() != 0) {
+            @if (GetOwnLicitacao() != 0) {
                 <div class="text-center min-w-fit">
                     <p class="text-sm text-gray-400 font-medium">
                         a sua licitação:
                     </p>
                     <p class="text-xl font-[600] text-rhythms/50">
-                        @getOwnLicitacao().ToString("0.00€")
+                        @GetOwnLicitacao().ToString("0.00€")
                     </p>
                 </div>        
             }
             <div class="text-center min-w-fit">
-                @if (getLastLicitacao() != 0 && !isAsCegas()) {
+                @if (GetLastLicitacao() != 0 && !IsAsCegas()) {
                     <p class="text-sm text-gray-400 font-medium">
                         última licitação:
                     </p>
                     <p class="text-xl font-[600] text-rhythms">
-                        @getLastLicitacao().ToString("0.00€")
+                        @GetLastLicitacao().ToString("0.00€")
                     </p>
                 }
                 else {
@@ -51,7 +51,7 @@
                         valor base:
                     </p>
                     <p class="text-xl font-[600] text-rhythms">
-                        @getValorBase().ToString("0.00€")
+                        @GetValorBase().ToString("0.00€")
                     </p>
                 }
             </div>
@@ -59,63 +59,63 @@
     </div>
     @* Imagem *@
     <div class="min-w-[25rem] bg-gray-300 hidden xl:block">
-        <img class="object-cover h-full" src=@getImagePath()/>
+        <img class="object-cover h-full" src=@GetImagePath()/>
     </div>
 </div>
 
 @code {
     [EditorRequired]
     [Parameter]
-    public Leilao Leilao { get; set; }
+    public LeilaoUI Leilao { get; set; }
 
-    private int getId() {
-        return Leilao.getId();
+    private int GetId() {
+        return Leilao.GetId();
     }
-    private string getArtista() {
-        return Leilao.getArtista();
+    private string GetArtista() {
+        return Leilao.GetArtista();
     }
-    private string getTitle() {
-        return Leilao.getTitle();
+    private string GetTitle() {
+        return Leilao.GetTitle();
     }
-    private string getLocalizacao() {
-        return Leilao.getLocalizacao();
+    private string GetLocalizacao() {
+        return Leilao.GetLocalizacao();
     }
-    private string getGenero() {
-        return Leilao.getGenero();
+    private string GetGenero() {
+        return Leilao.GetGenero();
     }
-    private string getTipo() {
-        return Leilao.getTipo();
+    private string GetTipo() {
+        return Leilao.GetTipo();
     }
-    private string getFim() {
-        return Leilao.getFim().ToShortDateString();
+    private string GetFim() {
+        return Leilao.GetFim().ToShortDateString();
     }
-    private string getDescricao() {
-        return Leilao.getShortDescricao();
-    }
-
-    private float getValorBase() {
-        return Leilao.getValorBase();
+    private string GetDescricao() {
+        return Leilao.GetShortDescricao();
     }
 
-    private float getOwnLicitacao() {
+    private float GetValorBase() {
+        return Leilao.GetValorBase();
+    }
+
+    private float GetOwnLicitacao() {
         // ir à base de dados obter informação
         return 7500.00f;
     }
 
-    private float getLastLicitacao() {
+    private float GetLastLicitacao() {
         // ir à base de dados obter informação
         return 8543.92f;
     }
 
-    private string getImagePath() {
-        return Leilao.getImagePath();
+    private string GetImagePath() {
+        return Leilao.GetImagePath();
     }
 
-    private string getAuthorImagePath() {
-        return Leilao.getAuthorImagePath();
+    private string GetAuthorImagePath() {
+        return Leilao.GetAuthorImagePath();
     }
 
-    private bool isAsCegas() {
-        return Leilao.getAsCegas();
+    private bool IsAsCegas() {
+        return Leilao.IsAsCegas();
     }
 }
