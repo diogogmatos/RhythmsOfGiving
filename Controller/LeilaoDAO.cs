@@ -422,12 +422,14 @@ namespace RhythmsOfGiving.Controller
                                                 if (tipoLeilao == 0)
                                                 {
                                                     Leilao leilao = new LeilaoAsCegas(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia); 
+                                                    leiloes.Add(leilao);
                                                 }
                                                 else
                                                 {
                                                     Leilao leilao = new LeilaoIngles(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia);
+                                                    leiloes.Add(leilao);
                                                 }
-                                                leiloes.Add(leilao);
+                                                
                                             }
                                             
                                         }
@@ -530,12 +532,14 @@ namespace RhythmsOfGiving.Controller
                                                 if (tipoLeilao == 0)
                                                 {
                                                     Leilao leilao = new LeilaoAsCegas(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia); 
+                                                    leiloes.Add(leilao);
                                                 }
                                                 else
                                                 {
                                                     Leilao leilao = new LeilaoIngles(idLeilao,ativo,valorAtual,valorBase,dataHoraFinal,titulo,dataHoraContador,idAdmin,-1,minhasLicitacoes,experiencia);
+                                                    leiloes.Add(leilao);
                                                 }
-                                                leiloes.Add(leilao);
+                                                
                                             }
                                             
                                         }
