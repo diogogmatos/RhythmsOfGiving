@@ -86,12 +86,14 @@ namespace RhythmsOfGiving.Controller
                 if (tipoLeilao == 0)
                 {
                     Leilao l = new LeilaoAsCegas(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, e);
+                    this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
                 }
                 else
                 {
                     Leilao l = new LeilaoIngles(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, e);
+                    this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
                 }
-                this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+                
 
             }
             catch (GeneroMusicalNaoExisteException e)
@@ -378,20 +380,22 @@ namespace RhythmsOfGiving.Controller
                 {
                     if (atual < fim)
                     {
-                        return (fim-atual)
+                        return (fim - atual);
                     }
-                    else{
-                        throw new LeilaoJaAcabouException()
+                    else
+                    {
+                        throw new LeilaoJaAcabouException();
                     }
                 }
                 else
                 {
                     if (atual < contador)
                     {
-                        return (contador-atual)
+                        return (contador - atual);
                     }
-                    else{
-                        throw new LeilaoJaAcabouException()
+                    else
+                    {
+                        throw new LeilaoJaAcabouException();
                     }
                 }
 

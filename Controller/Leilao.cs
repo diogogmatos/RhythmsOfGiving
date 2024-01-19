@@ -28,7 +28,8 @@ public abstract class Leilao
 
     // Construtor de criação
     public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-                  string titulo, DateTime dataHoraContador, int idAdmin, Experiencia experiencia)
+                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
+
     {
         this.idLeilao = ++contador;
         this.ativo = ativo;
@@ -63,6 +64,27 @@ public abstract class Leilao
         this.experiencia = experiencia;
         this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
+
+    // Contrutor para leilões que não terminaram
+    public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
+        string titulo, DateTime dataHoraContador, int idAdmin,
+        List<int> minhasLicitacoes,  Experiencia experiencia)
+    {
+        this.idLeilao = idLeilao;
+        this.ativo = ativo;
+        this.valorAtual = valorAtual;
+        this.valorBase = valorBase;
+        this.dataHoraFinal = dataHoraFinal;
+        this.titulo = titulo;
+        this.dataHoraContador = dataHoraContador;
+        this.idAdmin = idAdmin;
+        this.minhasLicitacoes = minhasLicitacoes;
+        this.IdInstituicao = -1;
+        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.experiencia = experiencia;
+        this.instituicaoDAO = InstituicaoDAO.getInstance();
+    }
+
 
     // Propriedades Get e Set
     public int IdLeilao

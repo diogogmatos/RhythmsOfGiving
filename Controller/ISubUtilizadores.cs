@@ -21,10 +21,9 @@ namespace RhythmsOfGiving.Controller
         public SortedSet<Fatura> minhasFaturas(int idLicitador);
 
         public Dictionary<Licitador, float> licitadoresTop10();
-
         public void criarFatura (int idInstituicao, int idLicitacao, int idLicitador);
         
-        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
+        
 
     }
 }
