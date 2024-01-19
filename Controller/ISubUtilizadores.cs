@@ -22,5 +22,7 @@ namespace RhythmsOfGiving.Controller
 
         public Dictionary<Licitador, float> licitadoresTop10();
 
+        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
+
     }
 }
