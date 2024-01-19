@@ -364,5 +364,43 @@ namespace RhythmsOfGiving.Controller
         }
         
 
+
+        public TimeSpan calcularTempoRestante (int idLeilao)
+        {
+            try
+            {
+                Leilao l = this.leilaoDAO.get(idLeilao);
+                DateTime atual = DateTime.Now;
+                DateTime fim = l.DataHoraFinal;
+                DateTime contador = l.DataHoraContador;
+
+                if (fim > contador)
+                {
+                    if (atual < fim)
+                    {
+                        return (fim-atual)
+                    }
+                    else{
+                        throw new LeilaoJaAcabouException()
+                    }
+                }
+                else
+                {
+                    if (atual < contador)
+                    {
+                        return (contador-atual)
+                    }
+                    else{
+                        throw new LeilaoJaAcabouException()
+                    }
+                }
+
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+        }
+
     }
 }

@@ -37,5 +37,7 @@ namespace RhythmsOfGiving.Controller
 
         public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
 
+        public TimeSpan calcularTempoRestante (int idLeilao);
+
     }
 }
