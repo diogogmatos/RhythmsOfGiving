@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using RhythmsOfGiving.Controller.UI;
 using RhythmsOfGiving.Controller;
-using RhythmsOfGiving.Data;
+using RhythmsOfGiving.Data; 
 
 var builder = WebApplication.CreateBuilder(args);
 

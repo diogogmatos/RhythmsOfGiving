@@ -1,4 +1,4 @@
-@using RhythmsOfGiving.Controller
+@using RhythmsOfGiving.Controller.UI
 
 <div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden">
     @* Informações *@
@@ -58,8 +58,8 @@
         </div>
     </div>
     @* Imagem *@
-    <div class="min-w-[25rem] bg-gray-300 hidden xl:block">
-        <img class="object-cover h-full" src=@GetImagePath()/>
+    <div class="min-w-[25rem] h-96 bg-gray-300 hidden xl:block">
+        <img class="object-cover h-full w-full" src=@GetImagePath()/>
     </div>
 </div>
 
