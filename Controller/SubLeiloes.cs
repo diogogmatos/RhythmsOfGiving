@@ -362,6 +362,7 @@ namespace RhythmsOfGiving.Controller
 
             return resultado;
         }
+        
 
 
         public TimeSpan calcularTempoRestante (int idLeilao)
