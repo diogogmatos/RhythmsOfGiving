@@ -625,12 +625,12 @@ namespace RhythmsOfGiving.Controller
                 
                 string sql = "MERGE INTO GeneroMusical AS target " +
                               "USING (VALUES (@IdGenero, @Nome, @IdAdmin)) " +
-                              "AS source (id, nome, idAdmin) " +
+                              "AS source (id, nome, idAdministrador) " +
                               "ON target.id = @Id " +
                               "WHEN MATCHED THEN " +
-                              "    UPDATE SET nome = source.nome, idAdmin = source.idAdmin " +
+                              "    UPDATE SET nome = source.nome, idAdministrador = source.idAdministrador " +
                               "WHEN NOT MATCHED THEN " +
-                              "    INSERT (id, nome, idAdmin) VALUES (source.id, source.nome, source.idAdmin);";
+                              "    INSERT (id, nome, idAdministrador) VALUES (source.id, source.nome, source.idAdministrador);";
 
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
