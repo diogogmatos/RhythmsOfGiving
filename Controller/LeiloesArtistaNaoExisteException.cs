@@ -7,5 +7,5 @@ public class LeiloesArtistaNaoExisteException : Exception
 
     public LeiloesArtistaNaoExisteException(string message, Exception innerException)
         : base(message, innerException) { }
-    
+       
 }

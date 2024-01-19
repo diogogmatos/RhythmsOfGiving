@@ -2,7 +2,7 @@ using System;
 using System.Text;
 
 
-public class Licitacao
+public class Licitacao : IComparable<Licitacao>
 {
     // Propriedades
     private int idLicitacao;
@@ -70,5 +70,12 @@ public class Licitacao
     public int GetIdLicitador()
     {
         return idLicitador;
+    }
+
+
+    //Licitações serão ordenadas cronologicamente (da mais antiga para a mais recente)
+    public int CompareTo(Licitacao outra)
+    {
+        return dataHora.CompareTo(outra.GetDataHora());
     }
 }

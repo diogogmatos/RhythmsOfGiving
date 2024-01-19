@@ -69,15 +69,11 @@ namespace RhythmsOfGiving.Controller{
                     // Check if the person is at least 18 years old
                     if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
                     {
-                        if (licitadores.verificarUnicaDataNasciomento(novaDataNascimento))
-                        {
+                        l.setDataNascimento(novaDataNascimento);
 
-                            l.setDataNascimento(novaDataNascimento);
-                        }
                         // Ver se é necessario
-                        if (licitadores.verificarUnicoNumeroCC(novoNumeroCC))
+                        if (licitadores.VerificarUnicoNumeroCC(novoNumeroCC))
                         {
-
                             l.setNcc(novoNumeroCC);
                         }
                         licitadores.put(l.getEmail(), l);
@@ -150,6 +146,20 @@ namespace RhythmsOfGiving.Controller{
                 throw;
             }
         }
+        
+        public  Notificacao criarNotificacaoVencedora(int idLicitador, int idLeilao, string titulo, float valor)
+        {
+            try
+            {
+                Licitador l = licitadores.get(idLicitador);
+                Notificacao notificacao = l.criarNotificacaoVencedora(idLeilao, titulo, valor);
+                return notificacao;
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
 
         public SortedSet<Fatura> minhasFaturas(int idLicitador)
         {
@@ -164,6 +174,78 @@ namespace RhythmsOfGiving.Controller{
                 }
                 
                 return resultado;
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+        }
+
+        public Dictionary<Licitador, float> licitadoresTop10()
+        {
+            Dictionary<Licitador, float> resultado = new Dictionary<Licitador, float>();
+            
+            foreach (int id in this.licitadores.keySet())
+            {
+                Licitador l = this.licitadores.get(id);
+                float valorTotal = l.valorTotalDoado();
+                resultado.Add(l, valorTotal);
+
+            }
+
+            if (resultado.Count == 0)
+                throw new NaoExistemLicitadoresDoacoesException("Não existem licitadores que fizeram doações.");
+            
+            // Ordenar o dicionário por valores em ordem decrescente
+            Dictionary<Licitador, float> resultadoOrdenado = resultado
+                .OrderByDescending(x => x.Value)
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            Dictionary<Licitador, float> top10 = new Dictionary<Licitador, float>();
+            int tamanho = Math.Min(resultadoOrdenado.Count, 10);
+
+            for (int i = 0; i < tamanho; i++)
+            {
+                var elemento = resultadoOrdenado.ElementAt(i);
+                top10.Add(elemento.Key, elemento.Value);
+            }
+
+            return top10;
+        }
+
+        public void criarFatura (int idInstituicao, int idLicitacao, int idLicitador)
+        {
+            DateTime dataHoraAtual = DateTime.Now;
+
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                string nomeLicitador = l.getNome();
+                int nif = l.getNIF();
+                
+                try
+                {
+                    Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, idLicitacao, idLicitador);
+                    l.adicionarFatura(f);
+                }
+                catch (DadosInvalidosException e)
+                {
+                    throw;
+                }
+            }
+            catch (LicitadorNaoExisteException e)
+            {
+                throw;
+            }
+            
+        }
+        
+        public SortedSet<Licitacao> pesquisarLicitacoes (int idLicitador, int idLeilao)
+        {
+            try
+            {
+                Licitador l = this.licitadores.get(idLicitador);
+                return l.getLicitacoesLeilao(idLeilao);
             }
             catch (LicitadorNaoExisteException e)
             {

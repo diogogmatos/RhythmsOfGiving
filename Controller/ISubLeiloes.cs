@@ -5,9 +5,11 @@
         public bool registarArtista(string nome,String imagem, int idAdmin);
         public bool registarGeneroMusical(string nome,int idAdmin );
         public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin);
-        public bool registarLeilao(int artista, string title, string localizacao, string genero, string tipo, DateTime fim, string shortDescricao, string descricao, float valorBase, string imagePath, string authorImagePath, bool asCegas);
 
-        //public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
+        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
+            string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao);
+
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
 
         public int GetLicitadorGanhador(int idLeilao);
         public Dictionary<Leilao, Artista> consultarLeiloesAtivos();
@@ -26,6 +28,20 @@
         public float getValorFimLeilao (int idLeilao);
 
         public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
+
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorTipo(List<int> tipos);
+
+        public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
+
+        public Dictionary<Instituicao, float> getValoresInstituicoes();
+
+        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
+
+        public TimeSpan calcularTempoRestante (int idLeilao);
+
+        public Licitacao procurarLicitacaoAtual(int idLeilao);
+
+        public float getTotalValorDoado();
 
     }
 }*/
