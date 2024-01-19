@@ -1,10 +1,10 @@
 @page "/leiloes/{IdLeilao}"
-@using RhythmsOfGiving.Controller
+@using RhythmsOfGiving.Controller.UI
 @inject UIService UIService
 
 <div class="space-y-6 pb-10">
     @* Capa *@
-    <img class="object-cover w-full h-96" src="@GetImagePath()" />
+    <img class="object-cover w-full h-[30rem]" src="@GetImagePath()" />
     @* Nome Artista *@
     <div class="flex space-x-2 items-center select-none">
         <img class="object-cover w-10 h-10 rounded-full" src="@GetAuthorImagePath()">
