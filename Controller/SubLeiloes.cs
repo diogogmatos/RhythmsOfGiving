@@ -53,7 +53,9 @@ namespace RhythmsOfGiving.Controller
                 }
             }
 
-            GeneroMusical novoGenero = new GeneroMusical(nome, idAdmin);
+            int size = this.generos.Count;
+
+            GeneroMusical novoGenero = new GeneroMusical(++size, nome, idAdmin);
 
             generos.Add(novoGenero.getIdGenero(), novoGenero);
             this.leilaoDAO.putGeneroMusical(novoGenero.getIdGenero(), novoGenero);

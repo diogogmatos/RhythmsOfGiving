@@ -31,8 +31,110 @@ namespace RhythmsOfGiving.Controller
 
         public Leilao get(int idLeilao)
         {
-            throw new LeilaoNaoExiste("O leilão de id" + idLeilao + "não existe!");
+            Leilao leilao = null;
 
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+                    
+                    //Criar um set para os ids
+                    List<int> minhasLicitacoes = new List<int>();
+                        
+                    string query3= @"
+                            SELECT Leilao.id AS LeilaoID, Licitacao.id AS LicitacaoID
+                            FROM Leilao
+                            INNER JOIN Licitacao ON Leilao.id = Licitacao.idLeilao
+                            WHERE Leilao.Estado = 1";
+                        
+                    using (SqlCommand command3 = new SqlCommand(query3, connection))
+                    {
+                        using (SqlDataReader reader3 = command3.ExecuteReader())
+                        {
+                            while (reader3.Read())
+                            {
+                                int idLicitacao = reader3.GetInt32(reader3.GetOrdinal("LicitacaoID"));
+                                minhasLicitacoes.Add(idLicitacao);
+                            }
+                        }
+                    }
+
+                    string query = @"
+                        SELECT
+                            Leilao.*,
+                            GeneroMusical.id AS IdGenero
+                            GeneroMusical.nome AS NomeGenero,
+                            GeneroMusical.idAdministrador AS AdminGenero,
+                        FROM
+                            Leilao
+                            INNER JOIN GeneroMusical ON Leilao.idGeneroMusical = GeneroMusical.id
+                        WHERE
+                            Leilao.id = @IdLeilao";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@IdLeilao", idLeilao);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                GeneroMusical generoMusical = null;
+                                {
+                                    int idGenero = reader.GetInt32(reader.GetOrdinal("IdGenero"));
+                                    string nomeGenero = reader.GetString(reader.GetOrdinal("NomeGenero"));
+                                    int idAdmin1 = reader.GetInt32(reader.GetOrdinal("AdminGenero"));
+                                    generoMusical = new GeneroMusical(idGenero, nomeGenero, idAdmin1);
+                                    // Preencha outros campos do objeto GeneroMusical conforme necessário
+                                };
+
+                                leilao = null;
+                                {
+                                    int idLeilaoo = reader.GetInt32(reader.GetOrdinal("id"));
+                                    string titulo = reader.GetString(reader.GetOrdinal("titulo"));
+                                    float licitacaoAtual = reader.GetFloat(reader.GetOrdinal("valorAtual"));
+                                    DateTime dataTermina = reader.GetDateTime(reader.GetOrdinal("dataHoraFinal"));
+                                    string tipoLeilao = reader.GetString(reader.GetOrdinal("tipoLeilao"));
+                                    string imagem = reader.GetString(reader.GetOrdinal("imagem"));
+                                    string localizacao = reader.GetString(reader.GetOrdinal("localizacao"));
+                                    string descricao = reader.GetString(reader.GetOrdinal("descricao"));
+                                    int idGeneroMusical = reader.GetInt32(reader.GetOrdinal("idGeneroMusical"));
+                                    float valorBase = reader.GetFloat(reader.GetOrdinal("valorMinimo"));
+                                    int idAdmin2 = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
+                                    int idInstituicao = reader.GetInt32(reader.GetOrdinal("idInstituicao"));
+                                    bool ativo = reader.GetBoolean(reader.GetOrdinal("estado"));
+                                    int idArtista = reader.GetInt32(reader.GetOrdinal("idArtista"));
+
+                                    Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista,
+                                        generoMusical);
+
+                                    if (tipoLeilao.Equals("asCegas"))
+                                    {
+                                        Leilao l = new LeilaoAsCegas(idLeilao, ativo, licitacaoAtual, valorBase, dataTermina,
+                                            titulo, DateTime.Now, idAdmin2, idInstituicao, minhasLicitacoes, e);
+                                    }
+                                    
+                                    // Preencha outros campos do objeto Leilao conforme necessário
+                                    
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções conforme necessário (registre, relance, etc.)
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            if (leilao == null)
+            {
+                throw new LeilaoNaoExiste("O leilão de id " + idLeilao + " não existe!");
+            }
+
+            return leilao;
         }
 
         public static int size()
@@ -352,17 +454,102 @@ namespace RhythmsOfGiving.Controller
 
         public GeneroMusical getGenero(int idGenero)
         {
-            throw new GeneroMusicalNaoExisteException("O género musical com o id " + idGenero + " não existe");
+            GeneroMusical generoMusical = null;
+
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id, nome, idAdministrador FROM GeneroMusical WHERE id = @IdGenero";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@IdGenero", idGenero);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                {
+                                    int id = reader.GetInt32(reader.GetOrdinal("id"));
+                                    string nome = reader.GetString(reader.GetOrdinal("nome"));
+                                    int idAdministrador = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
+                                    generoMusical = new GeneroMusical(id, nome, idAdministrador);
+                                    // Preencha outros campos do objeto GeneroMusical conforme necessário
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções conforme necessário (registre, relance, etc.)
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            if (generoMusical == null)
+            {
+                throw new GeneroMusicalNaoExisteException("O género musical com o id " + idGenero + " não existe");
+            }
+
+            return generoMusical;
+        }
+        
+        public static int sizeGeneros()
+        {
+            int totalRows = 0;
+
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) AS TotalRows FROM GeneroMusical";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        totalRows = Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return totalRows;
         }
 
-        public Leilao putEspecial(int lIdLeilao, Leilao leilao, int idArtista, int getIdGenero)
+        public Leilao putEspecial(int IdLeilao, Leilao leilao, int idArtista, int getIdGenero)
         {
             throw new NotImplementedException();
         }
 
+        //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
         public Dictionary<int, GeneroMusical> preencherGeneros()
         {
-            throw new NotImplementedException();
+            int tamanho = LeilaoDAO.sizeGeneros();
+            Dictionary<int, GeneroMusical> resultado = new Dictionary<int, GeneroMusical>();
+
+            for (int i = 0; i < tamanho; i++)
+            {
+                try
+                {
+                    GeneroMusical generoMusical = this.getGenero(i+1);
+                    resultado.Add(i+1, generoMusical);
+                }
+                catch (GeneroMusicalNaoExisteException)
+                {
+                    // Lide com a exceção, se necessário, por exemplo, registre-a
+                    Console.WriteLine($"GeneroMusical com o id {i} não existe.");
+                }
+            }
+
+            return resultado;
         }
 
         public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
@@ -586,7 +773,36 @@ namespace RhythmsOfGiving.Controller
 
         public HashSet<int> keySet()
         {
-            throw new NotImplementedException();
+            HashSet<int> leilaoIds = new HashSet<int>();
+
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id FROM Leilao";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int leilaoId = Convert.ToInt32(reader["id"]);
+                                leilaoIds.Add(leilaoId);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções conforme necessário (registre, relance, etc.)
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return leilaoIds;
         }
     }
 }
