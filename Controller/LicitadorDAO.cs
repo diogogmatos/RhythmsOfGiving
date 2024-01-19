@@ -190,11 +190,22 @@ namespace RhythmsOfGiving.Controller
                 
                     try
                     {
-                        string updateSql = "UPDATE Licitador SET nome = @Nome, palavraPasse = @PalavraPasse, " +
-                                           "dataNascimento = @DataNascimento, nrCartao = @NrCartao, " +
-                                           "nif = @Nif, numeroCC = @NumeroCC WHERE email = @Email";
+                        string mergeSql = "MERGE INTO Licitador AS target " +
+                                          "USING (VALUES (@Email)) AS source (Email) " +
+                                          "ON target.Email = source.Email " +
+                                          "WHEN MATCHED THEN " +
+                                          "    UPDATE SET " +
+                                          "        nome = @Nome, " +
+                                          "        palavraPasse = @PalavraPasse, " +
+                                          "        dataNascimento = @DataNascimento, " +
+                                          "        nrCartao = @NrCartao, " +
+                                          "        nif = @Nif, " +
+                                          "        numeroCC = @NumeroCC " +
+                                          "WHEN NOT MATCHED THEN " +
+                                          "    INSERT (nome, palavraPasse, dataNascimento, nrCartao, nif, numeroCC, email) " +
+                                          "    VALUES (@Nome, @PalavraPasse, @DataNascimento, @NrCartao, @Nif, @NumeroCC, @Email);";
 
-                        using (SqlCommand updateCommand = new SqlCommand(updateSql, connection))
+                        using (SqlCommand updateCommand = new SqlCommand(mergeSql, connection))
                         {
                             updateCommand.Parameters.AddWithValue("@Nome", licitador.getNome());
                             updateCommand.Parameters.AddWithValue("@PalavraPasse", licitador.getPalavraPasse());
