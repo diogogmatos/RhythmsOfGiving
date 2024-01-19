@@ -5,45 +5,45 @@
     <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
         @* Nome da Instituição *@
         <p class="font-[600] text-2xl">
-            @getNome()
+            @GetNome()
         </p>
         @* Descrição *@
         <p class="text-justify">
-            @getDescricao()
+            @GetDescricao()
         </p>
         @* Botão Saiba Mais *@
-        <button onclick="location.href='@getLink()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
+        <button onclick="location.href='@GetLink()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
             Saiba Mais ->
         </button>
     </div>
     @* Imagem *@
     <div class="min-w-[25rem] hidden xl:block">
-        <img class="object-cover h-full m-auto" src=@getLogoPath()/>
+        <img class="object-cover h-80 m-auto" src=@GetLogoPath()/>
     </div>
 </div>
 
 @code {
     [EditorRequired]
     [Parameter]
-    public Instituicao Instituicao { get; set; }
+    public InstituicaoUI Instituicao { get; set; }
 
-    private string getNome()
+    private string GetNome()
     {
-        return Instituicao.getNome();
+        return Instituicao.GetNome();
     }
 
-    private string getDescricao()
+    private string GetDescricao()
     {
-        return Instituicao.getDescricao();
+        return Instituicao.GetDescricao();
     }
 
-    private string getLink()
+    private string GetLink()
     {
-        return Instituicao.getLink();
+        return Instituicao.GetLink();
     }
 
-    private string getLogoPath()
+    private string GetLogoPath()
     {
-        return Instituicao.getLogoPath();
+        return Instituicao.GetLogoPath();
     }
 }

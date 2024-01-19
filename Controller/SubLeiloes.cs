@@ -1,4 +1,3 @@
-
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -158,7 +157,6 @@ namespace RhythmsOfGiving.Controller
                     resultado.Add(leilao, artista);
                 }
             }
-
             return resultado;
         }
 
@@ -288,7 +286,6 @@ namespace RhythmsOfGiving.Controller
                 throw;
             }
         }
-
 
         public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes)
         {
