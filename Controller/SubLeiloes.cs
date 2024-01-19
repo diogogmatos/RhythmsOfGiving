@@ -77,17 +77,23 @@ namespace RhythmsOfGiving.Controller
 
 
 
-        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
-            string imagem, string localizacao, int idArtista, int idGenero, int idAdmin)
-        {
-
+        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao)
+        { 
             try
             {
                 GeneroMusical g = this.leilaoDAO.getGenero(idGenero);
                 Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista, g);
-                Leilao l = new Leilao(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, -1,
-                    new HashSet<int>(), e);
-                this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+                if (tipoLeilao == 0)
+                {
+                    Leilao l = new LeilaoAsCegas(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, e);
+                    this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+                }
+                else
+                {
+                    Leilao l = new LeilaoIngles(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now, idAdmin, e);
+                    this.leilaoDAO.putEspecial(l.IdLeilao, l, idArtista, g.getIdGenero());
+                }
+                
 
             }
             catch (GeneroMusicalNaoExisteException e)
@@ -333,6 +339,66 @@ namespace RhythmsOfGiving.Controller
                 Leilao l = this.leilaoDAO.get(idLeilao);
                 l.setIdInstituicao(idInstituicao);
                 this.leilaoDAO.put(l.IdLeilao, l);
+            }
+            catch (LeilaoNaoExiste e)
+            {
+                throw;
+            }
+        }
+
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorTipo(List<int> tipos)
+        {
+            List<Leilao> leiloes = leilaoDAO.obterLeiloesPorTipo(tipos);
+            Dictionary<Leilao, Artista> resultado = new Dictionary<Leilao, Artista>();
+
+            foreach (var leilao in leiloes)
+            {
+                Experiencia ex = leilao.Experiencia;
+                Artista artista = artistaDAO.get(ex.getIdArtista());
+
+                if (artista != null)
+                {
+                    resultado.Add(leilao, artista);
+                }
+            }
+
+            return resultado;
+        }
+        
+
+
+        public TimeSpan calcularTempoRestante (int idLeilao)
+        {
+            try
+            {
+                Leilao l = this.leilaoDAO.get(idLeilao);
+                DateTime atual = DateTime.Now;
+                DateTime fim = l.DataHoraFinal;
+                DateTime contador = l.DataHoraContador;
+
+                if (fim > contador)
+                {
+                    if (atual < fim)
+                    {
+                        return (fim - atual);
+                    }
+                    else
+                    {
+                        throw new LeilaoJaAcabouException();
+                    }
+                }
+                else
+                {
+                    if (atual < contador)
+                    {
+                        return (contador - atual);
+                    }
+                    else
+                    {
+                        throw new LeilaoJaAcabouException();
+                    }
+                }
+
             }
             catch (LeilaoNaoExiste e)
             {

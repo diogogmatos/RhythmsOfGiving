@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using RhythmsOfGiving.Controller;
 
-public class Leilao
+public abstract class Leilao
 {
     // Atributos privados
     private int idLeilao;
@@ -14,7 +14,7 @@ public class Leilao
     private DateTime dataHoraContador;
     private int idAdmin;
     private int idInstituicao;
-    private HashSet<int> minhasLicitacoes;
+    private List<int> minhasLicitacoes;
     private LicitacaoDAO licitacaoDAO;
     private Experiencia experiencia;
     private InstituicaoDAO instituicaoDAO;
@@ -23,9 +23,13 @@ public class Leilao
     private static int contador = LeilaoDAO.size();
     
 
-    // Construtor
+    //método abstract
+    public abstract int GetTipo();
+
+    // Construtor de criação
     public Leilao( bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
-                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, HashSet<int> minhasLicitacoes,  Experiencia experiencia)
+                  string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
+
     {
         this.idLeilao = ++contador;
         this.ativo = ativo;
@@ -35,8 +39,8 @@ public class Leilao
         this.titulo = titulo;
         this.dataHoraContador = dataHoraContador;
         this.idAdmin = idAdmin;
-        this.idInstituicao = idInstituicao;
-        this.minhasLicitacoes = minhasLicitacoes;
+        this.idInstituicao = -1;
+        this.minhasLicitacoes = new List<int>();
         this.licitacaoDAO = LicitacaoDAO.getInstance();
         this.experiencia = experiencia;
         this.instituicaoDAO = InstituicaoDAO.getInstance();
@@ -44,7 +48,7 @@ public class Leilao
     
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
         string titulo, DateTime dataHoraContador, int idAdmin,
-        int idInstituicao, HashSet<int> minhasLicitacoes,  Experiencia experiencia)
+        int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
         this.ativo = ativo;
@@ -60,10 +64,11 @@ public class Leilao
         this.experiencia = experiencia;
         this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
+
     // Contrutor para leilões que não terminaram
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
         string titulo, DateTime dataHoraContador, int idAdmin,
-        HashSet<int> minhasLicitacoes,  Experiencia experiencia)
+        List<int> minhasLicitacoes,  Experiencia experiencia)
     {
         this.idLeilao = idLeilao;
         this.ativo = ativo;
@@ -79,6 +84,7 @@ public class Leilao
         this.experiencia = experiencia;
         this.instituicaoDAO = InstituicaoDAO.getInstance();
     }
+
 
     // Propriedades Get e Set
     public int IdLeilao
@@ -145,7 +151,7 @@ public class Leilao
         this.idInstituicao = id;
     }
 
-    public HashSet<int> MinhasLicitacoes
+    public List<int> MinhasLicitacoes
     {
         get { return minhasLicitacoes; }
         set { minhasLicitacoes = value; }
@@ -176,7 +182,7 @@ public class Leilao
         this.ativo = false;
         
 
-            HashSet<int> licitacoes = this.minhasLicitacoes;
+            List<int> licitacoes = this.minhasLicitacoes;
             float valorMaior = 0;
 
             foreach (int idLicitacao in licitacoes)
