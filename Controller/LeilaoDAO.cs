@@ -37,8 +37,30 @@ namespace RhythmsOfGiving.Controller
 
         public static int size()
         {
-            return 0; // depois usar a query necessária
+            int totalRows = 0;
+
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) AS TotalRows FROM Leilao";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        totalRows = Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return totalRows;
         }
+        
 
         //Acho que vai ter de alterar por causa dos atributos do leilao, mas a lógica é esta
         public Dictionary<Leilao, Artista> leiloesAtivos()
