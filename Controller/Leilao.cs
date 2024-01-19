@@ -325,6 +325,7 @@ public abstract class Leilao
 
     public Licitacao LicitacaoAtualAnterior()
     {
+        float valor;
         if (minhasLicitacoes.Count <= 1)
         {
             throw new NaoExistemLicitacoesException("Não houve uma licitaçao atual anterior");
@@ -343,7 +344,7 @@ public abstract class Leilao
                     {
                         atual = licitacao;
                     }
-                    else if (anterior = null)
+                    else if (anterior == null)
                     {
                         if (valor < atual.GetValor())
                         {

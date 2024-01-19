@@ -245,7 +245,7 @@ namespace RhythmsOfGiving.Controller{
             try
             {
                 Licitador l = this.licitadores.get(idLicitador);
-                return l.getLicitacoesLeilao(int idLeilao);
+                return l.getLicitacoesLeilao(idLeilao);
             }
             catch (LicitadorNaoExisteException e)
             {

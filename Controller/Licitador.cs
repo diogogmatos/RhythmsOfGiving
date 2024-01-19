@@ -306,7 +306,7 @@ public class Licitador{
 
         public SortedSet<Licitacao> getLicitacoesLeilao(int idLeilao)
         {
-            SortedSet<Licitacao> licitacoes = new SortedSet<Licitacao>;
+            SortedSet<Licitacao> licitacoes = new SortedSet<Licitacao>();
 
             foreach (int idLicitacao in minhasLicitacoes)
             {
