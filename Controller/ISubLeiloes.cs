@@ -9,7 +9,7 @@ namespace RhythmsOfGiving.Controller
         public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
             string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao);
 
-        //public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
+        public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
 
         public int GetLicitadorGanhador(int idLeilao);
         public Dictionary<Leilao, Artista> consultarLeiloesAtivos();
