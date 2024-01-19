@@ -1,7 +1,6 @@
 
 using System.Data.SqlClient;
-using RhythmsOfGiving.Controller;
-
+using RhythmsOfGiving.Controller;   
 public class NotificacaoDAO{
     private static NotificacaoDAO? singleton = null;
         private NotificacaoDAO() { }
@@ -15,10 +14,22 @@ public class NotificacaoDAO{
             return singleton;
         }
         
-        public static int size(){
-            return 0; // depois usar a query necessária
-        }
+        public static int size()
+        {
+            int rowCount = 0;
+            
+            string query = "SELECT COUNT(*) FROM Notificação";
 
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+
+                rowCount = (int)command.ExecuteScalar();
+            }
+            return rowCount;
+        }
+        
          public Notificacao get(int id)
         {
             using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
@@ -58,11 +69,64 @@ public class NotificacaoDAO{
 
             return null;
         }
-
-
-        public Notificacao put (int id, Notificacao n)
+         
+         public void Put(int id, Notificacao n)
+{
+    using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+    {
+        connection.Open();
+        try
         {
-            //falta definir a lógica
-            return null;
+            // Check if the record with the specified id exists
+            bool recordExists = exite(id, connection);
+
+            string query;
+            if (recordExists)
+            {
+                // Update the existing record
+                query = "UPDATE Notificação " +
+                        "SET titulo = @Titulo, mensagem = @Mensagem, " +
+                        "idLicitador = @IdLicitador, dataHora = @DataHora, tipo = @Tipo " +
+                        "WHERE idNotificacao = @Id";
+            }
+            else
+            {
+                // Insert a new record if the record with the specified id does not exist
+                query = "INSERT INTO Notificação (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo) " +
+                        "VALUES (@Id, @Titulo, @Mensagem, @IdLicitador, @DataHora, @Tipo)";
+            }
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Titulo", n.getTitle());
+                command.Parameters.AddWithValue("@Mensagem", n.getMessage());
+                command.Parameters.AddWithValue("@IdLicitador", n.getIdLicitador());
+                command.Parameters.AddWithValue("@DataHora", n.getDate());
+                command.Parameters.AddWithValue("@Tipo", n.getTipo());
+
+                command.ExecuteNonQuery();
+            }
         }
+        catch (Exception ex)
+        {
+            // Handle exceptions appropriately, e.g., log or throw a custom exception
+            throw new Exception("Não foi possível fazer o put da notificação " + id);
+        }
+    }
+}
+
+    private bool exite(int id, SqlConnection connection)
+    {
+        // Check if the record with the specified id exists in the database
+        string checkQuery = "SELECT COUNT(*) FROM Notificação WHERE idNotificacao = @Id";
+        using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+        {
+            checkCommand.Parameters.AddWithValue("@Id", id);
+            int count = (int)checkCommand.ExecuteScalar();
+            return count > 0;
+        }
+    }
+
+
 }

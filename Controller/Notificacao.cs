@@ -52,6 +52,11 @@ namespace RhythmsOfGiving.Controller {
             return date;
         }
 
+        public int getIdLicitador()
+        {
+            return this.idLicatdor;
+        }
+
         public int getTipo()
         {
             return tipo;
