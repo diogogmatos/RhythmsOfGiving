@@ -224,17 +224,12 @@ namespace RhythmsOfGiving.Controller
                 {
                     connection.Open();
 
-                    // Consulta para verificar se o novoNumeroCC já existe na tabela Licitador
                     string query = "SELECT COUNT(*) FROM Licitador WHERE numeroCC = @NovoNumeroCC";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        // Adicionando parâmetro
-                       // command.Parameters.AddWithValue("@NovoNumeroCC", novoNumeroCC);
-
                         int count = (int)command.ExecuteScalar();
 
-                        // Se count for 0, significa que o número de cartão é único
                         numeroCCUnico = count == 0;
                     }
                 }
