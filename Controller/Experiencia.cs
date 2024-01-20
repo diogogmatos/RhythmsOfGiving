@@ -11,7 +11,7 @@ namespace RhythmsOfGiving.Controller
         private string imagem;
         private string localizacao;
         private GeneroMusical generoMusical;
-        private ArtistaDAO artistaDao;
+        private ArtistaDao artistaDao;
 
         public Experiencia(string descricao, string imagem, string localizacao, int idArtista, GeneroMusical generoMusical)
         {
@@ -20,50 +20,50 @@ namespace RhythmsOfGiving.Controller
             this.localizacao = localizacao;
             this.idArtista = idArtista;
             this.generoMusical = generoMusical;
-            this.artistaDao = ArtistaDAO.getInstance();
+            this.artistaDao = ArtistaDao.GetInstance();
         }
 
-        public string getDescricao()
+        public string GetDescricao()
         {
             return this.descricao;
         }
 
-        public string getImagem()
+        public string GetImagem()
         {
             return this.imagem;
         }
 
-        public string getLocalizacao()
+        public string GetLocalizacao()
         {
             return this.localizacao;
         }
 
-        public int getIdArtista()
+        public int GetIdArtista()
         {
             return this.idArtista;
         }
 
-        public GeneroMusical getGeneroMusical()
+        public GeneroMusical GetGeneroMusical()
         {
             return this.generoMusical;
         }
 
-        public void setDescricao(string descricao)
+        public void SetDescricao(string descricao)
         {
             this.descricao = descricao;
         }
 
-        public void setImagem(string imagem)
+        public void SetImagem(string imagem)
         {
             this.imagem = imagem;
         }
 
-        public void setLocalizacao(string localizacao)
+        public void SetLocalizacao(string localizacao)
         {
             this.localizacao = localizacao;
         }
 
-        public void setIdArtista(int id)
+        public void SetIdArtista(int id)
         {
             this.idArtista = id;
         }
@@ -93,10 +93,10 @@ namespace RhythmsOfGiving.Controller
             Experiencia other = (Experiencia)obj;
 
             // Verifica a igualdade dos atributos
-            return (this.idArtista == other.getIdArtista() &&
-                    this.descricao.Equals(other.getDescricao()) &&
-                    this.imagem.Equals(other.getImagem()) &&
-                    this.localizacao.Equals(other.getLocalizacao()));
+            return (this.idArtista == other.GetIdArtista() &&
+                    this.descricao.Equals(other.GetDescricao()) &&
+                    this.imagem.Equals(other.GetImagem()) &&
+                    this.localizacao.Equals(other.GetLocalizacao()));
         }
     }
 }

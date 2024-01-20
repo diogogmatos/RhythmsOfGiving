@@ -1,24 +1,23 @@
 @inject NavigationManager NavigationManager
 
-<nav class="w-full border-b p-4 text-gray-400 flex place-content-between text-lg font-medium">
-    <a href="/">
-        <img src="images/rog_color.png" alt="Rhythms Of Giving Logo" width="250px">
+<nav class="w-full border-b p-4 text-gray-400 flex text-lg font-medium bg-white">
+    <a class="ml-0 m-auto w-fit" href="/">
+        <img src="images/rog_color.png" alt="Rhythms Of Giving Logo" width="250">
     </a>
-    <div class="space-x-6 pr-52">
-        @if (!@isLoggedIn()) {
+    <div class="space-x-6 w-fit m-auto pr-[197px]">
+        @if (!IsLoggedIn) {
             <NavLink class=@hover href="leiloes" ActiveClass="@active"><i class="bi bi-music-note-list"></i> Leilões</NavLink>
             <NavLink class=@hover href="instituicoes" ActiveClass="@active"><i class="bi bi-heart-fill"></i> Instituições</NavLink>
             <NavLink class=@hover href="estatisticas" ActiveClass="@active"><i class="bi bi-bar-chart-fill"></i> Estatísticas</NavLink>
         }
-        <NavLink class=@hover href="sobre" ActiveClass="@active"><i class="bi bi-lightbulb-fill"></i> Sobre Nós</NavLink>
     </div>
-    @if(!@isLoggedIn()) {
-        <div class="space-x-2 text-xl">
-            <button class=@notButtonColor() @onclick=toggleNotificacoes><i class="bi bi-bell-fill"></i></button>
-            <button class=@profileButtonColor()><i class="bi bi-person-circle"></i></button>
+    @if(!IsLoggedIn) {
+        <div class="space-x-2 text-xl w-fit m-auto mr-0">
+            <button class="@NotButtonColor()" @onclick="@ToggleNotificacoesCall"><i class="bi bi-bell-fill"></i></button>
+            <button class="@ProfileButtonColor()" @onclick="@ToggleProfileCall"><i class="bi bi-person-circle"></i></button>
         </div>
     } else {
-        <div class="space-x-2 text-sm font-bold">
+        <div class="space-x-2 text-sm font-bold w-fit m-auto mr-0">
             <button onclick="location.href='/login';" class="bg-rhythms text-white py-1 px-4 rounded-xl shadow-sm hover:shadow-md transition-all">Login</button>
             <button onclick="location.href='/register';" class="bg-rhythms/10 text-rhythms py-1 px-4 rounded-xl shadow-sm hover:shadow-md transition-all">Sign Up</button>
         </div>
@@ -26,34 +25,51 @@
 </nav>
 
 @code {
-    [EditorRequired]
     [Parameter]
     public bool IsNotificacoesOpen { get; set; }
-    [EditorRequired]
     [Parameter]
     public EventCallback ToggleNotificacoes { get; set; }
-    [EditorRequired]
+    [Parameter]
+    public bool IsProfileOpen { get; set; }
+    [Parameter]
+    public EventCallback ToggleProfile { get; set; }
     [Parameter]
     public bool IsLoggedIn { get; set; }
 
-    private bool isLoggedIn() {
-        return IsLoggedIn;
-    }
-
-    private void toggleNotificacoes() {
+    private void ToggleNotificacoesCall()
+    {
+        if (IsProfileOpen)
+        {
+            IsProfileOpen = false;
+            ToggleProfile.InvokeAsync();
+        }
         IsNotificacoesOpen = !IsNotificacoesOpen;
         ToggleNotificacoes.InvokeAsync();
     }
+
+    private void ToggleProfileCall()
+    {
+        if (IsNotificacoesOpen)
+        {
+            IsNotificacoesOpen = false;
+            ToggleNotificacoes.InvokeAsync();
+        }
+        IsProfileOpen = !IsProfileOpen;
+        ToggleProfile.InvokeAsync();
+    }
+    
     private string hover = "hover:text-rhythms transition-colors";
     private string active = "text-rhythms";
-    private string notButtonColor() {
+    private string NotButtonColor() {
         if (IsNotificacoesOpen) {
             return active;
         }
         return hover;
     }
-    private string profileButtonColor() {
-        // TODO
+    private string ProfileButtonColor() {
+        if (IsProfileOpen) {
+            return active;
+        }
         return hover;
     }
 }

@@ -1,6 +1,6 @@
 @using RhythmsOfGiving.Controller.UI
 
-<div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden">
+<div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden bg-white">
     @* Informações *@
     <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
         @* Nome da Instituição *@
@@ -25,7 +25,7 @@
 @code {
     [EditorRequired]
     [Parameter]
-    public InstituicaoUI Instituicao { get; set; }
+    public InstituicaoUi Instituicao { get; set; }
 
     private string GetNome()
     {

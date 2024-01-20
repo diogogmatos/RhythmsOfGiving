@@ -1,38 +1,42 @@
 @page "/leiloes/{IdLeilao}"
 @using RhythmsOfGiving.Controller.UI
-@inject UIService UIService
+@using Microsoft.AspNetCore.SignalR.Client
+@inject UiService UiService
+@implements IAsyncDisposable
 
-<div class="space-y-6 pb-10">
+<div class="space-y-6">
     @* Capa *@
-    <img class="object-cover w-full h-[30rem]" src="@GetImagePath()" />
-    @* Nome Artista *@
-    <div class="flex space-x-2 items-center select-none">
-        <img class="object-cover w-10 h-10 rounded-full" src="@GetAuthorImagePath()">
-        <p class="font-[600] text-xl">@GetArtista()</p>
-    </div>
-    @* Título *@
-    <p class="font-[700] text-4xl">@GetTitle()</p>
-    @* Informações *@
-    <div class="flex text-gray-400 select-none">
-        <p class="w-fit m-auto ml-0">Localização - <text class="font-medium">@GetLocalizacao()</text></p>
-        <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
-        <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
-        <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
-    </div>
+    <img class="object-cover w-full h-[30rem]" src="@GetImagePath()"/>
     <div class="flex space-x-8">
-        @* Descrição *@
-        <text class="text-justify">
-            @GetDescricao()
-        </text>
+        <div class="space-y-6">
+            @* Nome Artista *@
+            <div class="flex space-x-2 items-center select-none">
+                <img class="object-cover w-10 h-10 rounded-full" src="@GetAuthorImagePath()">
+                <p class="font-[600] text-xl">@GetArtista()</p>
+            </div>
+            @* Título *@
+            <p class="font-[700] text-4xl">@GetTitle()</p>
+            @* Informações *@
+            <div class="flex text-gray-400 select-none">
+                <p class="w-fit m-auto ml-0">Localização - <text class="font-medium">@GetLocalizacao()</text></p>
+                <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
+                <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
+                <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+            </div>
+            @* Descrição *@
+            <p class="text-justify">
+                @GetDescricao()
+            </p>
+        </div>
         @* Área de Interação *@
-        <div class="min-w-[25rem] h-fit rounded-xl border p-6 space-y-4">
+        <div class="min-w-[25rem] h-full rounded-xl border p-6 space-y-4 m-auto bg-white">
             @* Título *@
             <h1 class="font-[600] text-3xl pb-4 border-b">Leilão</h1>
             @* Licitações *@
             <div class="space-y-2 text-xl">                
-                <p class="flex text-gray-400 font-medium items-center">
+                <p class="flex text-gray-400 font-[600] items-center">
                     <text class="w-fit ml-0 m-auto">Valor base: </text>
-                    <text class="w-fit mr-0 m-auto text-2xl font-medium">@GetValorBase().ToString("0.00€")</text>
+                    <text class="w-fit mr-0 m-auto text-2xl">@GetValorBase().ToString("0.00€")</text>
                 </p>
                 @if (!@ExisteLicitacoes()) {
                     <p class="text-rhythms font-medium">
@@ -43,27 +47,27 @@
                     @if (@IsAsCegas()) {
                         <p class="flex font-medium items-center">
                         <text class="w-fit ml-0 m-auto">A sua licitação: </text>
-                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@OwnLicitacao.ToString("0.00€")</text>
+                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
                         </p>
                     }
-                    else if (OwnLicitacao < @LastLicitacao) {
+                    else if (ownLicitacao < lastLicitacao) {
                         <p class="flex text-gray-400 font-medium items-center">
                         <text class="w-fit ml-0 m-auto">A sua licitação: </text>
-                        <text class="w-fit mr-0 m-auto text-2xl font-medium">@OwnLicitacao.ToString("0.00€")</text>
+                        <text class="w-fit mr-0 m-auto text-2xl">@ownLicitacao.ToString("0.00€")</text>
                         </p>
                         <p class="flex font-medium items-center">
-                            <text class="w-fit ml-0 m-auto">Última licitação: </text>
-                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@LastLicitacao.ToString("0.00€")</text>
+                            <text class="w-fit ml-0 m-auto font-[600]">Última licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@lastLicitacao.ToString("0.00€")</text>
                         </p>
                     }
                     else {                    
                         <p class="flex text-gray-400 font-medium items-center">
                             <text class="w-fit ml-0 m-auto">Última licitação: </text>
-                            <text class="w-fit mr-0 m-auto text-2xl font-medium">@LastLicitacao.ToString("0.00€")</text>
+                            <text class="w-fit mr-0 m-auto text-2xl font-medium">@lastLicitacao.ToString("0.00€")</text>
                         </p>
                         <p class="flex font-medium items-center">
-                        <text class="w-fit ml-0 m-auto">A sua licitação: </text>
-                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@OwnLicitacao.ToString("0.00€")</text>
+                        <text class="w-fit ml-0 m-auto font-[600]">A sua licitação: </text>
+                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
                         </p>
                     }      
                 }                  
@@ -88,40 +92,65 @@
 </div>
 
 @code {
+    // TODO: Erro quando mete valor menor que última licitação
+    // 
+    
     [Parameter]
     public string? IdLeilao { get; set; }
 
     private float Valor { get; set; }
 
-    private LeilaoUI GetLeilao()
+    private LeilaoUi GetLeilao()
     {
-        return UIService.GetLeilaoById(Int32.Parse(IdLeilao));
+        return UiService.GetLeilaoById(Int32.Parse(IdLeilao));
     }
     
     // licitações
 
-    private float OwnLicitacao;
-    private float LastLicitacao;
+    private float ownLicitacao;
+    private float lastLicitacao;
 
-    protected override void OnInitialized()
+    private HubConnection? infoHubConnection;
+
+    protected override async Task OnInitializedAsync()
     {
         GetOwnLicitacao();
         GetLastLicitacao();
-        StateHasChanged();
+        
+        infoHubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5269/infohub")
+            .Build();
+
+        infoHubConnection.On("UpdateAuctionInfo", () =>
+        {
+            GetOwnLicitacao(); // atualizar própria licitação
+            GetLastLicitacao(); // atualizar última licitação
+            InvokeAsync(StateHasChanged);
+        });
+        
+        await infoHubConnection.StartAsync();
     }
 
-    private void GetOwnLicitacao() {
-        // TODO: chamar método da UIService que vá à base de dados obter informação
-        OwnLicitacao = 7000.00f;
+    public async ValueTask DisposeAsync()
+    {
+        if (infoHubConnection is not null)
+        {
+            await infoHubConnection.DisposeAsync();
+        }
     }
-    private void GetLastLicitacao() {
-        // TODO: chamar método da UIService que vá à base de dados obter informação
-        LastLicitacao = 8543.92f;
+
+    private void GetOwnLicitacao()
+    {
+        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador("diogo@mail.com", int.Parse((IdLeilao)));
+    }
+    private void GetLastLicitacao()
+    {
+        lastLicitacao = UiService.GetUltimaLicitacaoLeilao("diogo@mail.com", int.Parse(IdLeilao));
     }
     
     // TODO
     private void Licitar() {
-        ;
+        UiService.Licitar(int.Parse(IdLeilao), "diogo@mail.com", Valor);
     }
     
     // info

@@ -2,28 +2,28 @@
 using System.Data.SqlClient;
 using RhythmsOfGiving.Controller;
 
-public class LicitacaoDAO{
-    private static LicitacaoDAO? singleton = null;
-        private LicitacaoDAO() { }
+public class LicitacaoDao{
+    private static LicitacaoDao? _singleton = null;
+        private LicitacaoDao() { }
 
-        public static LicitacaoDAO getInstance()
+        public static LicitacaoDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new LicitacaoDAO();
+                _singleton = new LicitacaoDao();
             }
-            return singleton;
+            return _singleton;
         }
 
     
-        internal Licitacao get(int idLicitacao)
+        internal Licitacao Get(int idLicitacao)
         {
             Licitacao result = null;
             try
             {
                 string query = "SELECT * FROM Licitacao WHERE id = @idLicitacao";
 
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@idLicitacao", idLicitacao);
@@ -55,7 +55,7 @@ public class LicitacaoDAO{
 
         
 
-        internal void put(int idLicitacao, Licitacao l)
+        internal void Put(int idLicitacao, Licitacao l)
         {
             try
             {
@@ -72,7 +72,7 @@ public class LicitacaoDAO{
                                + "    INSERT (id, dataHora, valor, idLicitador, idLeilao)\n"
                                + "    VALUES (Source.id, Source.dataHora, Source.valor, Source.idLicitador, Source.idLeilao);";
 
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     // Add parameters for the new Licitacao
@@ -96,7 +96,7 @@ public class LicitacaoDAO{
             }
         }
     
-        public static int size()
+        public static int Size()
         {
             int rowCount = 0;
 
@@ -104,7 +104,7 @@ public class LicitacaoDAO{
             {
                 string query = "SELECT COUNT(*) FROM Licitacao";
 
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();

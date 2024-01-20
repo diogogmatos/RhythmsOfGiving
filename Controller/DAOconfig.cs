@@ -2,12 +2,12 @@ using System.Data.SqlClient;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class DAOconfig
+    public class DaOconfig
     {
-        public const string USER = "FaltaDefinir";
-        public const string PASSWORD = "FaltaDefinir";
-        public const string MACHINE = "FaltaDefinir";
-        public const string DATABASE = "FaltaDefinir";
+        public const string User = "FaltaDefinir";
+        public const string Password = "FaltaDefinir";
+        public const string Machine = "FaltaDefinir";
+        public const string Database = "FaltaDefinir";
 
         public static string GetConnectionString()
         {

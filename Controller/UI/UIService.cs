@@ -1,12 +1,82 @@
+using Microsoft.AspNetCore.SignalR;
+
 namespace RhythmsOfGiving.Controller.UI;
 
-public class UIService
+public class UiService
 {
-    // TODO
-    public List<LeilaoUI> GetLeiloesDisponiveis()
+    private readonly RhythmsLn rhythmsLn = new();
+    private readonly IHubContext<InfoHub, IInfoHub> context;
+    
+    public UiService(IHubContext<InfoHub, IInfoHub> context)
     {
-        List<LeilaoUI> leiloes = new List<LeilaoUI>();
-        leiloes.Add(new LeilaoUI(
+        this.context = context;
+    }
+    
+    // leilões
+    
+    private async Task BroadcastAuctionUpdate()
+    {
+        await context.Clients.All.UpdateAuctionInfo();
+    }
+
+    private float valorTeste = 7600f;
+
+    // TODO
+    public async void Licitar(int idLeilao, string email, float valor)
+    {
+        valorTeste = valor;
+        // TODO: Método AdicionarLicitacao da LN recebe idLicitador, não email; recebe idLicitacao, não idLeilao
+        await BroadcastAuctionUpdate();
+    }
+
+    // TODO: Sem método necessário na LN
+    public float GetUltimaLicitacaoUtilizador(string email, int idLeilao)
+    {
+        return valorTeste;
+    }
+
+    // TODO: Sem método necessário na LN
+    public float GetUltimaLicitacaoLeilao(string email, int idLeilao)
+    {
+        return 8543.92f;
+    }
+    
+    private int shortDescSize = 100;
+    
+    // TODO
+    public List<LeilaoUi> GetLeiloesDisponiveis()
+    {
+        List<LeilaoUi> leiloes = new List<LeilaoUi>();
+        try
+        {
+            Dictionary<Leilao, Artista> leiloesLn = rhythmsLn.ConsultarLeiloesAtivos();
+            foreach (KeyValuePair<Leilao, Artista> leilao in leiloesLn)
+            {
+                string tipoLeilao = leilao.Key.GetTipo() == 0 ? "Ás Cegas" : "Inglês";
+                leiloes.Add(new LeilaoUi(
+                    leilao.Key.IdLeilao,
+                    leilao.Value.GetNome(),
+                    leilao.Key.Titulo,
+                    leilao.Key.Experiencia.GetLocalizacao(),
+                    leilao.Key.Experiencia.GetGeneroMusical().GetNome(),
+                    tipoLeilao,
+                    leilao.Key.DataHoraFinal,
+                    leilao.Key.Experiencia.GetDescricao().Substring(0,
+                        Math.Min(leilao.Key.Experiencia.GetDescricao().Length, shortDescSize)),
+                    leilao.Key.Experiencia.GetDescricao(),
+                    leilao.Key.Experiencia.GetImagem(),
+                    leilao.Value.GetImagem(),
+                    leilao.Key.GetTipo() == 0,
+                    leilao.Key.ValorBase
+                ));
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        // TODO: Remover
+        leiloes.Add(new LeilaoUi(
             1,
             "Taylor Swift",
             "The Eras Tour: Exclusive VIP Seating ",
@@ -24,9 +94,29 @@ public class UIService
         return leiloes;
     }
 
-    public LeilaoUI GetLeilaoById(int id)
+    public List<String> GetGenerosMusicais()
     {
-        return new LeilaoUI(
+        List<String> generos = new List<String>();
+        generos.Add("Pop");
+        generos.Add("Rock");
+        generos.Add("Hip Hop");
+        generos.Add("Rap");
+        generos.Add("Funk");
+        generos.Add("Fado");
+        generos.Add("Jazz");
+        generos.Add("Blues");
+        generos.Add("Soul");
+        generos.Add("Reggae");
+        generos.Add("Eletrónica");
+        generos.Add("Clássica");
+        generos.Add("Alternativa");
+        return generos;
+    }
+
+    // TODO: Sem método necessário na LN
+    public LeilaoUi GetLeilaoById(int id)
+    {
+        return new LeilaoUi(
             1,
             "Taylor Swift",
             "The Eras Tour: Exclusive VIP Seating ",
@@ -42,12 +132,14 @@ public class UIService
             7500f
         );
     }
+    
+    // notificações
 
-    // TODO
-    public List<NotificacaoUI> GetNotificacoesUtilizador(string email)
+    // TODO: Sem método necessário na LN
+    public List<NotificacaoUi> GetNotificacoesUtilizador(string email)
     {
-        List<NotificacaoUI> notificacoes = new List<NotificacaoUI>();
-        notificacoes.Add(new NotificacaoUI(
+        List<NotificacaoUi> notificacoes = new List<NotificacaoUi>();
+        notificacoes.Add(new NotificacaoUi(
             "A sua licitação foi ultrapassada!",
             "The Eras Tour: Exclusive VIP Seating",
             DateTime.Parse("2023-11-04"),
@@ -57,16 +149,36 @@ public class UIService
         return notificacoes;
     }
     
-    // TODO
-    public List<InstituicaoUI> GetInstituicoes()
+    // instituições
+    
+    public List<InstituicaoUi> GetInstituicoes()
     {
-        List<InstituicaoUI> instituicoes = new List<InstituicaoUI>();
-        instituicoes.Add(new InstituicaoUI(
+        List<InstituicaoUi> instituicoes = new List<InstituicaoUi>();
+        List<Instituicao> instituicoesLn = rhythmsLn.ApresentarInstituicoes();
+        foreach (Instituicao instituicao in instituicoesLn)
+        {
+            instituicoes.Add(new InstituicaoUi(
+                instituicao.GetNome(),
+                instituicao.GetDescricao(),
+                instituicao.GetLogoPath(),
+                instituicao.GetLink()    
+            ));
+        }
+        // TODO: Remover
+        instituicoes.Add(new InstituicaoUi(
             "The Trevor Project",
             "The Trevor Project é uma organização sem fins lucrativos norte-americana fundada em 1998 em West Hollywood, Califórnia, com o objetivo de informar e prevenir o suicído entre jovens LGBT, incluindo outros queer.",
             "https://mma.prnewswire.com/media/1636688/ttp_logo_primary_tagline_rgb_Logo.jpg?p=twitter",
             "https://www.thetrevorproject.org/"
         ));
         return instituicoes;
+    }
+    
+    // perfil
+    
+    // TODO: Sem método necessário na LN
+    public string GetNomeUtilizador(string email)
+    {
+        return "Diogo";
     }
 }

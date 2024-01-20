@@ -3,32 +3,32 @@ using System.Drawing;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class LicitadorDAO
+    public class LicitadorDao
     {
-        private static LicitadorDAO? singleton = null;
+        private static LicitadorDao? _singleton = null;
 
-        private LicitadorDAO()
+        private LicitadorDao()
         {
         }
 
-        public static LicitadorDAO getInstance()
+        public static LicitadorDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new LicitadorDAO();
+                _singleton = new LicitadorDao();
             }
 
-            return singleton;
+            return _singleton;
         }
 
-        public static int size()
+        public static int Size()
         {
             return 0; // depois usar a query necessária
         }
 
-    internal Licitador get(string email)
+    internal Licitador Get(string email)
     {
-        using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+        using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
         {
             connection.Open();
             try
@@ -51,7 +51,7 @@ namespace RhythmsOfGiving.Controller
                                 DateOnly.FromDateTime(Convert.ToDateTime(reader["dataNascimento"]));
                             int nrCartao = Convert.ToInt32(reader["nrCartao"]);
                             int nif = Convert.ToInt32(reader["nif"]);
-                            Int64 nCC = Convert.ToInt64(reader["numeroCC"]);
+                            Int64 nCc = Convert.ToInt64(reader["numeroCC"]);
                             HashSet<int> minhasLicitacoes = new HashSet<int>();
                             HashSet<int> minhasFaturas = new HashSet<int>();
 
@@ -87,7 +87,7 @@ namespace RhythmsOfGiving.Controller
 
                             Licitador licitador = new Licitador(idLicitador, nome, palavraPasse, dataNascimento,
                                 nrCartao, email, nif,
-                                nCC, minhasLicitacoes, minhasFaturas);
+                                nCc, minhasLicitacoes, minhasFaturas);
 
                             return licitador;
                         }
@@ -103,10 +103,10 @@ namespace RhythmsOfGiving.Controller
         return null;
     }
 
-        public Licitador get(int id)
+        public Licitador Get(int id)
         {
          
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -130,7 +130,7 @@ namespace RhythmsOfGiving.Controller
                                     DateOnly.FromDateTime(Convert.ToDateTime(reader["dataNascimento"]));
                                 int nrCartao = Convert.ToInt32(reader["nrCartao"]);
                                 int nif = Convert.ToInt32(reader["nif"]);
-                                Int64 nCC = Convert.ToInt64(reader["numeroCC"]);
+                                Int64 nCc = Convert.ToInt64(reader["numeroCC"]);
                                 HashSet<int> minhasLicitacoes = new HashSet<int>();
                                 HashSet<int> minhasFaturas = new HashSet<int>();
 
@@ -166,7 +166,7 @@ namespace RhythmsOfGiving.Controller
 
                                 Licitador licitador = new Licitador(idLicitador, nome, palavraPasse, dataNascimento,
                                     nrCartao, email, nif,
-                                    nCC, minhasLicitacoes, minhasFaturas);
+                                    nCc, minhasLicitacoes, minhasFaturas);
 
                                 return licitador;
                             }
@@ -182,9 +182,9 @@ namespace RhythmsOfGiving.Controller
             return null;
         }
 
-       internal void put(string email, Licitador licitador)
+       internal void Put(string email, Licitador licitador)
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 connection.Open();
                 
@@ -207,12 +207,12 @@ namespace RhythmsOfGiving.Controller
 
                         using (SqlCommand updateCommand = new SqlCommand(mergeSql, connection))
                         {
-                            updateCommand.Parameters.AddWithValue("@Nome", licitador.getNome());
-                            updateCommand.Parameters.AddWithValue("@PalavraPasse", licitador.getPalavraPasse());
-                            updateCommand.Parameters.AddWithValue("@DataNascimento", new DateTime(licitador.getDataNascimento().Year, licitador.getDataNascimento().Month, licitador.getDataNascimento().Day));
-                            updateCommand.Parameters.AddWithValue("@NrCartao", licitador.getNrCartao());
-                            updateCommand.Parameters.AddWithValue("@Nif", licitador.getNIF());
-                            updateCommand.Parameters.AddWithValue("@NumeroCC", licitador.getNcc());
+                            updateCommand.Parameters.AddWithValue("@Nome", licitador.GetNome());
+                            updateCommand.Parameters.AddWithValue("@PalavraPasse", licitador.GetPalavraPasse());
+                            updateCommand.Parameters.AddWithValue("@DataNascimento", new DateTime(licitador.GetDataNascimento().Year, licitador.GetDataNascimento().Month, licitador.GetDataNascimento().Day));
+                            updateCommand.Parameters.AddWithValue("@NrCartao", licitador.GetNrCartao());
+                            updateCommand.Parameters.AddWithValue("@Nif", licitador.GetNif());
+                            updateCommand.Parameters.AddWithValue("@NumeroCC", licitador.GetNcc());
                             updateCommand.Parameters.AddWithValue("@Email", email);
                             updateCommand.ExecuteNonQuery();
                         }
@@ -225,13 +225,13 @@ namespace RhythmsOfGiving.Controller
         }
 
 
-        public bool VerificarUnicoNumeroCC(int novoNumeroCC)
+        public bool VerificarUnicoNumeroCc(int novoNumeroCc)
         {
-            bool numeroCCUnico = false;
+            bool numeroCcUnico = false;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -241,7 +241,7 @@ namespace RhythmsOfGiving.Controller
                     {
                         int count = (int)command.ExecuteScalar();
 
-                        numeroCCUnico = count == 0;
+                        numeroCcUnico = count == 0;
                     }
                 }
             }
@@ -250,14 +250,14 @@ namespace RhythmsOfGiving.Controller
                 throw new VerificarNãoUnicoNumeroCcException("O NumeroCC já existe na base de dados");
             }
 
-            return numeroCCUnico;
+            return numeroCcUnico;
         }
 
-        public IEnumerable<int> keySet()
+        public IEnumerable<int> KeySet()
         {
             List<int> keySet = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 connection.Open();
 

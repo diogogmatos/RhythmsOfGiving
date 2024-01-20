@@ -4,20 +4,38 @@
 
 <PageTitle>RhythmsOfGiving</PageTitle>
 
-<div class="text-gray-900 font-inter">
+<div class="text-gray-900 font-inter bg-gray-50">
     @if (!NavigationManager.Uri.EndsWith("/")) {
-        <NavBar IsNotificacoesOpen="IsNotificacoesOpen" ToggleNotificacoes="ToggleNotificacoes" IsLoggedIn=false />
+        <NavBar 
+            IsNotificacoesOpen="IsNotificacoesOpen"
+            ToggleNotificacoes="ToggleNotificacoes" 
+            IsProfileOpen="IsProfileOpen"
+            ToggleProfile="ToggleProfile"
+            IsLoggedIn=false 
+        />
     }
     else {
-        <NavBar IsNotificacoesOpen="IsNotificacoesOpen" ToggleNotificacoes="ToggleNotificacoes" IsLoggedIn=true />
+        <NavBar 
+            IsNotificacoesOpen="IsNotificacoesOpen"
+            ToggleNotificacoes="ToggleNotificacoes" 
+            IsProfileOpen="IsProfileOpen"
+            ToggleProfile="ToggleProfile"
+            IsLoggedIn=true 
+        />
     }
 
-    <main class="px-8 lg:px-20 2xl:px-64 overflow-scroll">
+    <main class="px-8 lg:px-20 2xl:px-64 overflow-y-auto overflow-x-auto">
         @Body
     </main>
+    
+    <AppFooter/>
 
     @if (IsNotificacoesOpen) {
         <NotificacoesModal />
+    }
+    
+    @if (IsProfileOpen) {
+        <ProfileModal />
     }
 </div>
 
@@ -25,5 +43,10 @@
     public bool IsNotificacoesOpen { get; set; } = false;
     private void ToggleNotificacoes() {
         IsNotificacoesOpen = !IsNotificacoesOpen;
+    }
+    
+    public bool IsProfileOpen { get; set; } = false;
+    private void ToggleProfile() {
+        IsProfileOpen = !IsProfileOpen;
     }
 }

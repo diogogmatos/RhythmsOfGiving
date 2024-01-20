@@ -4,32 +4,32 @@ using RhythmsOfGiving.Controller;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class LeilaoDAO
+    public class LeilaoDao
     {
-        private static LeilaoDAO? singleton = null;
+        private static LeilaoDao? _singleton = null;
 
-        private LeilaoDAO()
+        private LeilaoDao()
         {
         }
 
-        public static LeilaoDAO getInstance()
+        public static LeilaoDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new LeilaoDAO();
+                _singleton = new LeilaoDao();
             }
 
-            return singleton;
+            return _singleton;
         }
 
-        public Leilao put(int id, Leilao l)
+        public Leilao Put(int id, Leilao l)
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 connection.Open();
 
                 Experiencia e = l.Experiencia;
-                GeneroMusical g = e.getGeneroMusical();
+                GeneroMusical g = e.GetGeneroMusical();
                 
                 string sql = "MERGE INTO Leilao AS target " +
                      "USING (VALUES (@IdLeilao, @Titulo, @ValorAtual, @ValorMinimo, @DataHoraFinal, " +
@@ -70,7 +70,7 @@ namespace RhythmsOfGiving.Controller
                     cmd.Parameters.AddWithValue("@ValorAtual", l.ValorAtual);
                     cmd.Parameters.AddWithValue("@ValorMinimo", l.ValorBase);
                     cmd.Parameters.AddWithValue("@DataHoraFinal", l.DataHoraFinal);
-                    cmd.Parameters.AddWithValue("@Localizacao", e.getLocalizacao());
+                    cmd.Parameters.AddWithValue("@Localizacao", e.GetLocalizacao());
                     cmd.Parameters.AddWithValue("@Ativo", l.Ativo);
                     if (l.GetTipo() == 0)
                     {
@@ -81,10 +81,10 @@ namespace RhythmsOfGiving.Controller
                         cmd.Parameters.AddWithValue("@tipoLeilao", "ingles");
                     }
 
-                    cmd.Parameters.AddWithValue("@Descricao", e.getDescricao());
-                    cmd.Parameters.AddWithValue("@Imagem", e.getImagem());
-                    cmd.Parameters.AddWithValue("@IdArtista", e.getIdArtista());
-                    cmd.Parameters.AddWithValue("@IdGenero", g.getIdGenero());
+                    cmd.Parameters.AddWithValue("@Descricao", e.GetDescricao());
+                    cmd.Parameters.AddWithValue("@Imagem", e.GetImagem());
+                    cmd.Parameters.AddWithValue("@IdArtista", e.GetIdArtista());
+                    cmd.Parameters.AddWithValue("@IdGenero", g.GetIdGenero());
                     cmd.Parameters.AddWithValue("@idInstituicao", l.IdInstituicao);
                     cmd.Parameters.AddWithValue("@idAdministrador", l.IdAdmin);
                     
@@ -98,11 +98,11 @@ namespace RhythmsOfGiving.Controller
             return l;
         }
 
-        public Leilao get(int idLeilao)
+        public Leilao Get(int idLeilao)
         {
             Leilao leilao = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -206,11 +206,11 @@ namespace RhythmsOfGiving.Controller
             return leilao;
         }
 
-        public static int size()
+        public static int Size()
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -234,89 +234,229 @@ namespace RhythmsOfGiving.Controller
         
 
         //Acho que vai ter de alterar por causa dos atributos do leilao, mas a lógica é esta
-        public Dictionary<Leilao, Artista> leiloesAtivos()
+        public Dictionary<Leilao, Artista> LeiloesAtivos()
         {
 
             Dictionary<Leilao, Artista> leiloesAtivosMap = new Dictionary<Leilao, Artista>();
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
-                try
-                {
-                    connection.Open();
+                connection.Open();
 
-                    string query2 = @"
+                string query2 = @"
                         SELECT Leilao.id AS LeilaoID, GeneroMusical.id AS GeneroID, GeneroMusical.nome AS GeneroNome, 
                                GeneroMusical.idAdministrador AS GeneroAdmin
                         FROM Leilao
                         INNER JOIN GeneroMusical ON Leilao.idGeneroMusical = GeneroMusical.id
                         WHERE Leilao.Estado = 1";
 
-                    // Criar um dicionário para armazenar o nome do gênero para cada Leilao
-                    Dictionary<int, GeneroMusical> generoPorLeilao = new Dictionary<int, GeneroMusical>();
+                // Criar um dicionário para armazenar o nome do gênero para cada Leilao
+                Dictionary<int, GeneroMusical> generoPorLeilao = new Dictionary<int, GeneroMusical>();
 
-                    // Buscar o nome do gênero musical
-                    using (SqlCommand command2 = new SqlCommand(query2, connection))
+                // Buscar o nome do gênero musical
+                using (SqlCommand command2 = new SqlCommand(query2, connection))
+                {
+                    using (SqlDataReader reader2 = command2.ExecuteReader())
                     {
-                        using (SqlDataReader reader2 = command2.ExecuteReader())
+                        while (reader2.Read())
                         {
-                            while (reader2.Read())
-                            {
-                                int idLeilao = reader2.GetInt32(reader2.GetOrdinal("LeilaoID"));
-                                int idGenero = reader2.GetInt32(reader2.GetOrdinal("GeneroId"));
-                                string nomeGenero = reader2.GetString(reader2.GetOrdinal("GeneroNome"));
-                                int idAdmin = reader2.GetInt32(reader2.GetOrdinal("GeneroAdmin"));
+                            int idLeilao = reader2.GetInt32(reader2.GetOrdinal("LeilaoID"));
+                            int idGenero = reader2.GetInt32(reader2.GetOrdinal("GeneroId"));
+                            string nomeGenero = reader2.GetString(reader2.GetOrdinal("GeneroNome"));
+                            int idAdmin = reader2.GetInt32(reader2.GetOrdinal("GeneroAdmin"));
 
-                                GeneroMusical g = new GeneroMusical(idGenero, nomeGenero, idAdmin);
+                            GeneroMusical g = new GeneroMusical(idGenero, nomeGenero, idAdmin);
 
-                                generoPorLeilao[idLeilao] = g;
-                            }
+                            generoPorLeilao[idLeilao] = g;
                         }
                     }
+                }
                     
-                    //Criar um set para os ids
-                    List<int> minhasLicitacoes = new List<int>();
+                //Criar um set para os ids
+                List<int> minhasLicitacoes = new List<int>();
                     
-                    string query3= @"
+                string query3= @"
                         SELECT Leilao.id AS LeilaoID, Licitacao.id AS LicitacaoID
                         FROM Leilao
                         INNER JOIN Licitacao ON Leilao.id = Licitacao.idLeilao
                         WHERE Leilao.Estado = 1";
                     
-                    using (SqlCommand command3 = new SqlCommand(query3, connection))
+                using (SqlCommand command3 = new SqlCommand(query3, connection))
+                {
+                    using (SqlDataReader reader3 = command3.ExecuteReader())
                     {
-                        using (SqlDataReader reader3 = command3.ExecuteReader())
+                        while (reader3.Read())
                         {
-                            while (reader3.Read())
-                            {
-                                int idLicitacao = reader3.GetInt32(reader3.GetOrdinal("LicitacaoID"));
-                                minhasLicitacoes.Add(idLicitacao);
-                            }
+                            int idLicitacao = reader3.GetInt32(reader3.GetOrdinal("LicitacaoID"));
+                            minhasLicitacoes.Add(idLicitacao);
                         }
                     }
+                }
 
-                    string query = @"
+                string query = @"
                         SELECT Leilao.id AS LeilaoId, Leilao.titulo, Leilao.valorMinimo ,Leilao.valorAtual, Leilao.dataHoraFinal, Leilao.tipoLeilao, Leilao.imagem AS imagemLeilao
                                , Leilao.localizacao, Leilao.idInstituicao, Leilao.descricao, Leilao.estado, Leilao.idAdministrador AS LeilaoIdAdmin, Artista.*
                         FROM Leilao
                         INNER JOIN Artista ON Leilao.idArtista = Artista.id
                         WHERE Leilao.Estado = 1";
 
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        while (reader.Read())
+                        {
+                            Artista artista = null;
+                            {
+                                // Configure os atributos do Artista com base nas colunas do resultado da consulta
+                                int idArtista = reader.GetInt32(reader.GetOrdinal("id"));
+                                string nomeArtista = reader.GetString(reader.GetOrdinal("nome"));
+                                string imagemArtista = reader.GetString(reader.GetOrdinal("imagem"));
+                                int idAdmin = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
+
+                                artista = new Artista(idArtista, nomeArtista, imagemArtista, idAdmin);
+                            }
+                            ;
+
+                            Leilao leilao = null;
+                            {
+                                // Configure os atributos do Leilao com base nas colunas do resultado da consulta
+                                int idLeilao = reader.GetInt32(reader.GetOrdinal("LeilaoID"));
+                                string titulo = reader.GetString(reader.GetOrdinal("titulo"));
+                                float licitacaoAtual = reader.GetFloat(reader.GetOrdinal("valorAtual"));
+                                DateTime dataTermina = reader.GetDateTime(reader.GetOrdinal("dataHoraFinal"));
+                                string tipoLeilao = reader.GetString(reader.GetOrdinal("tipoLeilao"));
+                                string imagem = reader.GetString(reader.GetOrdinal("imagemLeilao"));
+                                string localizacao = reader.GetString(reader.GetOrdinal("localizacao"));
+                                string descricao = reader.GetString(reader.GetOrdinal("descricao"));
+                                int idGeneroMusical = reader.GetInt32(reader.GetOrdinal("idGeneroMusical"));
+                                float valorBase = reader.GetFloat(reader.GetOrdinal("valorMinimo"));
+                                int idAdmin2 = reader.GetInt32(reader.GetOrdinal("LeilaoIdAdmin"));
+                                int idInstituicao = reader.GetInt32(reader.GetOrdinal("idInstituicao"));
+                                bool ativo = reader.GetBoolean(reader.GetOrdinal("estado"));
+                                    
+
+                                // Buscar o nome do gênero musical usando o dicionário
+                                GeneroMusical g = generoPorLeilao[idLeilao];
+                                Experiencia e = new Experiencia(descricao, imagem, localizacao,
+                                    artista.GetIdArtista(), g);
+                                if (tipoLeilao.Equals("asCegas"))
+                                {
+                                    Leilao l = new LeilaoAsCegas(idLeilao, ativo, licitacaoAtual, valorBase, dataTermina,
+                                        titulo, DateTime.Now, idAdmin2, idInstituicao, minhasLicitacoes, e);
+                                }
+                                else
+                                {
+                                    Leilao l = new LeilaoIngles(idLeilao, ativo, licitacaoAtual, valorBase, dataTermina,
+                                        titulo, DateTime.Now, idAdmin2, idInstituicao, minhasLicitacoes, e);
+                                }
+                            }
+                            ;
+
+                            leiloesAtivosMap.Add(leilao, artista);
+                        }
+                    }
+                }
+            }
+
+            return leiloesAtivosMap;
+        }
+
+        public Dictionary<Leilao, Artista> FiltrarLeiloesPorArtista(string nomeArtista)
+        {
+            Dictionary<Leilao, Artista> leiloesPorArtista = new Dictionary<Leilao, Artista>();
+
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            {
+                connection.Open();
+                    
+                //GENEROS
+                string query2 = @"
+                        SELECT Leilao.id AS LeilaoID, GeneroMusical.id AS GeneroID, GeneroMusical.nome AS GeneroNome, 
+                               GeneroMusical.idAdministrador AS GeneroAdmin
+                        FROM Leilao
+                        INNER JOIN GeneroMusical ON Leilao.idGeneroMusical = GeneroMusical.id
+                        WHERE Leilao.Estado = 1";
+
+                // Criar um dicionário para armazenar o nome do gênero para cada Leilao
+                Dictionary<int, GeneroMusical> generoPorLeilao = new Dictionary<int, GeneroMusical>();
+
+                // Buscar o nome do gênero musical
+                using (SqlCommand command2 = new SqlCommand(query2, connection))
+                {
+                    using (SqlDataReader reader2 = command2.ExecuteReader())
+                    {
+                        while (reader2.Read())
+                        {
+                            int idLeilao = reader2.GetInt32(reader2.GetOrdinal("LeilaoID"));
+                            int idGenero = reader2.GetInt32(reader2.GetOrdinal("GeneroId"));
+                            string nomeGenero = reader2.GetString(reader2.GetOrdinal("GeneroNome"));
+                            int idAdmin = reader2.GetInt32(reader2.GetOrdinal("GeneroAdmin"));
+
+                            GeneroMusical g = new GeneroMusical(idGenero, nomeGenero, idAdmin);
+
+                            generoPorLeilao[idLeilao] = g;
+                        }
+                    }
+                }
+                    
+                //IDS Licitações
+                List<int> minhasLicitacoes = new List<int>();
+                    
+                string query3= @"
+                        SELECT Leilao.id AS LeilaoID, Licitacao.id AS LicitacaoID
+                        FROM Leilao
+                        INNER JOIN Licitacao ON Leilao.id = Licitacao.idLeilao
+                        WHERE Leilao.Estado = 1";
+                    
+                using (SqlCommand command3 = new SqlCommand(query3, connection))
+                {
+                    using (SqlDataReader reader3 = command3.ExecuteReader())
+                    {
+                        while (reader3.Read())
+                        {
+                            int idLicitacao = reader3.GetInt32(reader3.GetOrdinal("LicitacaoID"));
+                            minhasLicitacoes.Add(idLicitacao);
+                        }
+                    }
+                }
+
+                // Primeiro, obter o ID do artista pelo nome
+                string queryObterIdArtista = "SELECT id FROM Artista WHERE nome = @NomeArtista";
+
+                using (SqlCommand commandObterIdArtista = new SqlCommand(queryObterIdArtista, connection))
+                {
+                    commandObterIdArtista.Parameters.AddWithValue("@NomeArtista", nomeArtista);
+
+                    int idArtista = Convert.ToInt32(commandObterIdArtista.ExecuteScalar());
+
+                    // Em seguida, usar o ID do artista para obter os leilões ativos em que ele participa
+                    string queryLeiloesPorArtista = @"
+                     SELECT Leilao.id AS LeilaoId, Leilao.titulo, Leilao.valorMinimo ,Leilao.valorAtual, Leilao.dataHoraFinal, Leilao.tipoLeilao, Leilao.imagem AS imagemLeilao
+                               , Leilao.localizacao, Leilao.idInstituicao, Leilao.descricao, Leilao.estado, Leilao.idAdministrador AS LeilaoIdAdmin, Artista.*
+                      FROM Leilao
+                      INNER JOIN Artista ON Leilao.idArtista = Artista.id
+                      WHERE Leilao.Estado = 1 AND Leilao.idArtista = @IdArtista";
+
+                    using (SqlCommand commandLeiloesPorArtista = new SqlCommand(queryLeiloesPorArtista, connection))
+                    {
+                        commandLeiloesPorArtista.Parameters.AddWithValue("@IdArtista", idArtista);
+
+                        using (SqlDataReader reader = commandLeiloesPorArtista.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 Artista artista = null;
                                 {
                                     // Configure os atributos do Artista com base nas colunas do resultado da consulta
-                                    int idArtista = reader.GetInt32(reader.GetOrdinal("id"));
-                                    string nomeArtista = reader.GetString(reader.GetOrdinal("nome"));
-                                    string imagemArtista = reader.GetString(reader.GetOrdinal("imagem"));
-                                    int idAdmin = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
+                                    int idArtistaLeilao = reader.GetInt32(reader.GetOrdinal("id"));
+                                    string nomeArtistaLeilao = reader.GetString(reader.GetOrdinal("nome"));
+                                    string imagemArtistaLeilao = reader.GetString(reader.GetOrdinal("imagem"));
+                                    int idAdminArtistaLeilao =
+                                        reader.GetInt32(reader.GetOrdinal("idAdministrador"));
 
-                                    artista = new Artista(idArtista, nomeArtista, imagemArtista, idAdmin);
+                                    artista = new Artista(idArtistaLeilao, nomeArtistaLeilao, imagemArtistaLeilao,
+                                        idAdminArtistaLeilao);
                                 }
                                 ;
 
@@ -341,7 +481,8 @@ namespace RhythmsOfGiving.Controller
                                     // Buscar o nome do gênero musical usando o dicionário
                                     GeneroMusical g = generoPorLeilao[idLeilao];
                                     Experiencia e = new Experiencia(descricao, imagem, localizacao,
-                                        artista.getIdArtista(), g);
+                                        artista.GetIdArtista(), g);
+                                    
                                     if (tipoLeilao.Equals("asCegas"))
                                     {
                                         Leilao l = new LeilaoAsCegas(idLeilao, ativo, licitacaoAtual, valorBase, dataTermina,
@@ -355,177 +496,21 @@ namespace RhythmsOfGiving.Controller
                                 }
                                 ;
 
-                                leiloesAtivosMap.Add(leilao, artista);
+                                leiloesPorArtista.Add(leilao, artista);
                             }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    // Trate a exceção conforme necessário, ou apenas a lance novamente.
-                    throw;
-                }
-            }
-
-            return leiloesAtivosMap;
-        }
-
-        public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nomeArtista)
-        {
-            Dictionary<Leilao, Artista> leiloesPorArtista = new Dictionary<Leilao, Artista>();
-
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
-            {
-                try
-                { connection.Open();
-                    
-                    //GENEROS
-                    string query2 = @"
-                        SELECT Leilao.id AS LeilaoID, GeneroMusical.id AS GeneroID, GeneroMusical.nome AS GeneroNome, 
-                               GeneroMusical.idAdministrador AS GeneroAdmin
-                        FROM Leilao
-                        INNER JOIN GeneroMusical ON Leilao.idGeneroMusical = GeneroMusical.id
-                        WHERE Leilao.Estado = 1";
-
-                    // Criar um dicionário para armazenar o nome do gênero para cada Leilao
-                    Dictionary<int, GeneroMusical> generoPorLeilao = new Dictionary<int, GeneroMusical>();
-
-                    // Buscar o nome do gênero musical
-                    using (SqlCommand command2 = new SqlCommand(query2, connection))
-                    {
-                        using (SqlDataReader reader2 = command2.ExecuteReader())
-                        {
-                            while (reader2.Read())
-                            {
-                                int idLeilao = reader2.GetInt32(reader2.GetOrdinal("LeilaoID"));
-                                int idGenero = reader2.GetInt32(reader2.GetOrdinal("GeneroId"));
-                                string nomeGenero = reader2.GetString(reader2.GetOrdinal("GeneroNome"));
-                                int idAdmin = reader2.GetInt32(reader2.GetOrdinal("GeneroAdmin"));
-
-                                GeneroMusical g = new GeneroMusical(idGenero, nomeGenero, idAdmin);
-
-                                generoPorLeilao[idLeilao] = g;
-                            }
-                        }
-                    }
-                    
-                    //IDS Licitações
-                    List<int> minhasLicitacoes = new List<int>();
-                    
-                    string query3= @"
-                        SELECT Leilao.id AS LeilaoID, Licitacao.id AS LicitacaoID
-                        FROM Leilao
-                        INNER JOIN Licitacao ON Leilao.id = Licitacao.idLeilao
-                        WHERE Leilao.Estado = 1";
-                    
-                    using (SqlCommand command3 = new SqlCommand(query3, connection))
-                    {
-                        using (SqlDataReader reader3 = command3.ExecuteReader())
-                        {
-                            while (reader3.Read())
-                            {
-                                int idLicitacao = reader3.GetInt32(reader3.GetOrdinal("LicitacaoID"));
-                                minhasLicitacoes.Add(idLicitacao);
-                            }
-                        }
-                    }
-
-                    // Primeiro, obter o ID do artista pelo nome
-                    string queryObterIdArtista = "SELECT id FROM Artista WHERE nome = @NomeArtista";
-
-                    using (SqlCommand commandObterIdArtista = new SqlCommand(queryObterIdArtista, connection))
-                    {
-                        commandObterIdArtista.Parameters.AddWithValue("@NomeArtista", nomeArtista);
-
-                        int idArtista = Convert.ToInt32(commandObterIdArtista.ExecuteScalar());
-
-                        // Em seguida, usar o ID do artista para obter os leilões ativos em que ele participa
-                        string queryLeiloesPorArtista = @"
-                     SELECT Leilao.id AS LeilaoId, Leilao.titulo, Leilao.valorMinimo ,Leilao.valorAtual, Leilao.dataHoraFinal, Leilao.tipoLeilao, Leilao.imagem AS imagemLeilao
-                               , Leilao.localizacao, Leilao.idInstituicao, Leilao.descricao, Leilao.estado, Leilao.idAdministrador AS LeilaoIdAdmin, Artista.*
-                      FROM Leilao
-                      INNER JOIN Artista ON Leilao.idArtista = Artista.id
-                      WHERE Leilao.Estado = 1 AND Leilao.idArtista = @IdArtista";
-
-                        using (SqlCommand commandLeiloesPorArtista = new SqlCommand(queryLeiloesPorArtista, connection))
-                        {
-                            commandLeiloesPorArtista.Parameters.AddWithValue("@IdArtista", idArtista);
-
-                            using (SqlDataReader reader = commandLeiloesPorArtista.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    Artista artista = null;
-                                    {
-                                        // Configure os atributos do Artista com base nas colunas do resultado da consulta
-                                        int idArtistaLeilao = reader.GetInt32(reader.GetOrdinal("id"));
-                                        string nomeArtistaLeilao = reader.GetString(reader.GetOrdinal("nome"));
-                                        string imagemArtistaLeilao = reader.GetString(reader.GetOrdinal("imagem"));
-                                        int idAdminArtistaLeilao =
-                                            reader.GetInt32(reader.GetOrdinal("idAdministrador"));
-
-                                        artista = new Artista(idArtistaLeilao, nomeArtistaLeilao, imagemArtistaLeilao,
-                                            idAdminArtistaLeilao);
-                                    }
-                                    ;
-
-                                    Leilao leilao = null;
-                                    {
-                                        // Configure os atributos do Leilao com base nas colunas do resultado da consulta
-                                    int idLeilao = reader.GetInt32(reader.GetOrdinal("LeilaoID"));
-                                    string titulo = reader.GetString(reader.GetOrdinal("titulo"));
-                                    float licitacaoAtual = reader.GetFloat(reader.GetOrdinal("valorAtual"));
-                                    DateTime dataTermina = reader.GetDateTime(reader.GetOrdinal("dataHoraFinal"));
-                                    string tipoLeilao = reader.GetString(reader.GetOrdinal("tipoLeilao"));
-                                    string imagem = reader.GetString(reader.GetOrdinal("imagemLeilao"));
-                                    string localizacao = reader.GetString(reader.GetOrdinal("localizacao"));
-                                    string descricao = reader.GetString(reader.GetOrdinal("descricao"));
-                                    int idGeneroMusical = reader.GetInt32(reader.GetOrdinal("idGeneroMusical"));
-                                    float valorBase = reader.GetFloat(reader.GetOrdinal("valorMinimo"));
-                                    int idAdmin2 = reader.GetInt32(reader.GetOrdinal("LeilaoIdAdmin"));
-                                    int idInstituicao = reader.GetInt32(reader.GetOrdinal("idInstituicao"));
-                                    bool ativo = reader.GetBoolean(reader.GetOrdinal("estado"));
-                                    
-
-                                    // Buscar o nome do gênero musical usando o dicionário
-                                    GeneroMusical g = generoPorLeilao[idLeilao];
-                                    Experiencia e = new Experiencia(descricao, imagem, localizacao,
-                                        artista.getIdArtista(), g);
-                                    
-                                    if (tipoLeilao.Equals("asCegas"))
-                                    {
-                                        Leilao l = new LeilaoAsCegas(idLeilao, ativo, licitacaoAtual, valorBase, dataTermina,
-                                            titulo, DateTime.Now, idAdmin2, idInstituicao, minhasLicitacoes, e);
-                                    }
-                                    else
-                                    {
-                                        Leilao l = new LeilaoIngles(idLeilao, ativo, licitacaoAtual, valorBase, dataTermina,
-                                            titulo, DateTime.Now, idAdmin2, idInstituicao, minhasLicitacoes, e);
-                                    }
-                                    }
-                                    ;
-
-                                    leiloesPorArtista.Add(leilao, artista);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Trate a exceção conforme necessário, ou apenas a lance novamente.
-                    throw;
                 }
             }
 
             return leiloesPorArtista;
         }
 
-        public GeneroMusical getGenero(int idGenero)
+        public GeneroMusical GetGenero(int idGenero)
         {
             GeneroMusical generoMusical = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString())) 
             {
                 try
                 {
@@ -567,11 +552,11 @@ namespace RhythmsOfGiving.Controller
             return generoMusical;
         }
         
-        public static int sizeGeneros()
+        public static int SizeGeneros()
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -594,16 +579,16 @@ namespace RhythmsOfGiving.Controller
         }
 
         //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
-        public Dictionary<int, GeneroMusical> preencherGeneros()
+        public Dictionary<int, GeneroMusical> PreencherGeneros()
         {
-            int tamanho = LeilaoDAO.sizeGeneros();
+            int tamanho = LeilaoDao.SizeGeneros();
             Dictionary<int, GeneroMusical> resultado = new Dictionary<int, GeneroMusical>();
 
             for (int i = 0; i < tamanho; i++)
             {
                 try
                 {
-                    GeneroMusical generoMusical = this.getGenero(i+1);
+                    GeneroMusical generoMusical = this.GetGenero(i+1);
                     resultado.Add(i+1, generoMusical);
                 }
                 catch (GeneroMusicalNaoExisteException)
@@ -616,9 +601,9 @@ namespace RhythmsOfGiving.Controller
             return resultado;
         }
 
-        public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
+        public GeneroMusical PutGeneroMusical(int id, GeneroMusical novoGenero)
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 connection.Open();
                 
@@ -633,9 +618,9 @@ namespace RhythmsOfGiving.Controller
 
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    cmd.Parameters.AddWithValue("@IdGenero", novoGenero.getIdGenero());
-                    cmd.Parameters.AddWithValue("@Nome", novoGenero.getNome());
-                    cmd.Parameters.AddWithValue("@IdAdmin", novoGenero.getIdAdmin());
+                    cmd.Parameters.AddWithValue("@IdGenero", novoGenero.GetIdGenero());
+                    cmd.Parameters.AddWithValue("@Nome", novoGenero.GetNome());
+                    cmd.Parameters.AddWithValue("@IdAdmin", novoGenero.GetIdAdmin());
                     
                     cmd.Parameters.AddWithValue("@Id", id);
                     
@@ -647,13 +632,13 @@ namespace RhythmsOfGiving.Controller
             return novoGenero;
         }
 
-        public List<Leilao> obterLeiloesPorIdsGenero(List<int> idsGenero)
+        public List<Leilao> ObterLeiloesPorIdsGenero(List<int> idsGenero)
         {
              List<Leilao> leiloes = new List<Leilao>();
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -755,13 +740,13 @@ namespace RhythmsOfGiving.Controller
 
 
 
-        public List<Leilao> obterLeiloesPorTipo(List<int> tipos)
+        public List<Leilao> ObterLeiloesPorTipo(List<int> tipos)
     {
         List<Leilao> leiloes = new List<Leilao>();
 
         try
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -860,11 +845,11 @@ namespace RhythmsOfGiving.Controller
             return leiloes;
         }
 
-        public HashSet<int> keySet()
+        public HashSet<int> KeySet()
         {
             HashSet<int> leilaoIds = new HashSet<int>();
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
             {
                 try
                 {

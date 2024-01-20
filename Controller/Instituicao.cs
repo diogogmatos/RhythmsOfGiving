@@ -13,7 +13,7 @@ namespace RhythmsOfGiving.Controller
         private string iban;
         private int idAdmin;
 
-        private int contadorInstituicaoes = InstituicaoDAO.size();
+        private int contadorInstituicaoes = InstituicaoDao.Size();
 
         //Construtor para o get
         public Instituicao(int id, string nome, string descricao, string logoPath, string link, string iban,
@@ -40,37 +40,37 @@ namespace RhythmsOfGiving.Controller
             this.idAdmin = idAdmin;
         }
 
-        public int getId()
+        public int GetId()
         {
             return id;
         }
 
-        public string getNome()
+        public string GetNome()
         {
             return nome;
         }
 
-        public string getDescricao()
+        public string GetDescricao()
         {
             return descricao;
         }
 
-        public string getLogoPath()
+        public string GetLogoPath()
         {
             return logoPath;
         }
 
-        public string getLink()
+        public string GetLink()
         {
             return link;
         }
 
-        public string getIban()
+        public string GetIban()
         {
             return this.iban;
         }
 
-        public int getIdAdmin()
+        public int GetIdAdmin()
         {
             return this.idAdmin;
         }
@@ -103,12 +103,12 @@ namespace RhythmsOfGiving.Controller
             Instituicao other = (Instituicao)obj;
 
             // Verifica a igualdade dos atributos
-            return (this.id == other.getId() &&
-                    this.nome.Equals(other.getNome()) &&
-                    this.descricao.Equals(other.getDescricao()) &&
+            return (this.id == other.GetId() &&
+                    this.nome.Equals(other.GetNome()) &&
+                    this.descricao.Equals(other.GetDescricao()) &&
                     this.link.Equals(other.link) &&
                     this.iban.Equals(other.iban) &&
-                    this.idAdmin == other.getIdAdmin());
+                    this.idAdmin == other.GetIdAdmin());
         }
     }
 }

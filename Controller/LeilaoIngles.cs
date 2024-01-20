@@ -2,11 +2,11 @@ namespace RhythmsOfGiving.Controller
 {
     public class LeilaoIngles : Leilao
     {
-        const int tipo = 1;
+        const int Tipo = 1;
 
         public override int GetTipo()
         {
-            return tipo;
+            return Tipo;
         }
         
 

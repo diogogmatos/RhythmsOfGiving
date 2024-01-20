@@ -2,46 +2,46 @@ namespace RhythmsOfGiving.Controller
 {
     public interface ISubLeiloes
     {
-        public bool registarArtista(string nome,String imagem, int idAdmin);
-        public bool registarGeneroMusical(string nome,int idAdmin );
-        public bool registarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin);
+        public bool RegistarArtista(string nome,String imagem, int idAdmin);
+        public bool RegistarGeneroMusical(string nome,int idAdmin );
+        public bool RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin);
 
-        public void registarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
+        public void RegistarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
             string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao);
 
-        public Dictionary<Leilao, Artista> filtrarLeiloesPorGenero(List<int> idsGenero);
+        public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero);
 
         public int GetLicitadorGanhador(int idLeilao);
-        public Dictionary<Leilao, Artista> consultarLeiloesAtivos();
-        public Dictionary<Leilao, Artista> filtrarLeiloesPorArtista(string nome);
+        public Dictionary<Leilao, Artista> ConsultarLeiloesAtivos();
+        public Dictionary<Leilao, Artista> FiltrarLeiloesPorArtista(string nome);
 
-        public int criarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo);
+        public int CriarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo);
 
         public List<Instituicao> ApresentarInstituicoes();
         
-         public Dictionary<Leilao, Licitacao> infoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
+         public Dictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
 
-        public string getTituloLeilao(int idLeilao);
+        public string GetTituloLeilao(int idLeilao);
 
-        public float calcularValorMinimo(int idLeilao);
+        public float CalcularValorMinimo(int idLeilao);
 
-        public float getValorFimLeilao (int idLeilao);
+        public float GetValorFimLeilao (int idLeilao);
 
-        public HashSet<int> getLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
+        public HashSet<int> GetLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
 
-        public Dictionary<Leilao, Artista> filtrarLeiloesPorTipo(List<int> tipos);
+        public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos);
 
-        public Dictionary<Leilao, Licitacao> getLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
+        public Dictionary<Leilao, Licitacao> GetLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
 
-        public Dictionary<Instituicao, float> getValoresInstituicoes();
+        public Dictionary<Instituicao, float> GetValoresInstituicoes();
 
-        public void preencherInstituicaoLeilao(int idLeilao, int idInstituicao);
+        public void PreencherInstituicaoLeilao(int idLeilao, int idInstituicao);
 
-        public TimeSpan calcularTempoRestante (int idLeilao);
+        public TimeSpan CalcularTempoRestante (int idLeilao);
 
-        public Licitacao procurarLicitacaoAtual(int idLeilao);
+        public Licitacao ProcurarLicitacaoAtual(int idLeilao);
 
-        public float getTotalValorDoado();
+        public float GetTotalValorDoado();
 
     }
 }
