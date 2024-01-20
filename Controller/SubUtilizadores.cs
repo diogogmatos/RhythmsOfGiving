@@ -28,7 +28,7 @@ namespace RhythmsOfGiving.Controller
             Licitador l = new Licitador(nome, palavraPasse, dataNascimento, nrCartao, email, nif, nCc);
             licitadores.put(email,l);
         }
-
+        
         public int ValidarAutenticacao(string email, string palavraPasse)
         {
             Licitador l = this.licitadores.Get(email);
@@ -37,7 +37,8 @@ namespace RhythmsOfGiving.Controller
             {
                 return l.GetIdLicitador();
             }
-            return -1;
+
+            throw new ErroAutenticacaoException("Email e/ou palavra-passe incorretas.");
         }
 
         
