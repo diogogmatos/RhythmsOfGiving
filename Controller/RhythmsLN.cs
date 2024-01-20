@@ -191,4 +191,9 @@ public class RhythmsLn : IRhythmsLn
     {
         return subLeiloes.GetLeilaoById(int id);
     }
+
+    public string GetNomeUtilizador(int idLicitador)
+    {
+        return subUtilizadores.GetNomeUtilizador(idLicitador);
+    }
 }

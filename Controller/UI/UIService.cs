@@ -185,5 +185,6 @@ public class UiService
     public string GetNomeUtilizador(string email)
     {
         return "Diogo";
+        //return rhythmsLn.GetNomeUtilizador(idLicitador);
     }
 }

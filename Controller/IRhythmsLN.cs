@@ -101,6 +101,8 @@ public interface IRhythmsLn
     //SubUtilizadores
     public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
 
+    public string GetNomeUtilizador(int idLicitador);
+
 
     //SubLeilões
     public Leilao GetLeilaoById(int id);

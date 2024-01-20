@@ -183,5 +183,13 @@ namespace RhythmsOfGiving.Controller
             Licitador l = this.licitadores.get(idLicitador);
             return l.GetUltimaLicitacao(idLeilao);
         }
+
+
+        public string GetNomeUtilizador(int idLicitador)
+        {
+            Licitador l = this.licitadores.get(idLicitador);
+            return l.GetNome();
+        }
+
     }
 }
