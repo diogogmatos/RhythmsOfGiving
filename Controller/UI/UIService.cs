@@ -14,9 +14,9 @@ public class UiService
     
     // leilões
     
-    private async Task BroadcastAuctionUpdate()
+    private async Task BroadcastAuctionUpdate(int idLeilao)
     {
-        await context.Clients.All.UpdateAuctionInfo();
+        await context.Clients.All.UpdateAuctionInfo(idLeilao);
     }
 
     private float valorTeste = 7600f;
@@ -27,7 +27,7 @@ public class UiService
         valorTeste = valor;
         // TODO: Método AdicionarLicitacao da LN recebe idLicitador, não email; recebe idLicitacao, não idLeilao
         //Acho que é suposto receber isso: Primeiro tens de chamar a CriarLicitacao que te dá o idLicitacao
-        await BroadcastAuctionUpdate();
+        await BroadcastAuctionUpdate(idLeilao);
     }
 
     // TODO: Sem método necessário na LN
@@ -57,22 +57,7 @@ public class UiService
             foreach (KeyValuePair<Leilao, Artista> leilao in leiloesLn)
             {
                 string tipoLeilao = leilao.Key.GetTipo() == 0 ? "Ás Cegas" : "Inglês";
-                leiloes.Add(new LeilaoUi(
-                    leilao.Key.IdLeilao,
-                    leilao.Value.GetNome(),
-                    leilao.Key.Titulo,
-                    leilao.Key.Experiencia.GetLocalizacao(),
-                    leilao.Key.Experiencia.GetGeneroMusical().GetNome(),
-                    tipoLeilao,
-                    leilao.Key.DataHoraFinal,
-                    leilao.Key.Experiencia.GetDescricao().Substring(0,
-                        Math.Min(leilao.Key.Experiencia.GetDescricao().Length, shortDescSize)),
-                    leilao.Key.Experiencia.GetDescricao(),
-                    leilao.Key.Experiencia.GetImagem(),
-                    leilao.Value.GetImagem(),
-                    leilao.Key.GetTipo() == 0,
-                    leilao.Key.ValorBase
-                ));
+                leiloes.Add(new LeilaoUi(leilao.Key, leilao.Value));
             }
         }
         catch (Exception e)
@@ -141,6 +126,7 @@ public class UiService
     // notificações
 
     // TODO: Sem método necessário na LN
+    //Já há método GetNotificacoesUtilizador mas devolve Notificacao e não NotificacaoUi e recebe idLicitador
     public List<NotificacaoUi> GetNotificacoesUtilizador(string email)
     {
         List<NotificacaoUi> notificacoes = new List<NotificacaoUi>();
@@ -162,12 +148,7 @@ public class UiService
         List<Instituicao> instituicoesLn = rhythmsLn.ApresentarInstituicoes();
         foreach (Instituicao instituicao in instituicoesLn)
         {
-            instituicoes.Add(new InstituicaoUi(
-                instituicao.GetNome(),
-                instituicao.GetDescricao(),
-                instituicao.GetLogoPath(),
-                instituicao.GetLink()    
-            ));
+            instituicoes.Add(new InstituicaoUi(instituicao));
         }
         // TODO: Remover
         instituicoes.Add(new InstituicaoUi(

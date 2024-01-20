@@ -53,7 +53,7 @@ namespace RhythmsOfGiving.Controller
             // Check if the person is at least 18 years old
             if (dataAtual >= idadeAdulta)
             {
-                l.SetDataNascimento(novaDataNascimento);
+                l.SetDataNascimento(DateOnly.FromDateTime(novaDataNascimento));
                         // Ver se é necessario
                         if (licitadores.VerificarUnicoNumeroCc(novoNumeroCc))
                         {
@@ -191,6 +191,12 @@ namespace RhythmsOfGiving.Controller
         {
             Licitador l = this.licitadores.get(idLicitador);
             return l.GetNome();
+        }
+
+        public List<Notificacao> GetNotificacoesUtilizador(int idLicitador)
+        {
+            Licitador l = this.licitadores.get(idLicitador);
+            return l.GetNotificacoes();
         }
 
     }

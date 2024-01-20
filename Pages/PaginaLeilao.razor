@@ -121,11 +121,14 @@
             .WithUrl("http://localhost:5269/infohub")
             .Build();
 
-        infoHubConnection.On("UpdateAuctionInfo", () =>
+        infoHubConnection.On("UpdateAuctionInfo", (int idLeilao) =>
         {
-            GetOwnLicitacao(); // atualizar própria licitação
-            GetLastLicitacao(); // atualizar última licitação
-            InvokeAsync(StateHasChanged);
+            if (int.Parse(IdLeilao) == idLeilao)
+            {
+                GetOwnLicitacao(); // atualizar própria licitação
+                GetLastLicitacao(); // atualizar última licitação
+                InvokeAsync(StateHasChanged);
+            }       
         });
         
         await infoHubConnection.StartAsync();

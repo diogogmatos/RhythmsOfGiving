@@ -16,6 +16,14 @@ public class InstituicaoUi
         this.logoPath = logoPath;
     }
 
+    public InstituicaoUi(Instituicao instituicao)
+    {
+        this.nome = instituicao.GetNome();
+        this.descricao = instituicao.GetDescricao();
+        this.link = instituicao.GetLink();
+        this.logoPath = instituicao.GetLogoPath();
+    }
+
     public string GetNome()
     {
         return nome;

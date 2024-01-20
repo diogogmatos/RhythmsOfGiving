@@ -196,4 +196,9 @@ public class RhythmsLn : IRhythmsLn
     {
         return subUtilizadores.GetNomeUtilizador(idLicitador);
     }
+
+    public List<Notificacao> GetNotificacoesUtilizador(int idLicitador)
+    {
+        return subUtilizadores.GetNotificacoesUtilizador(idLicitador);
+    }
 }
