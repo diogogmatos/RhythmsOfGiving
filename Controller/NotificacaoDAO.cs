@@ -54,7 +54,8 @@ public class NotificacaoDao{
                                     Convert.ToString(reader["mensagem"]),
                                     Convert.ToInt32(reader["idLicitador"]),
                                     Convert.ToDateTime(reader["dataHora"]),
-                                    Convert.ToInt32(reader["tipo"]));
+                                    Convert.ToInt32(reader["tipo"]),
+                                    Convert.ToInt32(reader["idLeilao"]));
 
                                 return notification;
                             }
@@ -86,14 +87,14 @@ public class NotificacaoDao{
                 // Update the existing record
                 query = "UPDATE Notificação " +
                         "SET titulo = @Titulo, mensagem = @Mensagem, " +
-                        "idLicitador = @IdLicitador, dataHora = @DataHora, tipo = @Tipo " +
+                        "idLicitador = @IdLicitador, dataHora = @DataHora, tipo = @Tipo, idLeilao = @IdLeilao " +
                         "WHERE idNotificacao = @Id";
             }
             else
             {
                 // Insert a new record if the record with the specified id does not exist
-                query = "INSERT INTO Notificação (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo) " +
-                        "VALUES (@Id, @Titulo, @Mensagem, @IdLicitador, @DataHora, @Tipo)";
+                query = "INSERT INTO Notificação (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo, idLeilao) " +
+                        "VALUES (@Id, @Titulo, @Mensagem, @IdLicitador, @DataHora, @Tipo, @IdLeilao)";
             }
 
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -104,6 +105,7 @@ public class NotificacaoDao{
                 command.Parameters.AddWithValue("@IdLicitador", n.GetIdLicitador());
                 command.Parameters.AddWithValue("@DataHora", n.GetDate());
                 command.Parameters.AddWithValue("@Tipo", n.GetTipo());
+                command.Parameters.AddWithValue("@IdLeilao", n.GetIdLeilao());
 
                 command.ExecuteNonQuery();
             }
@@ -155,7 +157,8 @@ public class NotificacaoDao{
                                     Convert.ToString(reader["mensagem"]),
                                     Convert.ToInt32(reader["idLicitador"]),
                                     Convert.ToDateTime(reader["dataHora"]),
-                                    Convert.ToInt32(reader["tipo"]));
+                                    Convert.ToInt32(reader["tipo"]),
+                                    Convert.ToInt32(reader["idLeilao"]));
 
                                 notificacoes.Add(notification);
                             }

@@ -7,12 +7,13 @@ namespace RhythmsOfGiving.Controller {
         private int idLicatdor;
         private DateTime date;
         private int tipo; //0-> ultrapassada, 1-> vencedora, 2-> perdedora Vale a pena Enum??
+        private int idLeilao;
 
         private static int _contadorId = NotificacaoDao.Size();
         
         //Constutor para criar
 
-        public Notificacao(int idNotificacao, string title, string message, int idLicatdor, DateTime date, int tipo)
+        public Notificacao(int idNotificacao, string title, string message, int idLicatdor, DateTime date, int tipo, int idLeilao)
         {
             this.idNotificacao = idNotificacao;
             this.title = title;
@@ -20,9 +21,10 @@ namespace RhythmsOfGiving.Controller {
             this.idLicatdor = idLicatdor;
             this.date = date;
             this.tipo = tipo;
+            this.idLeilao = idLeilao;
         }
 
-        public Notificacao(string title, string message, int idLicatdor, DateTime date, int tipo)
+        public Notificacao(string title, string message, int idLicatdor, DateTime date, int tipo, int idLeilao)
         {
             this.idNotificacao = ++_contadorId;
             this.title = title;
@@ -30,6 +32,7 @@ namespace RhythmsOfGiving.Controller {
             this.idLicatdor = idLicatdor;
             this.date = date;
             this.tipo = tipo;
+            this.idLeilao = idLeilao;
         }
 
 
@@ -60,6 +63,11 @@ namespace RhythmsOfGiving.Controller {
         public int GetTipo()
         {
             return tipo;
+        }
+
+        public int GetIdLeilao()
+        {
+            return idLeilao;
         }
     }
 }

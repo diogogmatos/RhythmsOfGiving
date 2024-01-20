@@ -32,9 +32,9 @@ public class RhythmsLn : IRhythmsLn
         subUtilizadores.AdicionarLicitacao(idLicitacao, idLicitador);
     }
 
-    public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo)
+    public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo, int idLeilao)
     {
-        return subUtilizadores.CriarNotificacaoUltrapassada(idLicitador, titulo);
+        return subUtilizadores.CriarNotificacaoUltrapassada(idLicitador, titulo, idLeilao);
     }
 
     public Dictionary<int, Notificacao> CriarNotificacaoPerdedora(HashSet<int> idLicitadores, int idLeilao, string titulo, float valor)

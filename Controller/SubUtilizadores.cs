@@ -76,10 +76,10 @@ namespace RhythmsOfGiving.Controller
             //throw new NotImplementedException();
         }
 
-        public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo)
+        public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo, int idLeilao)
         {
             Licitador l = this.licitadores.get(idLicitador); 
-            return l.CriarNotificacaoUltrapassada(titulo);
+            return l.CriarNotificacaoUltrapassada(titulo, idLeilao);
             //throw new NotImplementedException();
         }
         

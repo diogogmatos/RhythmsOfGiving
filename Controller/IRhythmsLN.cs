@@ -44,7 +44,7 @@ public interface IRhythmsLn
     //Notificação Nova Licitação
     public Licitacao ProcurarLicitacaoAtual(int idLeilao);
 
-    public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo);
+    public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo, int idLeilao);
 
 
     //Notificações Fim Leilão
