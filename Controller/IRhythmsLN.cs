@@ -20,7 +20,7 @@ public interface IRhythmsLn
 
     
     //Alterar  informações pessoais
-    public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCc, string novaPalavraPasse);
+    public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int novoNumeroCc, string novaPalavraPasse);
 
     
     //Ver leilões ativos e filtrá-los
