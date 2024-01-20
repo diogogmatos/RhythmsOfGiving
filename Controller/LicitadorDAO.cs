@@ -23,7 +23,29 @@ namespace RhythmsOfGiving.Controller
 
         public static int size()
         {
-            return 0; // depois usar a query necessária
+            
+            int totalRows = 0;
+
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) AS TotalRows FROM Licitador";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        totalRows = Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return totalRows;
         }
 
     internal Licitador get(string email)
@@ -103,15 +125,13 @@ namespace RhythmsOfGiving.Controller
         return null;
     }
 
-        public Licitador get(int id)
+             public Licitador get(int id)
         {
-         
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try
                 {
-
                     string sql = "SELECT * FROM Licitador WHERE id = @Id";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
@@ -134,32 +154,36 @@ namespace RhythmsOfGiving.Controller
                                 HashSet<int> minhasLicitacoes = new HashSet<int>();
                                 HashSet<int> minhasFaturas = new HashSet<int>();
 
+                                // Close the first SqlDataReader before executing the next query
+                                reader.Close();
 
-
-                                string sql2 = "SELECT * FROM Licitacao  WHERE  idLicitador= @IdLicitador ";
+                                string sql2 = "SELECT * FROM Licitacao  WHERE  Licitacao.idLicitador = @IdLicitador ";
                                 using (SqlCommand command2 = new SqlCommand(sql2, connection))
                                 {
-                                    command2.Parameters.AddWithValue("@IdLicitador", idLicitador);
+                                    command2.Parameters.AddWithValue("@IdLicitador", id);
 
                                     using (SqlDataReader readerLicitacao = command2.ExecuteReader())
                                     {
-                                        while (reader.Read())
+                                        while (readerLicitacao.Read())
                                         {
-                                            minhasLicitacoes.Add(Convert.ToInt32(readerLicitacao["idLicitador"]));
+                                            minhasLicitacoes.Add(Convert.ToInt32(readerLicitacao["id"]));
                                         }
                                     }
                                 }
 
+                                // Close the second SqlDataReader before executing the next query
+                                reader.Close();
+
                                 string sql3 = "SELECT * FROM Fatura WHERE idLicitador= @IdLicitador ";
                                 using (SqlCommand command3 = new SqlCommand(sql3, connection))
                                 {
-                                    command3.Parameters.AddWithValue("@IdLicitador", idLicitador);
+                                    command3.Parameters.AddWithValue("@IdLicitador", id);
 
                                     using (SqlDataReader readerFatura = command3.ExecuteReader())
                                     {
-                                        while (reader.Read())
+                                        while (readerFatura.Read())
                                         {
-                                            minhasFaturas.Add(Convert.ToInt32(readerFatura["idLicitador"]));
+                                            minhasFaturas.Add(Convert.ToInt32(readerFatura["id"]));
                                         }
                                     }
                                 }
@@ -177,10 +201,11 @@ namespace RhythmsOfGiving.Controller
                 {
                     throw new LicitadorNaoExisteException("O licitador com o id " + id + " não existe!");
                 }
-
             }
+
             return null;
         }
+
 
        internal void put(string email, Licitador licitador)
         {
@@ -195,6 +220,7 @@ namespace RhythmsOfGiving.Controller
                                           "ON target.Email = source.Email " +
                                           "WHEN MATCHED THEN " +
                                           "    UPDATE SET " +
+                                          "        id = @Id, " +
                                           "        nome = @Nome, " +
                                           "        palavraPasse = @PalavraPasse, " +
                                           "        dataNascimento = @DataNascimento, " +
@@ -202,11 +228,13 @@ namespace RhythmsOfGiving.Controller
                                           "        nif = @Nif, " +
                                           "        numeroCC = @NumeroCC " +
                                           "WHEN NOT MATCHED THEN " +
-                                          "    INSERT (nome, palavraPasse, dataNascimento, nrCartao, nif, numeroCC, email) " +
-                                          "    VALUES (@Nome, @PalavraPasse, @DataNascimento, @NrCartao, @Nif, @NumeroCC, @Email);";
+                                          "    INSERT (id, nome, palavraPasse, dataNascimento, nrCartao, nif, numeroCC, email) " +
+                                          "    VALUES (@Id, @Nome, @PalavraPasse, @DataNascimento, @NrCartao, @Nif, @NumeroCC, @Email);";
+
 
                         using (SqlCommand updateCommand = new SqlCommand(mergeSql, connection))
                         {
+                            updateCommand.Parameters.AddWithValue("@id", licitador.getIdLicitador());
                             updateCommand.Parameters.AddWithValue("@Nome", licitador.getNome());
                             updateCommand.Parameters.AddWithValue("@PalavraPasse", licitador.getPalavraPasse());
                             updateCommand.Parameters.AddWithValue("@DataNascimento", new DateTime(licitador.getDataNascimento().Year, licitador.getDataNascimento().Month, licitador.getDataNascimento().Day));
@@ -239,6 +267,7 @@ namespace RhythmsOfGiving.Controller
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@NovoNumeroCC", novoNumeroCC);
                         int count = (int)command.ExecuteScalar();
 
                         numeroCCUnico = count == 0;

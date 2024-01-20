@@ -75,8 +75,9 @@ namespace RhythmsOfGiving.Controller{
                         if (licitadores.VerificarUnicoNumeroCC(novoNumeroCC))
                         {
                             l.setNcc(novoNumeroCC);
-                        }
+            
                         licitadores.put(l.getEmail(), l);
+                          }
 
                     }
                     else
