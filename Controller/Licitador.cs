@@ -338,7 +338,7 @@ public class Licitador{
 
         public List<Notificacao> GetNotificacoes()
         {
-            return notificacaoDao.getNotificacoesLicitador(idLicitador);
+            return notificacaoDao.getNotificacoesLicitador(this.idLicitador);
         }
 }
 }

@@ -48,82 +48,83 @@ namespace RhythmsOfGiving.Controller
             return totalRows;
         }
 
-    internal Licitador Get(string email)
-    {
-        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+        internal Licitador Get(string email)
         {
-            connection.Open();
-            try
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
-
-                string sql = "SELECT * FROM Licitador WHERE email = @Email";
-
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                connection.Open();
+                try
                 {
-                    command.Parameters.AddWithValue("@Email", email);
+                    string sql = "SELECT * FROM Licitador WHERE email = @Email";
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        if (reader.Read())
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            int idLicitador = Convert.ToInt32(reader["id"]);
-                            String nome = Convert.ToString(reader["nome"]);
-                            String palavraPasse = Convert.ToString(reader["palavraPasse"]);
-                            DateOnly dataNascimento =
-                                DateOnly.FromDateTime(Convert.ToDateTime(reader["dataNascimento"]));
-                            int nrCartao = Convert.ToInt32(reader["nrCartao"]);
-                            int nif = Convert.ToInt32(reader["nif"]);
-                            Int64 nCc = Convert.ToInt64(reader["numeroCC"]);
-                            HashSet<int> minhasLicitacoes = new HashSet<int>();
-                            HashSet<int> minhasFaturas = new HashSet<int>();
-
-
-
-                            string sql2 = "SELECT * FROM Licitacao  WHERE  idLicitador= @IdLicitador ";
-                            using (SqlCommand command2 = new SqlCommand(sql2, connection))
+                            if (reader.Read())
                             {
-                                command2.Parameters.AddWithValue("@IdLicitador", idLicitador);
+                                int idLicitador = Convert.ToInt32(reader["id"]);
+                                String nome = Convert.ToString(reader["nome"]);
+                                String palavraPasse = Convert.ToString(reader["palavraPasse"]);
+                                DateOnly dataNascimento = DateOnly.FromDateTime(Convert.ToDateTime(reader["dataNascimento"]));
+                                int nrCartao = Convert.ToInt32(reader["nrCartao"]);
+                                int nif = Convert.ToInt32(reader["nif"]);
+                                Int64 nCc = Convert.ToInt64(reader["numeroCC"]);
+                                HashSet<int> minhasLicitacoes = new HashSet<int>();
+                                HashSet<int> minhasFaturas = new HashSet<int>();
 
-                                using (SqlDataReader readerLicitacao = command2.ExecuteReader())
+                                reader.Close();
+
+                                string sql2 = "SELECT * FROM Licitacao WHERE idLicitador = @IdLicitador";
+                                using (SqlCommand command2 = new SqlCommand(sql2, connection))
                                 {
-                                    while (reader.Read())
+                                    command2.Parameters.AddWithValue("@IdLicitador", idLicitador);
+
+                                    using (SqlDataReader readerLicitacao = command2.ExecuteReader())
                                     {
-                                        minhasLicitacoes.Add(Convert.ToInt32(readerLicitacao["idLicitador"]));
+                                        while (readerLicitacao.Read())
+                                        {
+                                            minhasLicitacoes.Add(Convert.ToInt32(readerLicitacao["id"]));
+                                        }
                                     }
                                 }
-                            }
 
-                            string sql3 = "SELECT * FROM Fatura WHERE idLicitador= @IdLicitador ";
-                            using (SqlCommand command3 = new SqlCommand(sql3, connection))
-                            {
-                                command3.Parameters.AddWithValue("@IdLicitador", idLicitador);
+                                // Close the second SqlDataReader before executing the next query
+                                reader.Close();
 
-                                using (SqlDataReader readerFatura = command3.ExecuteReader())
+                                string sql3 = "SELECT * FROM Fatura WHERE idLicitador = @IdLicitador";
+                                using (SqlCommand command3 = new SqlCommand(sql3, connection))
                                 {
-                                    while (reader.Read())
+                                    command3.Parameters.AddWithValue("@IdLicitador", idLicitador);
+
+                                    using (SqlDataReader readerFatura = command3.ExecuteReader())
                                     {
-                                        minhasFaturas.Add(Convert.ToInt32(readerFatura["idLicitador"]));
+                                        while (readerFatura.Read())
+                                        {
+                                            minhasFaturas.Add(Convert.ToInt32(readerFatura["id"]));
+                                        }
                                     }
                                 }
+
+                                Licitador licitador = new Licitador(idLicitador, nome, palavraPasse, dataNascimento,
+                                    nrCartao, email, nif, nCc, minhasLicitacoes, minhasFaturas);
+
+                                return licitador;
                             }
-
-                            Licitador licitador = new Licitador(idLicitador, nome, palavraPasse, dataNascimento,
-                                nrCartao, email, nif,
-                                nCc, minhasLicitacoes, minhasFaturas);
-
-                            return licitador;
                         }
                     }
                 }
+                catch
+                {
+                    throw new LicitadorNaoExisteException($"O licitador com o email '{email}' não existe!");
+                }
             }
-            catch
-            {
-                throw new LicitadorNaoExisteException($"O licitador com o email '{email}' não existe!");
-            }
+
+            return null;
         }
 
-        return null;
-    }
              public Licitador get(int id)
         {
             using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
@@ -303,5 +304,92 @@ namespace RhythmsOfGiving.Controller
             }
             return keySet;
         }
+        
+        public static int SizeAdmin()
+        {
+            int totalRows = 0;
+
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) AS TotalRows FROM Administrador";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        totalRows = Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return totalRows;
+        }
+        
+        public Administrador GetAdmin(int idAdmin)
+        {
+            Administrador a = null;
+
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id, palavraPasse, email FROM Administrador WHERE id = @IdAdmin";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@IdAdmin", idAdmin);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                {
+                                    int id = reader.GetInt32(reader.GetOrdinal("id"));
+                                    string palavraPasse = reader.GetString(reader.GetOrdinal("palavraPasse"));
+                                    string email = reader.GetString(reader.GetOrdinal("email"));
+                                    
+                                    a = new Administrador(id, palavraPasse, email);
+                                    // Preencha outros campos do objeto GeneroMusical conforme necessário
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções conforme necessário (registre, relance, etc.)
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return a;
+        }
+
+        //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
+        public Dictionary<int, Administrador> preencherAdmins()
+        {
+            int tamanho = LicitadorDao.SizeAdmin();
+            Dictionary<int, Administrador> resultado = new Dictionary<int, Administrador>();
+
+            for (int i = 0; i < tamanho; i++)
+            {
+                Administrador a = this.GetAdmin(i+1);
+                resultado.Add(i+1, a);
+                    
+            }
+
+            return resultado;
+        }
+        
     }
+    
+    
 }
