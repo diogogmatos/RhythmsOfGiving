@@ -42,6 +42,7 @@ public class UiService
     public float GetUltimaLicitacaoLeilao(string email, int idLeilao)
     {
         return 8543.92f;
+        //return rhythmsLn.GetValorFimLeilao(idLeilao);
     }
     
     private int shortDescSize = 100;
