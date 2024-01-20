@@ -9,7 +9,7 @@ namespace RhythmsOfGiving.Controller
         public SubUtilizadores()
         {
             this.licitadores = LicitadorDao.GetInstance();
-            this.administradores = new Dictionary<int, Administrador>();
+            this.administradores = this.licitadores.preencherAdmins();
             //preencher o map administradores
             //ver classe SubServicos no trabalho DSS para ajudar
         }

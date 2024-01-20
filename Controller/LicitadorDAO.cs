@@ -303,5 +303,92 @@ namespace RhythmsOfGiving.Controller
             }
             return keySet;
         }
+        
+        public static int SizeAdmin()
+        {
+            int totalRows = 0;
+
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) AS TotalRows FROM Administrador";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        totalRows = Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return totalRows;
+        }
+        
+        public Administrador GetAdmin(int idAdmin)
+        {
+            Administrador a = null;
+
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id, palavraPasse, email FROM Administrador WHERE id = @IdAdmin";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@IdAdmin", idAdmin);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                {
+                                    int id = reader.GetInt32(reader.GetOrdinal("id"));
+                                    string palavraPasse = reader.GetString(reader.GetOrdinal("palavraPasse"));
+                                    string email = reader.GetString(reader.GetOrdinal("email"));
+                                    
+                                    a = new Administrador(id, palavraPasse, email);
+                                    // Preencha outros campos do objeto GeneroMusical conforme necessário
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Trate exceções conforme necessário (registre, relance, etc.)
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+
+            return a;
+        }
+
+        //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
+        public Dictionary<int, Administrador> preencherAdmins()
+        {
+            int tamanho = LicitadorDao.SizeAdmin();
+            Dictionary<int, Administrador> resultado = new Dictionary<int, Administrador>();
+
+            for (int i = 0; i < tamanho; i++)
+            {
+                Administrador a = this.GetAdmin(i+1);
+                resultado.Add(i+1, a);
+                    
+            }
+
+            return resultado;
+        }
+        
     }
+    
+    
 }
