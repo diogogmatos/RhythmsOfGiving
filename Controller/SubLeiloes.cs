@@ -351,7 +351,7 @@ namespace RhythmsOfGiving.Controller
             foreach (GeneroMusical genero in generos.Values)
             {
                 string nomeDoGenero = genero.GetNome();
-                nomesDosGeneros.Add(nomeDoGenero);
+                nomes.Add(nomeDoGenero);
             }
 
             return nomes;
@@ -359,7 +359,18 @@ namespace RhythmsOfGiving.Controller
 
         public List<string> GetNomesArtistasMusicais()
         {
-            throw new NotImplementedException();
+            
+            List<string> nomes = new List<string>();
+
+            foreach (int idartista in artistaDao.keySet())
+            {
+                Artista artista = this.artistaDao.Get(idartista);
+                string nome = artista.GetNome();
+                nomes.Add(nome);
+            }
+
+            return nomes;
+            
         }
 
     }
