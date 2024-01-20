@@ -5,30 +5,30 @@ using System.Data.SqlClient;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class FaturaDao
+    public class FaturaDAO
     {
 
-        private static FaturaDao? _singleton = null;
+        private static FaturaDAO? singleton = null;
 
-        private FaturaDao()
+        private FaturaDAO()
         {
         }
 
-        public static FaturaDao GetInstance()
+        public static FaturaDAO getInstance()
         {
-            if (_singleton == null)
+            if (singleton == null)
             {
-                _singleton = new FaturaDao();
+                singleton = new FaturaDAO();
             }
 
-            return _singleton;
+            return singleton;
         }
         
-        public static int Size()
+        public static int size()
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -50,16 +50,16 @@ namespace RhythmsOfGiving.Controller
             return totalRows;
         }
         
-        public Fatura Get(int id){
+        public Fatura get(int id){
             Fatura fatura = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
             {
                 try
                 {
                     connection.Open();
 
-                    string query = "SELECT Fatura.* , Licitador.id AS LicitadorID Licitador.nif AS Nif, Licitador.nome AS NomeL " +
+                    string query = "SELECT Fatura.* , Licitador.id AS LicitadorID , Licitador.nif AS Nif, Licitador.nome AS NomeL " +
                                    "FROM Fatura " +
                                    "INNER JOIN Licitador ON Licitador.id = Fatura.idLicitador " +
                                    "WHERE Fatura.id = @IdFatura";
@@ -97,11 +97,11 @@ namespace RhythmsOfGiving.Controller
             return fatura;
         } 
 
-        public Fatura Put (int id, Fatura f)
+        public Fatura put (int id, Fatura f)
         { 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -116,11 +116,11 @@ namespace RhythmsOfGiving.Controller
 
                     using (SqlCommand cmd = new SqlCommand(sql, connection))
                     {
-                        cmd.Parameters.AddWithValue("@IdFatura", f.GetIdFatura());
-                        cmd.Parameters.AddWithValue("@DataHora", f.GetDataHoraEmissao());
-                        cmd.Parameters.AddWithValue("@IdLicitador", f.GetIdLicitador());
-                        cmd.Parameters.AddWithValue("@IdLicitacao", f.GetIdLicitacao());
-                        cmd.Parameters.AddWithValue("@IdInstituicao", f.GetIdInstituicao());
+                        cmd.Parameters.AddWithValue("@IdFatura", f.getIdFatura());
+                        cmd.Parameters.AddWithValue("@DataHora", f.getDataHoraEmissao());
+                        cmd.Parameters.AddWithValue("@IdLicitador", f.getIdLicitador());
+                        cmd.Parameters.AddWithValue("@IdLicitacao", f.getIdLicitacao());
+                        cmd.Parameters.AddWithValue("@IdInstituicao", f.getIdInstituicao());
 
                         cmd.Parameters.AddWithValue("@Id", id);
 
