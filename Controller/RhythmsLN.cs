@@ -184,6 +184,6 @@ public class RhythmsLn : IRhythmsLn
 
     public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
     {
-        return GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
+        return subUtilizadores.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
     }
 }
