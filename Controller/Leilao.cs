@@ -283,7 +283,7 @@ public abstract class Leilao
             }
         }
         return resultado;*/
-        return valorAtual
+        return valorAtual;
     }
 
     public HashSet<int> GetLicitadores()

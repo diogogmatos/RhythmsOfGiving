@@ -206,12 +206,6 @@ public class Licitador{
             this.nCc == other.nCc);
     }
 
-        internal void SetDataNascimento(DateTime novaDataNascimento)
-        {
-            this.dataNascimento = novaDataNascimento
-            //throw new NotImplementedException();
-        }
-
         public Notificacao CriarNotificacaoUltrapassada(string titulo)
         {
             DateTime data = DateTime.Now;

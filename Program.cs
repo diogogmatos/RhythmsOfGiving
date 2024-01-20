@@ -33,9 +33,9 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 app.MapHub<InfoHub>("infohub");
 
-app.MapPost("broadcast-auction-update", async (IHubContext<InfoHub, IInfoHub> context) =>
+app.MapPost("broadcast-auction-update", async (IHubContext<InfoHub, IInfoHub> context, int idLeilao) =>
 {
-    await context.Clients.All.UpdateAuctionInfo();
+    await context.Clients.All.UpdateAuctionInfo(idLeilao);
 
     return Results.NoContent();
 });

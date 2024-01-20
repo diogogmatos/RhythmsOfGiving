@@ -22,7 +22,7 @@ public class RhythmsLn : IRhythmsLn
         return subUtilizadores.ValidarAutenticacao(email, palavraPasse);
     }
 
-    public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
+    public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
     {
         subUtilizadores.AlterarInfosPessoais(email, novoNome, novaDataNascimento, novoNumeroCc, novaPalavraPasse);
     }
@@ -189,7 +189,7 @@ public class RhythmsLn : IRhythmsLn
 
     public Leilao GetLeilaoById(int id)
     {
-        return subLeiloes.GetLeilaoById(int id);
+        return subLeiloes.GetLeilaoById(id);
     }
 
     public string GetNomeUtilizador(int idLicitador)

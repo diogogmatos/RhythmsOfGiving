@@ -41,17 +41,19 @@ namespace RhythmsOfGiving.Controller
         }
 
         
-        public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
+        public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
         {
             Licitador l = licitadores.Get(email);
             l.SetNome(novoNome);
             l.SetPalavraPasse(novaPalavraPasse);
 
+            DateOnly idadeAdulta = novaDataNascimento.AddYears(18);
+            DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Now);
 
             // Check if the person is at least 18 years old
-            if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
+            if (dataAtual >= idadeAdulta)
             {
-                l.SetDataNascimento(novaDataNascimento);
+                l.SetDataNascimento(DateOnly.FromDateTime(novaDataNascimento));
                         // Ver se é necessario
                         if (licitadores.VerificarUnicoNumeroCc(novoNumeroCc))
                         {
