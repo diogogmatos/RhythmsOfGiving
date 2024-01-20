@@ -42,7 +42,7 @@ namespace RhythmsOfGiving.Controller
         }
 
         
-        public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
+        public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int nrCredito, string novaPalavraPasse)
         {
             Licitador l = licitadores.Get(email);
             l.SetNome(novoNome);
@@ -55,13 +55,10 @@ namespace RhythmsOfGiving.Controller
             if (dataAtual >= idadeAdulta)
             {
                 l.SetDataNascimento(novaDataNascimento);
-                        // Ver se é necessario
-                        if (licitadores.VerificarUnicoNumeroCc(novoNumeroCc))
-                        {
-                            l.SetNcc(novoNumeroCc);
+                l.SetNrCartao(nrCredito);
             
-                        licitadores.put(l.GetEmail(), l);
-                          }
+                licitadores.put(l.GetEmail(), l);
+                
             }
             else
             {

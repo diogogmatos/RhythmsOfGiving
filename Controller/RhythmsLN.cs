@@ -22,9 +22,9 @@ public class RhythmsLn : IRhythmsLn
         return subUtilizadores.ValidarAutenticacao(email, palavraPasse);
     }
 
-    public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
+    public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int nrCredito, string novaPalavraPasse)
     {
-        subUtilizadores.AlterarInfosPessoais(email, novoNome, novaDataNascimento, novoNumeroCc, novaPalavraPasse);
+        subUtilizadores.AlterarInfosPessoais(email, novoNome, novaDataNascimento, nrCredito, novaPalavraPasse);
     }
 
     public void AdicionarLicitacao(int idLicitacao, int idLicitador)
