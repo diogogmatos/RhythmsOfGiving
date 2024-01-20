@@ -129,4 +129,48 @@ public class NotificacaoDao{
     }
 
 
+    public List<Notificacao> getNotificacoesLicitador(int idLicitador)
+    {
+        List<Notificacao> notificacoes = new List<Notificacao>();
+
+        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            {
+                connection.Open();
+                try
+                {
+
+                    string query = "SELECT * FROM Notificação WHERE idLicitador = @Id";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", idLicitador);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Notificacao notification = new Notificacao(
+                                    Convert.ToInt32(reader["idNotificacao"]),
+                                    Convert.ToString(reader["titulo"]),
+                                    Convert.ToString(reader["mensagem"]),
+                                    Convert.ToInt32(reader["idLicitador"]),
+                                    Convert.ToDateTime(reader["dataHora"]),
+                                    Convert.ToInt32(reader["tipo"]));
+
+                                notificacoes.Add(notification);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Lidar com exceções, se necessário
+                    Console.WriteLine("Erro ao obter notificações: " + ex.Message);
+                }
+            }
+
+            return notificacoes;
+    }
+
+
 }

@@ -126,6 +126,7 @@ public class UiService
     // notificações
 
     // TODO: Sem método necessário na LN
+    //Já há método GetNotificacoesUtilizador mas devolve Notificacao e não NotificacaoUi e recebe idLicitador
     public List<NotificacaoUi> GetNotificacoesUtilizador(string email)
     {
         List<NotificacaoUi> notificacoes = new List<NotificacaoUi>();
