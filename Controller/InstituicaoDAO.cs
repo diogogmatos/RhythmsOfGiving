@@ -106,8 +106,11 @@ namespace RhythmsOfGiving.Controller
             int idAdmin = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
             return new Instituicao(id,nome,descricao,logoPath,link,iban,idAdmin);
         }
+        else
+        {
 
-        return null; // Retorna null se a instituição não for encontrada
+            return null; // Retorna null se a instituição não for encontrada
+        }
     }
 
     public Instituicao put(int id, Instituicao instituicao)
@@ -118,16 +121,16 @@ namespace RhythmsOfGiving.Controller
             connection.Open();
                 
             string sql = "MERGE INTO Instituicao AS target " +
-                         "USING (VALUES (@IdInstituicao, @Nome, @Descricao, @Logotipo, @Hiperligacao, @IdAdmin)) " +
-                         "AS source (id, nome, descricao, logotipo, hiperligacao, idAdmin) " +
+                         "USING (VALUES (@IdInstituicao, @Nome, @Descricao, @Logotipo, @Hiperligacao, @IdAdmin, @Iban)) " +
+                         "AS source (id, nome, descricao, logotipo, hiperligacao, idAdministrador, iban) " +
                          "ON target.id = @Id " +
                          "WHEN MATCHED THEN " +
-                         " UPDATE SET nome = source.nome, descricao = source.descricao, logotipo = source.logotipo, hiperligacao = source.hiperligacao," +
-                         " idAdministrador = source.idAdministrador " +
+                         " UPDATE SET nome = source.nome, descricao = source.descricao, logotipo = source.logotipo, hiperligacao = source.hiperligacao, " +
+                         " idAdministrador = source.idAdministrador, iban = source.iban " +
                          "WHEN NOT MATCHED THEN " +
-                         " INSERT (id, nome, descricao, logotipo, hiperligacao, idAdministrador) VALUES (source.id, source.nome, source.descricao, " +
-                         "source.logotipo, source.hiperligacao, source.idAdministrador);";
-
+                         " INSERT (id, nome, descricao, logotipo, hiperligacao, idAdministrador, iban) VALUES (source.id, source.nome, source.descricao, " +
+                         " source.logotipo, source.hiperligacao, source.idAdministrador, source.iban);";
+    
             using (SqlCommand cmd = new SqlCommand(sql, connection))
             {
                 cmd.Parameters.AddWithValue("@IdInstituicao", instituicao.getId());
@@ -136,7 +139,7 @@ namespace RhythmsOfGiving.Controller
                 cmd.Parameters.AddWithValue("@Logotipo", instituicao.getLogoPath());
                 cmd.Parameters.AddWithValue("@Hiperligacao", instituicao.getLink());
                 cmd.Parameters.AddWithValue("@IdAdmin", instituicao.getIdAdmin());
-                    
+                cmd.Parameters.AddWithValue("@Iban", instituicao.getIban());
                 cmd.Parameters.AddWithValue("@Id", id);
                     
 
