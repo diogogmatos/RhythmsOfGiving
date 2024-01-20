@@ -129,9 +129,9 @@ public class NotificacaoDao{
     }
 
 
-    public List<Notificacao> getNotificacoesLicitador(idLicitador)
+    public List<Notificacao> getNotificacoesLicitador(int idLicitador)
     {
-        List<Notificacao> notificacoes = new List<Notificacao>;
+        List<Notificacao> notificacoes = new List<Notificacao>();
 
         using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
@@ -162,7 +162,7 @@ public class NotificacaoDao{
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     // Lidar com exceções, se necessário
                     Console.WriteLine("Erro ao obter notificações: " + ex.Message);
