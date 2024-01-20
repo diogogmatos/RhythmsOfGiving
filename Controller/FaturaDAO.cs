@@ -5,30 +5,30 @@ using System.Data.SqlClient;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class FaturaDAO
+    public class FaturaDao
     {
 
-        private static FaturaDAO? singleton = null;
+        private static FaturaDao? _singleton = null;
 
-        private FaturaDAO()
+        private FaturaDao()
         {
         }
 
-        public static FaturaDAO getInstance()
+        public static FaturaDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new FaturaDAO();
+                _singleton = new FaturaDao();
             }
 
-            return singleton;
+            return _singleton;
         }
         
-        public static int size()
+        public static int Size()
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -50,10 +50,10 @@ namespace RhythmsOfGiving.Controller
             return totalRows;
         }
         
-        public Fatura get(int id){
+        public Fatura Get(int id){
             Fatura fatura = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
             {
                 try
                 {
@@ -97,11 +97,11 @@ namespace RhythmsOfGiving.Controller
             return fatura;
         } 
 
-        public Fatura put (int id, Fatura f)
+        public Fatura Put (int id, Fatura f)
         { 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -116,11 +116,11 @@ namespace RhythmsOfGiving.Controller
 
                     using (SqlCommand cmd = new SqlCommand(sql, connection))
                     {
-                        cmd.Parameters.AddWithValue("@IdFatura", f.getIdFatura());
-                        cmd.Parameters.AddWithValue("@DataHora", f.getDataHoraEmissao());
-                        cmd.Parameters.AddWithValue("@IdLicitador", f.getIdLicitador());
-                        cmd.Parameters.AddWithValue("@IdLicitacao", f.getIdLicitacao());
-                        cmd.Parameters.AddWithValue("@IdInstituicao", f.getIdInstituicao());
+                        cmd.Parameters.AddWithValue("@IdFatura", f.GetIdFatura());
+                        cmd.Parameters.AddWithValue("@DataHora", f.GetDataHoraEmissao());
+                        cmd.Parameters.AddWithValue("@IdLicitador", f.GetIdLicitador());
+                        cmd.Parameters.AddWithValue("@IdLicitacao", f.GetIdLicitacao());
+                        cmd.Parameters.AddWithValue("@IdInstituicao", f.GetIdInstituicao());
 
                         cmd.Parameters.AddWithValue("@Id", id);
 

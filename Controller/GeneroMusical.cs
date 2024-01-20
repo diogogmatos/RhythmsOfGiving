@@ -9,12 +9,12 @@ namespace RhythmsOfGiving.Controller
         private string nome;
         private int idAdmin;
         
-        private static int contadorGeneros = 0;
+        private static int _contadorGeneros = 0;
         
         //Construtor
         public GeneroMusical(string nome, int idAdmin)
         {
-            this.idGenero = ++contadorGeneros;
+            this.idGenero = ++_contadorGeneros;
             this.nome = nome;
             this.idAdmin = idAdmin;
         }
@@ -26,32 +26,32 @@ namespace RhythmsOfGiving.Controller
             this.idAdmin = idAdmin;
         }
 
-        public int getIdGenero()
+        public int GetIdGenero()
         {
             return this.idGenero;
         }
 
-        public string getNome()
+        public string GetNome()
         {
             return this.nome;
         }
 
-        public int getIdAdmin()
+        public int GetIdAdmin()
         {
             return this.idAdmin;
         }
 
-        public void setIdGenero(int id)
+        public void SetIdGenero(int id)
         {
             this.idGenero = id;
         }
 
-        public void setNome(string nome)
+        public void SetNome(string nome)
         {
             this.nome = nome;
         }
 
-        public void setIdAdmin(int idAdmin)
+        public void SetIdAdmin(int idAdmin)
         {
             this.idAdmin = idAdmin;
         }
@@ -80,9 +80,9 @@ namespace RhythmsOfGiving.Controller
             GeneroMusical other = (GeneroMusical)obj;
 
             // Verifica a igualdade dos atributos
-            return (this.idGenero == other.getIdGenero() &&
-                    this.nome.Equals(other.getNome()) &&
-                    this.idAdmin == other.getIdAdmin());
+            return (this.idGenero == other.GetIdGenero() &&
+                    this.nome.Equals(other.GetNome()) &&
+                    this.idAdmin == other.GetIdAdmin());
         }
         
     }

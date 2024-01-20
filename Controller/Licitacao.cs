@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 
+namespace RhythmsOfGiving.Controller;
 
 public class Licitacao : IComparable<Licitacao>
 {
@@ -11,7 +12,7 @@ public class Licitacao : IComparable<Licitacao>
     private int idLeilao;
     private int idLicitador;
 
-    private static int contadorID = LicitacaoDAO.size();
+    private static int _contadorId = LicitacaoDao.Size();
     
     //Para o get
     public Licitacao(int idLicitacao, DateTime dataHora, float valor, int idLeilao, int idLicitador)
@@ -26,7 +27,7 @@ public class Licitacao : IComparable<Licitacao>
     //Para criar
     public Licitacao(DateTime dataHora, float valor, int idLeilao, int idLicitador)
     {
-        this.idLicitacao = ++contadorID;
+        this.idLicitacao = ++_contadorId;
         this.dataHora = dataHora;
         this.valor = valor;
         this.idLeilao = idLeilao;

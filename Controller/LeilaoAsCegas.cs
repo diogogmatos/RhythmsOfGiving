@@ -3,11 +3,11 @@ namespace RhythmsOfGiving.Controller
 {
     public class LeilaoAsCegas : Leilao
     {
-        const int tipo = 0;
+        const int Tipo = 0;
 
         public override int GetTipo()
         {
-            return tipo;
+            return Tipo;
         }
 
         //Construtor get

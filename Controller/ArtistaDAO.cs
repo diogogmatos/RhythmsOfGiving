@@ -2,23 +2,23 @@ using System.Data.SqlClient;
 using System.Drawing;
 
 namespace RhythmsOfGiving.Controller{
-public class ArtistaDAO{
-    private static ArtistaDAO? singleton = null;
-        private ArtistaDAO() { }
+public class ArtistaDao{
+    private static ArtistaDao? _singleton = null;
+        private ArtistaDao() { }
 
-        public static ArtistaDAO getInstance()
+        public static ArtistaDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new ArtistaDAO();
+                _singleton = new ArtistaDao();
             }
-            return singleton;
+            return _singleton;
         }
 
-        public static int size(){
+        public static int Size(){
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -40,11 +40,11 @@ public class ArtistaDAO{
             return totalRows;
         }
         
-       public Artista get(int idArtista){
+       public Artista Get(int idArtista){
            
            Artista artista = null;
 
-           using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
            {
                try
                {
@@ -87,9 +87,9 @@ public class ArtistaDAO{
            return artista;
        } 
 
-       public Artista put (int id, Artista a)
+       public Artista Put (int id, Artista a)
        {
-           using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
            {
                connection.Open();
                 
@@ -104,10 +104,10 @@ public class ArtistaDAO{
 
                using (SqlCommand cmd = new SqlCommand(sql, connection))
                {
-                   cmd.Parameters.AddWithValue("@IdArtista", a.getIdArtista());
-                   cmd.Parameters.AddWithValue("@Imagem", a.getImagem());
-                   cmd.Parameters.AddWithValue("@Nome", a.getNome());
-                   cmd.Parameters.AddWithValue("@IdAdmin", a.getIdAdmin());
+                   cmd.Parameters.AddWithValue("@IdArtista", a.GetIdArtista());
+                   cmd.Parameters.AddWithValue("@Imagem", a.GetImagem());
+                   cmd.Parameters.AddWithValue("@Nome", a.GetNome());
+                   cmd.Parameters.AddWithValue("@IdAdmin", a.GetIdAdmin());
                     
                    cmd.Parameters.AddWithValue("@Id", id);
                     
@@ -119,36 +119,26 @@ public class ArtistaDAO{
            return a;
        }
 
-       public bool existeArtista(string nome)
+       public bool ExisteArtista(string nome)
        {
-           using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
            {
-               try
-               {
-                   connection.Open();
+               connection.Open();
 
-                   string query = "SELECT COUNT(*) FROM Artista WHERE nome = @Nome";
+               string query = "SELECT COUNT(*) FROM Artista WHERE nome = @Nome";
                 
-                   using (SqlCommand command = new SqlCommand(query, connection))
-                   {
-                       command.Parameters.AddWithValue("@Nome", nome);
-
-                       int count = Convert.ToInt32(command.ExecuteScalar());
-
-                       if (count > 0)
-                       {
-                           return true; // já existe artista na base de dados
-                       }
-                       else
-                       {
-                           return false; // Não existe
-                       }
-                   }
-               }
-               catch (Exception ex)
+               using (SqlCommand command = new SqlCommand(query, connection))
                {
-                   // Trate a exceção conforme necessário, ou apenas a lance novamente.
-                   throw;
+                   command.Parameters.AddWithValue("@Nome", nome);
+
+                   int count = Convert.ToInt32(command.ExecuteScalar());
+
+                   if (count > 0)
+                   {
+                       return true; // já existe artista na base de dados
+                   }
+
+                   return false; // Não existe
                }
            }
        }

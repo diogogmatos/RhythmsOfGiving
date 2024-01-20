@@ -13,23 +13,23 @@ namespace RhythmsOfGiving.Controller
         private int nif;
         private int idLicitacao;
         private int idLicitador;
-        private LicitacaoDAO licitacaoDAO;
-        private InstituicaoDAO instituicaoDAO;
+        private LicitacaoDao licitacaoDao;
+        private InstituicaoDao instituicaoDao;
 
-        private static int contadorFat = FaturaDAO.size();
+        private static int _contadorFat = FaturaDao.Size();
 
         //Construtor para criar
         public Fatura(DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao, int idLicitador)
         {
-            this.idFatura = ++contadorFat;
+            this.idFatura = ++_contadorFat;
             this.dataHoraEmissao = dataHora;
             this.idInstituicao = idInstituicao;
             this.nomeLicitador = nomeLicitador;
             this.nif = nif;
             this.idLicitacao = idLicitacao;
             this.idLicitador = idLicitador;
-            this.licitacaoDAO = LicitacaoDAO.getInstance();
-            this.instituicaoDAO = InstituicaoDAO.getInstance();
+            this.licitacaoDao = LicitacaoDao.GetInstance();
+            this.instituicaoDao = InstituicaoDao.GetInstance();
         }
 
         //Construtor para get
@@ -42,48 +42,48 @@ namespace RhythmsOfGiving.Controller
             this.nif = nif;
             this.idLicitacao = idLicitacao;
             this.idLicitador = idLicitador;
-            this.licitacaoDAO = LicitacaoDAO.getInstance();
-            this.instituicaoDAO = InstituicaoDAO.getInstance();
+            this.licitacaoDao = LicitacaoDao.GetInstance();
+            this.instituicaoDao = InstituicaoDao.GetInstance();
         }
 
-        public int getIdFatura()
+        public int GetIdFatura()
         {
             return idFatura;
         }
 
-        public DateTime getDataHoraEmissao()
+        public DateTime GetDataHoraEmissao()
         {
             return dataHoraEmissao;
         }
 
-        public int getIdInstituicao()
+        public int GetIdInstituicao()
         {
             return idInstituicao;
         }
 
-        public string getNomeLicitador()
+        public string GetNomeLicitador()
         {
             return nomeLicitador;
         }
 
-        public int getNIF()
+        public int GetNif()
         {
             return nif;
         }
 
-        public int getIdLicitacao()
+        public int GetIdLicitacao()
         {
             return idLicitacao;
         }
         
-        public int getIdLicitador()
+        public int GetIdLicitador()
         {
             return idLicitador;
         }
 
-        public float getValor()
+        public float GetValor()
         {
-            Licitacao l = this.licitacaoDAO.get(this.idLicitacao);
+            Licitacao l = this.licitacaoDao.Get(this.idLicitacao);
             return (l.GetValor());
         }
         
@@ -116,12 +116,12 @@ namespace RhythmsOfGiving.Controller
             Fatura other = (Fatura)obj;
 
             // Verifica a igualdade dos atributos
-            return (this.idFatura == other.getIdFatura() &&
-                    this.dataHoraEmissao.Equals(other.getDataHoraEmissao()) &&
-                    this.idInstituicao == other.getIdInstituicao() &&
-                    this.nomeLicitador.Equals(other.getNomeLicitador()) &&
-                    this.nif == other.getNIF() &&
-                    this.idLicitacao == other.getIdLicitacao()
+            return (this.idFatura == other.GetIdFatura() &&
+                    this.dataHoraEmissao.Equals(other.GetDataHoraEmissao()) &&
+                    this.idInstituicao == other.GetIdInstituicao() &&
+                    this.nomeLicitador.Equals(other.GetNomeLicitador()) &&
+                    this.nif == other.GetNif() &&
+                    this.idLicitacao == other.GetIdLicitacao()
                 );
 
         }
@@ -129,7 +129,7 @@ namespace RhythmsOfGiving.Controller
         public int CompareTo(Fatura other)
         {
             // Comparação com base na data invertida para ordenar em ordem decrescente
-            return other.getDataHoraEmissao().CompareTo(this.dataHoraEmissao);
+            return other.GetDataHoraEmissao().CompareTo(this.dataHoraEmissao);
         }
 
     }

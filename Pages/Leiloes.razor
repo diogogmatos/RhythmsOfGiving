@@ -1,11 +1,64 @@
 @page "/leiloes"
 @using RhythmsOfGiving.Controller.UI
-@inject UIService UIService
+@inject UiService UiService
 
 <PageTitle>Leilões</PageTitle>
 
 <div class="space-y-6 py-8">
-    @foreach (LeilaoUI leilao in UIService.GetLeiloesDisponiveis()) {
-        <LeilaoBlock Leilao="leilao" />
+    <div class="flex space-x-4">
+        <div>
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Género Musical</label>
+            <select @onchange="@OnSelectedGeneroMusicalChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                @foreach (var option in UiService.GetGenerosMusicais())
+                {
+                    <option>@option</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Tipo Leilão</label>
+            <select @onchange="@OnSelectedTipoLeilaoChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Inglês</option>
+                <option>Ás Cegas</option>
+            </select>
+        </div>
+    </div>
+    @if (leiloesDisponiveis.Count == 0)
+    {
+        <p class="py-12 text-center text-xl">
+            <i class="bi bi-exclamation-circle-fill text-rhythms"></i>
+            Sem correspondências para os filtros selecionados.
+        </p>
+    }
+    @foreach (LeilaoUi leilao in leiloesDisponiveis)
+    {
+        <LeilaoBlock Leilao="leilao"/>
     }
 </div>
+
+@code {
+    List<LeilaoUi> leiloesDisponiveis;
+    protected override void OnInitialized()
+    {
+        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
+    }
+    
+    string selectedGeneroMusical;
+    string selectedTipoLeilao;
+    
+    private void OnSelectedGeneroMusicalChanged(ChangeEventArgs args)
+    {
+        selectedGeneroMusical = args.Value.ToString();
+        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
+        leiloesDisponiveis.RemoveAll(leilao => leilao.GetGenero() != args.Value.ToString());
+        StateHasChanged();
+    }
+
+    private void OnSelectedTipoLeilaoChanged(ChangeEventArgs args)
+    {
+        selectedTipoLeilao = args.Value.ToString();
+        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
+        leiloesDisponiveis.RemoveAll(leilao => leilao.GetTipo() != args.Value.ToString());
+        StateHasChanged();
+    }
+}

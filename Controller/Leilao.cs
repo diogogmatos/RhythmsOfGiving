@@ -15,12 +15,12 @@ public abstract class Leilao
     private int idAdmin;
     private int idInstituicao;
     private List<int> minhasLicitacoes;
-    private LicitacaoDAO licitacaoDAO;
+    private LicitacaoDao licitacaoDao;
     private Experiencia experiencia;
-    private InstituicaoDAO instituicaoDAO;
+    private InstituicaoDao instituicaoDao;
 
     public static int percentagemAumento = 1;
-    private static int contador = LeilaoDAO.size();
+    private static int _contador = LeilaoDao.Size();
     
 
     //método abstract
@@ -31,7 +31,7 @@ public abstract class Leilao
                   string titulo, DateTime dataHoraContador, int idAdmin, int idInstituicao, List<int> minhasLicitacoes,  Experiencia experiencia)
 
     {
-        this.idLeilao = ++contador;
+        this.idLeilao = ++_contador;
         this.ativo = ativo;
         this.valorAtual = valorAtual;
         this.valorBase = valorBase;
@@ -41,9 +41,9 @@ public abstract class Leilao
         this.idAdmin = idAdmin;
         this.idInstituicao = -1;
         this.minhasLicitacoes = new List<int>();
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.licitacaoDao = LicitacaoDao.GetInstance();
         this.experiencia = experiencia;
-        this.instituicaoDAO = InstituicaoDAO.getInstance();
+        this.instituicaoDao = InstituicaoDao.GetInstance();
     }
     
     public Leilao(int idLeilao, bool ativo, float valorAtual, float valorBase, DateTime dataHoraFinal,
@@ -60,9 +60,9 @@ public abstract class Leilao
         this.idAdmin = idAdmin;
         this.idInstituicao = idInstituicao;
         this.minhasLicitacoes = minhasLicitacoes;
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.licitacaoDao = LicitacaoDao.GetInstance();
         this.experiencia = experiencia;
-        this.instituicaoDAO = InstituicaoDAO.getInstance();
+        this.instituicaoDao = InstituicaoDao.GetInstance();
     }
 
     // Contrutor para leilões que não terminaram
@@ -80,9 +80,9 @@ public abstract class Leilao
         this.idAdmin = idAdmin;
         this.minhasLicitacoes = minhasLicitacoes;
         this.IdInstituicao = -1;
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.licitacaoDao = LicitacaoDao.GetInstance();
         this.experiencia = experiencia;
-        this.instituicaoDAO = InstituicaoDAO.getInstance();
+        this.instituicaoDao = InstituicaoDao.GetInstance();
     }
 
 
@@ -146,7 +146,7 @@ public abstract class Leilao
         set { idInstituicao = value; }
     }
 
-    public void setIdInstituicao(int id)
+    public void SetIdInstituicao(int id)
     {
         this.idInstituicao = id;
     }
@@ -187,7 +187,7 @@ public abstract class Leilao
 
             foreach (int idLicitacao in licitacoes)
             {
-                Licitacao l = licitacaoDAO.get(idLicitacao);
+                Licitacao l = licitacaoDao.Get(idLicitacao);
 
                 if (l != null)
                 {
@@ -204,16 +204,16 @@ public abstract class Leilao
         return idLicitadorVencedor;
     }
 
-    public int criarLicitacao(float valorLicitacao, int idLicitador)
+    public int CriarLicitacao(float valorLicitacao, int idLicitador)
     {
         Licitacao novaLicitacao = new Licitacao(DateTime.Now, valorLicitacao, this.idLeilao, idLicitador);
         this.minhasLicitacoes.Add(novaLicitacao.GetIdLicitacao());
-        this.licitacaoDAO.put(novaLicitacao.GetIdLicitacao(), novaLicitacao);
+        this.licitacaoDao.Put(novaLicitacao.GetIdLicitacao(), novaLicitacao);
         return novaLicitacao.GetIdLicitacao();
     }
 
     //Verifiquem se está certo
-    public int verificarLicitacao(int idLicitador, float valorLicitacao, float valorMinimo)
+    public int VerificarLicitacao(int idLicitador, float valorLicitacao, float valorMinimo)
     {
         DateTime atual = DateTime.Now;
         if (atual < this.dataHoraFinal)
@@ -223,104 +223,82 @@ public abstract class Leilao
 
                 //Acrescentar 5 min ao contador
                 this.dataHoraContador = atual.AddMinutes(5);
-                return this.criarLicitacao(valorLicitacao, idLicitador);
+                return this.CriarLicitacao(valorLicitacao, idLicitador);
             }
 
             throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
                                               "O valor mínimo da licitação é de: " + valorMinimo);
         }
-        else
-        {
-            TimeSpan diferenca = this.dataHoraContador - (this.dataHoraFinal.AddHours(24));
-            double diferencaEmMinutos = diferenca.TotalMinutes;
+
+        TimeSpan diferenca = this.dataHoraContador - (this.dataHoraFinal.AddHours(24));
+        double diferencaEmMinutos = diferenca.TotalMinutes;
             
-            if (atual < this.dataHoraContador)
+        if (atual < this.dataHoraContador)
+        {
+            if (diferencaEmMinutos >= 5)
             {
-                if (diferencaEmMinutos >= 5)
+                if (valorLicitacao >= valorMinimo)
                 {
-                    if (valorLicitacao >= valorMinimo)
-                    {
 
-                        //Acrescentar 5 min ao contador
-                        this.dataHoraContador = atual.AddMinutes(5);
-                        return this.criarLicitacao(valorLicitacao, idLicitador);
-                    }
-
-                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
-                                                      "O valor mínimo da licitação é de: " + valorMinimo);
+                    //Acrescentar 5 min ao contador
+                    this.dataHoraContador = atual.AddMinutes(5);
+                    return this.CriarLicitacao(valorLicitacao, idLicitador);
                 }
-                else
-                {
-                    if (valorLicitacao >= valorMinimo)
-                    {
 
-                        //Acrescentar diferençaTempo ao contador
-                        this.dataHoraContador = atual.AddMinutes(diferencaEmMinutos);
-                        return this.criarLicitacao(valorLicitacao, idLicitador);
-                    }
-
-                    throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
-                                                      "O valor mínimo da licitação é de: " + valorMinimo);
-                }
-                
+                throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                                  "O valor mínimo da licitação é de: " + valorMinimo);
             }
-            else
+
+            if (valorLicitacao >= valorMinimo)
             {
-                throw new TempoExcedidoException("O tempo do leilão " + this.idLeilao + " foi excedido.");
+
+                //Acrescentar diferençaTempo ao contador
+                this.dataHoraContador = atual.AddMinutes(diferencaEmMinutos);
+                return this.CriarLicitacao(valorLicitacao, idLicitador);
             }
+
+            throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
+                                              "O valor mínimo da licitação é de: " + valorMinimo);
+
         }
+
+        throw new TempoExcedidoException("O tempo do leilão " + this.idLeilao + " foi excedido.");
     }
 
-    public float getValorFim()
+    public float GetValorFim()
     {
         if (minhasLicitacoes.Count == 0)
         {
             throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
         }
-        else
+
+        float resultado = -1;
+        foreach (int idLicitacao in minhasLicitacoes)
         {
-            float resultado = -1;
-            foreach (int idLicitacao in minhasLicitacoes)
+            Licitacao licitacao = licitacaoDao.Get(idLicitacao);
+            valorAtual = licitacao.GetValor();
+            if (valorAtual>resultado)
             {
-                try
-                {
-                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
-                    valorAtual = licitacao.GetValor();
-                    if (valorAtual>resultado)
-                    {
-                        resultado = valorAtual;
-                    }
-                }
-                catch (LicitacaoNaoExisteException ex){
-                    throw;
-                }
+                resultado = valorAtual;
             }
-            return resultado;
         }
+        return resultado;
     }
 
-    public HashSet<int> getLicitadores()
+    public HashSet<int> GetLicitadores()
     {
         if (minhasLicitacoes.Count == 0)
         {
             throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
         }
-        else
+
+        HashSet<int> licitadores = new HashSet<int>();
+        foreach (int idLicitacao in minhasLicitacoes)
         {
-            HashSet<int> licitadores = new HashSet<int>();
-            foreach (int idLicitacao in minhasLicitacoes)
-            {
-                try
-                {
-                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
-                    licitadores.Add(licitacao.GetIdLicitador());
-                }
-                catch (LicitacaoNaoExisteException ex){
-                    throw;
-                }
-            }
-            return licitadores;
+            Licitacao licitacao = licitacaoDao.Get(idLicitacao);
+            licitadores.Add(licitacao.GetIdLicitador());
         }
+        return licitadores;
     }
 
     public Licitacao LicitacaoAtualAnterior()
@@ -330,50 +308,42 @@ public abstract class Leilao
         {
             throw new NaoExistemLicitacoesException("Não houve uma licitaçao atual anterior");
         }
-        else
+
+        Licitacao atual = null;
+        Licitacao anterior = null;
+        foreach (int idLicitacao in minhasLicitacoes)
         {
-            Licitacao atual = null;
-            Licitacao anterior = null;
-            foreach (int idLicitacao in minhasLicitacoes)
+            Licitacao licitacao = licitacaoDao.Get(idLicitacao);
+            valor = licitacao.GetValor();
+            if (atual == null)
             {
-                try
+                atual = licitacao;
+            }
+            else if (anterior == null)
+            {
+                if (valor < atual.GetValor())
                 {
-                    Licitacao licitacao = licitacaoDAO.get(idLicitacao);
-                    valor = licitacao.GetValor();
-                    if (atual == null)
-                    {
-                        atual = licitacao;
-                    }
-                    else if (anterior == null)
-                    {
-                        if (valor < atual.GetValor())
-                        {
-                            anterior = licitacao;
-                        }
-                        else
-                        {
-                            anterior = atual;
-                            atual = licitacao;
-                        }
-                    }
-                    else
-                    {
-                        if (valor > atual.GetValor())
-                        {
-                            anterior = atual;
-                            atual = licitacao;
-                        }
-                        else if (valor > anterior.GetValor())
-                        {
-                            anterior = licitacao;
-                        }
-                    }
+                    anterior = licitacao;
                 }
-                catch (LicitacaoNaoExisteException ex){
-                    throw;
+                else
+                {
+                    anterior = atual;
+                    atual = licitacao;
                 }
             }
-            return anterior;
+            else
+            {
+                if (valor > atual.GetValor())
+                {
+                    anterior = atual;
+                    atual = licitacao;
+                }
+                else if (valor > anterior.GetValor())
+                {
+                    anterior = licitacao;
+                }
+            }
         }
+        return anterior;
     }
 }

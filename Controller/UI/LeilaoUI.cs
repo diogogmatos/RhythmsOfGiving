@@ -1,6 +1,6 @@
 ﻿namespace RhythmsOfGiving.Controller.UI;
 
-public class LeilaoUI
+public class LeilaoUi
 {
     private readonly int id;
     private readonly string artista;
@@ -16,7 +16,7 @@ public class LeilaoUI
     private readonly bool asCegas;
     private readonly float valorBase;
 
-    public LeilaoUI(int id, string artista, string title, string localizacao, string genero, string tipo, DateTime fim,
+    public LeilaoUi(int id, string artista, string title, string localizacao, string genero, string tipo, DateTime fim,
         string shortDescricao, string descricao, string imagePath, string authorImagePath, bool asCegas, float valorBase)
     {
         this.id = id;

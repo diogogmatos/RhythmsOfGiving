@@ -1,6 +1,6 @@
 namespace RhythmsOfGiving.Controller.UI;
 
-public class NotificacaoUI
+public class NotificacaoUi
 {
     private string title;
     private string message;
@@ -8,7 +8,7 @@ public class NotificacaoUI
     private int tipo; // 0 -> ultrapassada, 1 -> vencedora, 2 -> perdedora
     private int idLeilao;
 
-    public NotificacaoUI(string title, string message, DateTime date, int tipo, int idLeilao)
+    public NotificacaoUi(string title, string message, DateTime date, int tipo, int idLeilao)
     {
         this.title = title;
         this.message = message;

@@ -10,7 +10,7 @@ public class Artista{
     private string imagem;
     private int idAdmin;
 
-    private static int contadorArtistas = ArtistaDAO.size();
+    private static int _contadorArtistas = ArtistaDao.Size();
 
     //Construtor para fazer get
     public Artista (int idArtista, string nome, string imagem, int idAdmin){
@@ -22,41 +22,41 @@ public class Artista{
 
     //Construtor para criar o Licitador
     public Artista(string nome, string imagem, int idAdmin){
-        this.idArtista = ++contadorArtistas;
+        this.idArtista = ++_contadorArtistas;
         this.nome = nome;
         this.imagem = imagem;
         this.idAdmin = idAdmin;
     }
 
-    public int getIdArtista(){
+    public int GetIdArtista(){
         return idArtista;
     }
 
-    public string getNome(){
+    public string GetNome(){
         return nome;
     }
 
-    public string getImagem(){
+    public string GetImagem(){
         return imagem;
     }
 
-    public int getIdAdmin(){
+    public int GetIdAdmin(){
         return idAdmin;
     }
 
-    public void setIdArtista(int idArtista){
+    public void SetIdArtista(int idArtista){
         this.idArtista = idArtista;
     }
 
-    public void setNome(string nome){
+    public void SetNome(string nome){
         this.nome = nome;
     }
 
-    public void setImagem(string imagem){
+    public void SetImagem(string imagem){
         this.imagem = imagem;
     }
 
-    public void setIdAdmin(int idAdmin){
+    public void SetIdAdmin(int idAdmin){
         this.idAdmin = idAdmin;
     }
 
@@ -84,10 +84,10 @@ public class Artista{
     Artista other = (Artista)obj;
 
     // Verifica a igualdade dos atributos
-    return (this.idArtista == other.getIdArtista() &&
-            this.nome.Equals(other.getNome()) &&
-            this.imagem.Equals(other.getImagem()) &&
-            this.idAdmin == other.getIdAdmin()
+    return (this.idArtista == other.GetIdArtista() &&
+            this.nome.Equals(other.GetNome()) &&
+            this.imagem.Equals(other.GetImagem()) &&
+            this.idAdmin == other.GetIdAdmin()
             );
     }
 

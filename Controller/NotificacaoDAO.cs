@@ -1,26 +1,26 @@
 
 using System.Data.SqlClient;
 using RhythmsOfGiving.Controller;   
-public class NotificacaoDAO{
-    private static NotificacaoDAO? singleton = null;
-        private NotificacaoDAO() { }
+public class NotificacaoDao{
+    private static NotificacaoDao? _singleton = null;
+        private NotificacaoDao() { }
 
-        public static NotificacaoDAO getInstance()
+        public static NotificacaoDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new NotificacaoDAO();
+                _singleton = new NotificacaoDao();
             }
-            return singleton;
+            return _singleton;
         }
         
-        public static int size()
+        public static int Size()
         {
             int rowCount = 0;
             
             string query = "SELECT COUNT(*) FROM Notificação";
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 connection.Open();
@@ -30,9 +30,9 @@ public class NotificacaoDAO{
             return rowCount;
         }
         
-         public Notificacao get(int id)
+         public Notificacao Get(int id)
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -70,15 +70,15 @@ public class NotificacaoDAO{
             return null;
         }
          
-         public void put(int id, Notificacao n)
+         public void Put(int id, Notificacao n)
 {
-    using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+    using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
     {
         connection.Open();
         try
         {
             // Check if the record with the specified id exists
-            bool recordExists = exite(id, connection);
+            bool recordExists = Exite(id, connection);
 
             string query;
             if (recordExists)
@@ -99,11 +99,11 @@ public class NotificacaoDAO{
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Id", id);
-                command.Parameters.AddWithValue("@Titulo", n.getTitle());
-                command.Parameters.AddWithValue("@Mensagem", n.getMessage());
-                command.Parameters.AddWithValue("@IdLicitador", n.getIdLicitador());
-                command.Parameters.AddWithValue("@DataHora", n.getDate());
-                command.Parameters.AddWithValue("@Tipo", n.getTipo());
+                command.Parameters.AddWithValue("@Titulo", n.GetTitle());
+                command.Parameters.AddWithValue("@Mensagem", n.GetMessage());
+                command.Parameters.AddWithValue("@IdLicitador", n.GetIdLicitador());
+                command.Parameters.AddWithValue("@DataHora", n.GetDate());
+                command.Parameters.AddWithValue("@Tipo", n.GetTipo());
 
                 command.ExecuteNonQuery();
             }
@@ -116,7 +116,7 @@ public class NotificacaoDAO{
     }
 }
 
-    private bool exite(int id, SqlConnection connection)
+    private bool Exite(int id, SqlConnection connection)
     {
         // Check if the record with the specified id exists in the database
         string checkQuery = "SELECT COUNT(*) FROM Notificação WHERE idNotificacao = @Id";

@@ -1,16 +1,14 @@
-
-using System.Reflection.Metadata;
-
-namespace RhythmsOfGiving.Controller{
+namespace RhythmsOfGiving.Controller
+{
     public class SubUtilizadores: ISubUtilizadores {
-        private LicitadorDAO licitadores;
+        private LicitadorDao licitadores;
         private  Dictionary<int, Administrador> administradores;
 
 
         //Construtor
         public SubUtilizadores()
         {
-            this.licitadores = LicitadorDAO.getInstance();
+            this.licitadores = LicitadorDao.GetInstance();
             this.administradores = new Dictionary<int, Administrador>();
             //preencher o map administradores
             //ver classe SubServicos no trabalho DSS para ajudar
@@ -18,117 +16,82 @@ namespace RhythmsOfGiving.Controller{
 
 
         //DUVIDA É preciso alguma verificação dos dados?
-        public void registarLicitador (string nome, string email, string palavraPasse, int nCC, int nif, DateOnly dataNascimento, int nrCartao)
+        public void RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)
         {
-            DateOnly idade_adulta = dataNascimento.AddYears(18);
+            DateOnly idadeAdulta = dataNascimento.AddYears(18);
             DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Now);
-            if (dataAtual < idade_adulta)
+            if (dataAtual < idadeAdulta)
             {
                 throw new DataNascimentoMenor18("O utilizador é menor de idade");
             }
-            
-            try
-            {
-                Licitador l = new Licitador(nome, palavraPasse, dataNascimento, nrCartao, email, nif, nCC);
-                licitadores.put(email,l);
-            }
-            catch (DadosInvalidosException ex)
-            {
-                throw;
-            }
+
+            Licitador l = new Licitador(nome, palavraPasse, dataNascimento, nrCartao, email, nif, nCc);
+            licitadores.put(email,l);
         }
 
-        public bool validarAutenticacao(string email, string palavraPasse)
+        public bool ValidarAutenticacao(string email, string palavraPasse)
         {
-            try
-            {
-                Licitador l = this.licitadores.get(email);
+            Licitador l = this.licitadores.Get(email);
 
-                if (l.getPalavraPasse().Equals(palavraPasse))
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (LicitadorNaoExisteException ex)
+            if (l.GetPalavraPasse().Equals(palavraPasse))
             {
-                throw;
+                return true;
             }
+            return false;
         }
 
         
-        public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse)
+        public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCc, string novaPalavraPasse)
         {
-            try
+            Licitador l = licitadores.Get(email);
+            l.SetNome(novoNome);
+            l.SetPalavraPasse(novaPalavraPasse);
+
+
+            // Check if the person is at least 18 years old
+            if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
             {
-                Licitador l = licitadores.get(email);
-                l.setNome(novoNome);
-                l.setPalavraPasse(novaPalavraPasse);
-
-
-                    // Check if the person is at least 18 years old
-                    if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
-                    {
-                        l.setDataNascimento(novaDataNascimento);
-
+                l.SetDataNascimento(novaDataNascimento);
                         // Ver se é necessario
-                        if (licitadores.VerificarUnicoNumeroCC(novoNumeroCC))
+                        if (licitadores.VerificarUnicoNumeroCc(novoNumeroCc))
                         {
-                            l.setNcc(novoNumeroCC);
+                            l.SetNcc(novoNumeroCc);
             
-                        licitadores.put(l.getEmail(), l);
+                        licitadores.put(l.GetEmail(), l);
                           }
 
-                    }
-                    else
-                    {
-                        throw new DataNascimentoMenor18("A pessoa deve ter pelo menos 18 anos.");
-                    }
             }
-            catch (LicitadorNaoExisteException ex)
+            else
             {
-                throw;
+                throw new DataNascimentoMenor18("A pessoa deve ter pelo menos 18 anos.");
             }
-        }
-
-        public void AdicionarLicitacao(int idLicitacao, int idLicitador)
-        {
-            Licitador l  = this.licitadores.get(idLicitacao);
-            l.getMinhasLicitacoes().Add(idLicitacao);
-            licitadores.put(l.getEmail(),l);
-
-        }
-
-        public Notificacao criarNotificacaoUltrapassada(int idLicitador, string titulo)
-        {
-            try
-            {
-                Licitador l = this.licitadores.get(idLicitador);
-                return l.criarNotificacaoUltrapassada(titulo);
-            }
-            catch (LicitadorNaoExisteException e)
-            {
-                throw;
-            }
-            
         }
         
-        public Dictionary<int, Notificacao> criarNotificacaoPerdedora (HashSet<int> idLicitadores, int idLeilao, string titulo, float valor)
+        public void AdicionarLicitacao(int idLicitacao, int idLicitador)
+        {
+            // Licitador l  = this.licitadores.Get(idLicitacao); // ERRO
+            // l.GetMinhasLicitacoes().Add(idLicitacao);
+            // licitadores.put(l.GetEmail(),l);
+            throw new NotImplementedException();
+        }
+
+        public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo)
+        {
+            // Licitador l = this.licitadores.Get(idLicitador); // ERRO
+            // return l.CriarNotificacaoUltrapassada(titulo);
+            throw new NotImplementedException();
+        }
+        
+        public Dictionary<int, Notificacao> CriarNotificacaoPerdedora (HashSet<int> idLicitadores, int idLeilao, string titulo, float valor)
         {
             Dictionary<int, Notificacao> notificacoesPerdedoras = new Dictionary<int, Notificacao>();
             
             foreach (int id in idLicitadores)
             {
-                try
-                {
-                    Licitador l = this.licitadores.get(id);
-                    Notificacao n = l.criarNotificacaoPerdedora(idLeilao, titulo, valor);
-                    notificacoesPerdedoras.Add(id, n);
-                }
-                catch (LicitadorNaoExisteException e)
-                {
-                    throw;
-                }
+                // Licitador l = this.licitadores.Get(id); // ERRO
+                // Notificacao n = l.CriarNotificacaoPerdedora(idLeilao, titulo, valor);
+                // notificacoesPerdedoras.Add(id, n);
+                throw new NotImplementedException();
             }
 
             return notificacoesPerdedoras;
@@ -136,62 +99,44 @@ namespace RhythmsOfGiving.Controller{
 
         public Dictionary<int, Licitacao> saberLeiloesParticipa_Licitacao(int idLicitador)
         {
-            try
-            {
-                Licitador l = this.licitadores.get(idLicitador);
-                Dictionary<int, Licitacao> resultado = l.saberLeiloesParticipa_Licitacao();
-                return resultado;
-            }
-            catch (LicitadorNaoExisteException e)
-            {
-                throw;
-            }
+            // Licitador l = this.licitadores.Get(idLicitador); // ERRO
+            // Dictionary<int, Licitacao> resultado = l.saberLeiloesParticipa_Licitacao();
+            // return resultado;
+            throw new NotImplementedException();
         }
         
-        public  Notificacao criarNotificacaoVencedora(int idLicitador, int idLeilao, string titulo, float valor)
+        public  Notificacao CriarNotificacaoVencedora(int idLicitador, int idLeilao, string titulo, float valor)
         {
-            try
-            {
-                Licitador l = licitadores.get(idLicitador);
-                Notificacao notificacao = l.criarNotificacaoVencedora(idLeilao, titulo, valor);
-                return notificacao;
-            }
-            catch (LicitadorNaoExisteException e)
-            {
-                throw;
-            }
+            // Licitador l = licitadores.Get(idLicitador);
+            // Notificacao notificacao = l.CriarNotificacaoVencedora(idLeilao, titulo, valor);
+            // return notificacao;
+            throw new NotImplementedException();
         }
 
-        public SortedSet<Fatura> minhasFaturas(int idLicitador)
+        public SortedSet<Fatura> MinhasFaturas(int idLicitador)
         {
-            try
-            {
-                Licitador l = this.licitadores.get(idLicitador);
-                SortedSet<Fatura> resultado = l.getFaturas();
+            /*Licitador l = this.licitadores.Get(idLicitador);
+            SortedSet<Fatura> resultado = l.GetFaturas();
 
-                if (resultado.Count == 0)
-                {
-                    throw new SemFaturasException("Não tem faturas disponíveis.");
-                }
+            if (resultado.Count == 0)
+            {
+                throw new SemFaturasException("Não tem faturas disponíveis.");
+            }
                 
-                return resultado;
-            }
-            catch (LicitadorNaoExisteException e)
-            {
-                throw;
-            }
+            return resultado*/;
+            throw new NotImplementedException();
         }
 
-        public Dictionary<Licitador, float> licitadoresTop10()
+        public Dictionary<Licitador, float> LicitadoresTop10()
         {
             Dictionary<Licitador, float> resultado = new Dictionary<Licitador, float>();
             
-            foreach (int id in this.licitadores.keySet())
+            foreach (int id in this.licitadores.KeySet())
             {
-                Licitador l = this.licitadores.get(id);
-                float valorTotal = l.valorTotalDoado();
-                resultado.Add(l, valorTotal);
-
+                // Licitador l = this.licitadores.Get(id);
+                // float valorTotal = l.ValorTotalDoado();
+                // resultado.Add(l, valorTotal);
+                throw new NotImplementedException();
             }
 
             if (resultado.Count == 0)
@@ -214,45 +159,24 @@ namespace RhythmsOfGiving.Controller{
             return top10;
         }
 
-        public void criarFatura (int idInstituicao, int idLicitacao, int idLicitador)
+        public void CriarFatura (int idInstituicao, int idLicitacao, int idLicitador)
         {
-            DateTime dataHoraAtual = DateTime.Now;
-
-            try
-            {
-                Licitador l = this.licitadores.get(idLicitador);
-                string nomeLicitador = l.getNome();
-                int nif = l.getNIF();
-                
-                try
-                {
-                    Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, idLicitacao, idLicitador);
-                    l.adicionarFatura(f);
-                }
-                catch (DadosInvalidosException e)
-                {
-                    throw;
-                }
-            }
-            catch (LicitadorNaoExisteException e)
-            {
-                throw;
-            }
-            
+            // DateTime dataHoraAtual = DateTime.Now;
+            //
+            // Licitador l = this.licitadores.Get(idLicitador);
+            // string nomeLicitador = l.GetNome();
+            // int nif = l.GetNif();
+            //
+            // Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, idLicitacao, idLicitador);
+            // l.AdicionarFatura(f);
+            throw new NotImplementedException();
         }
         
-        public SortedSet<Licitacao> pesquisarLicitacoes (int idLicitador, int idLeilao)
+        public SortedSet<Licitacao> PesquisarLicitacoes (int idLicitador, int idLeilao)
         {
-            try
-            {
-                Licitador l = this.licitadores.get(idLicitador);
-                return l.getLicitacoesLeilao(idLeilao);
-            }
-            catch (LicitadorNaoExisteException e)
-            {
-                throw;
-            }
+            // Licitador l = this.licitadores.Get(idLicitador);
+            // return l.GetLicitacoesLeilao(idLeilao);
+            throw new NotImplementedException();
         }
-        
     }
 }

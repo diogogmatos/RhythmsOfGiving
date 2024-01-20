@@ -1,6 +1,9 @@
 @using RhythmsOfGiving.Controller.UI
+@using Microsoft.AspNetCore.SignalR.Client
+@inject UiService UiService
+@implements IAsyncDisposable
 
-<div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden">
+<div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden bg-white">
     @* Informações *@
     <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
         @* Nome Artista *@
@@ -27,24 +30,50 @@
             <button onclick="location.href='/leiloes/@GetId()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
                 Licitar ->
             </button>
-            @if (GetOwnLicitacao() != 0) {
-                <div class="text-center min-w-fit">
-                    <p class="text-sm text-gray-400 font-medium">
-                        a sua licitação:
-                    </p>
-                    <p class="text-xl font-[600] text-rhythms/50">
-                        @GetOwnLicitacao().ToString("0.00€")
-                    </p>
-                </div>        
+            @if (ownLicitacao != 0) {
+                @if (ownLicitacao > lastLicitacao)
+                {
+                    <div class="text-center min-w-fit">
+                        <p class="text-sm text-gray-400 font-medium">
+                            a sua licitação:
+                        </p>
+                        <p class="text-xl font-[600] text-rhythms">
+                            @ownLicitacao.ToString("0.00€")
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center min-w-fit">
+                        <p class="text-sm text-gray-400 font-medium">
+                            a sua licitação:
+                        </p>
+                        <p class="text-xl font-[600] text-rhythms/50">
+                            @ownLicitacao.ToString("0.00€")
+                        </p>
+                    </div>
+                }
             }
             <div class="text-center min-w-fit">
-                @if (GetLastLicitacao() != 0 && !IsAsCegas()) {
-                    <p class="text-sm text-gray-400 font-medium">
-                        última licitação:
-                    </p>
-                    <p class="text-xl font-[600] text-rhythms">
-                        @GetLastLicitacao().ToString("0.00€")
-                    </p>
+                @if (lastLicitacao != 0 && !IsAsCegas()) {
+                    @if (lastLicitacao > ownLicitacao)
+                    {
+                        <p class="text-sm text-gray-400 font-medium">
+                            última licitação:
+                        </p>
+                        <p class="text-xl font-[600] text-rhythms">
+                            @lastLicitacao.ToString("0.00€")
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-sm text-gray-400 font-medium">
+                            última licitação:
+                        </p>
+                        <p class="text-xl font-[600] text-rhythms/50">
+                            @lastLicitacao.ToString("0.00€")
+                        </p>
+                    }
                 }
                 else {
                     <p class="text-sm text-gray-400 font-medium">
@@ -66,7 +95,53 @@
 @code {
     [EditorRequired]
     [Parameter]
-    public LeilaoUI Leilao { get; set; }
+    public LeilaoUi Leilao { get; set; }
+    
+    // licitações
+
+    private float ownLicitacao;
+    private float lastLicitacao;
+
+    private HubConnection? infoHubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        GetOwnLicitacao();
+        GetLastLicitacao();
+        
+        infoHubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5269/infohub")
+            .Build();
+
+        infoHubConnection.On("UpdateAuctionInfo", () =>
+        {
+            GetOwnLicitacao(); // atualizar própria licitação
+            GetLastLicitacao(); // atualizar última licitação
+            InvokeAsync(StateHasChanged);
+        });
+        
+        await infoHubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (infoHubConnection is not null)
+        {
+            await infoHubConnection.DisposeAsync();
+        }
+    }
+
+    private void GetOwnLicitacao()
+    {
+        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador("diogo@mail.com", GetId());
+    }
+    
+    private void GetLastLicitacao()
+    {
+        lastLicitacao = UiService.GetUltimaLicitacaoLeilao("diogo@mail.com", GetId());
+    }
+    
+    // info
 
     private int GetId() {
         return Leilao.GetId();
@@ -93,18 +168,9 @@
         return Leilao.GetShortDescricao();
     }
 
-    private float GetValorBase() {
+    private float GetValorBase()
+    {
         return Leilao.GetValorBase();
-    }
-
-    private float GetOwnLicitacao() {
-        // ir à base de dados obter informação
-        return 7500.00f;
-    }
-
-    private float GetLastLicitacao() {
-        // ir à base de dados obter informação
-        return 8543.92f;
     }
 
     private string GetImagePath() {

@@ -2,7 +2,7 @@
 using System.Text;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
-using RhythmsOfGiving.Controller;
+using RhythmsOfGiving.Controller.UI;
 
 namespace RhythmsOfGiving.Controller{
 public class Licitador{
@@ -14,32 +14,29 @@ public class Licitador{
     private int nrCartao;
     private string email;
     private int nif;
-    private Int64 nCC;
-    private LicitacaoDAO licitacaoDAO;
+    private Int64 nCc;
+    private LicitacaoDao licitacaoDao;
     private HashSet<int> minhasLicitacoes;
-    private FaturaDAO faturaDAO;
+    private FaturaDao faturaDao;
     private HashSet<int> minhasFaturas;
-    private NotificacaoDAO notificacaoDAO;
-
+    private NotificacaoDao notificacaoDao;
 
     public Licitador()
     {
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
-        this.notificacaoDAO = NotificacaoDAO.getInstance();
-
-
+        this.licitacaoDao = LicitacaoDao.GetInstance();
+        this.notificacaoDao = NotificacaoDao.GetInstance();
     }
 
     public Licitacao teste()
     {
-        return licitacaoDAO.get(1);
+        return licitacaoDao.Get(1);
     }
     
 
-    private static int contadorLicitadores = LicitadorDAO.size();
+    private static int contadorLicitadores = LicitadorDao.Size();
 
     //Construtor para fazer get
-    public Licitador (int idLicitador, string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCC, HashSet<int> minhasLicitacoes, HashSet<int> minhasFaturas){
+    public Licitador (int idLicitador, string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCc, HashSet<int> minhasLicitacoes, HashSet<int> minhasFaturas){
         this.idLicitador = idLicitador;
         this.nome = nome;
         this.palavraPasse = palavraPasse;
@@ -47,16 +44,16 @@ public class Licitador{
         this.nrCartao = nrCartao;
         this.email = email;
         this.nif = nif;
-        this.nCC = nCC;
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.nCc = nCc;
+        this.licitacaoDao = LicitacaoDao.GetInstance();
         this.minhasLicitacoes = minhasLicitacoes;
-        this.faturaDAO = FaturaDAO.getInstance();
+        this.faturaDao = FaturaDao.GetInstance();
         this.minhasFaturas = minhasFaturas;
-        this.notificacaoDAO = NotificacaoDAO.getInstance();
+        this.notificacaoDao = NotificacaoDao.GetInstance();
     }
 
     //Construtor para criar o Licitador
-    public Licitador(string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCC){
+    public Licitador(string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCc){
         this.idLicitador = ++contadorLicitadores;
         this.nome = nome;
         this.palavraPasse = palavraPasse;
@@ -64,105 +61,105 @@ public class Licitador{
         this.nrCartao = nrCartao;
         this.email = email;
         this.nif= nif;
-        this.nCC = nCC;
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
+        this.nCc = nCc;
+        this.licitacaoDao = LicitacaoDao.GetInstance();
         this.minhasLicitacoes = new HashSet<int>();
-        this.faturaDAO = FaturaDAO.getInstance();
+        this.faturaDao = FaturaDao.GetInstance();
         this.minhasFaturas = new HashSet<int>();
-        this.notificacaoDAO = NotificacaoDAO.getInstance();
+        this.notificacaoDao = NotificacaoDao.GetInstance();
     }
 
-    public int getIdLicitador()
+    public int GetIdLicitador()
         {
             return idLicitador;
         }
 
-    public string getNome()
+    public string GetNome()
         {
             return nome;
         }
 
-    public string getPalavraPasse()
+    public string GetPalavraPasse()
         {
             return palavraPasse;
         }
 
-    public DateOnly getDataNascimento()
+    public DateOnly GetDataNascimento()
         {
             return dataNascimento;
         }
 
-    public int getNrCartao()
+    public int GetNrCartao()
         {
             return nrCartao;
         }
 
-    public string getEmail()
+    public string GetEmail()
         {
             return email;
         }
 
-    public int getNIF()
+    public int GetNif()
         {
             return nif;
         }
 
-    public Int64 getNcc()
+    public Int64 GetNcc()
         {
-            return nCC;
+            return nCc;
         }
 
-    public HashSet<int> getMinhasLicitacoes()
+    public HashSet<int> GetMinhasLicitacoes()
         {
             return minhasLicitacoes;
         }
 
-    public HashSet<int> getMinhasFaturas()
+    public HashSet<int> GetMinhasFaturas()
         {
             return minhasFaturas;
         }
 
-    public void setNome(string nome)
+    public void SetNome(string nome)
         {
             this.nome = nome;
         }
 
-    public void setPalavraPasse(string palavraPasse)
+    public void SetPalavraPasse(string palavraPasse)
         {
             this.palavraPasse = palavraPasse;
         }
 
-    public void setDataNascimento(DateOnly data)
+    public void SetDataNascimento(DateOnly data)
         {
             this.dataNascimento = data;
         }
 
-    public void setNrCartao(int nr)
+    public void SetNrCartao(int nr)
         {
             this.nrCartao = nr;
         }
 
-    public void setEmail(string email)
+    public void SetEmail(string email)
         {
             this.email = email;
         }
 
-    public void setNIF(int nif)
+    public void SetNif(int nif)
         {
             this.nif = nif;
         }
 
-    public void setNcc(int ncc)
+    public void SetNcc(int ncc)
         {
-            this.nCC = ncc;
+            this.nCc = ncc;
         }
 
-    public void setMinhasLicitacoes(HashSet<int> licitacoes)
+    public void SetMinhasLicitacoes(HashSet<int> licitacoes)
         {
             this.minhasLicitacoes = licitacoes;
         }
 
-    public void setMinhasFaturas(HashSet<int> faturas)
+    public void SetMinhasFaturas(HashSet<int> faturas)
         {
             this.minhasFaturas = faturas;
         }
@@ -179,7 +176,7 @@ public class Licitador{
         sb.Append(" Nr cartão credito: ").Append(this.nrCartao);
         sb.Append(" Email: ").Append(this.email);
         sb.Append(" NIF: ").Append(this.nif);
-        sb.Append(" NCC: ").Append(this.nCC);
+        sb.Append(" NCC: ").Append(this.nCc);
         sb.Append(" Ids licitações: ").Append(this.minhasLicitacoes.ToString());
         sb.Append(" Ids faturas: ").Append(this.minhasFaturas.ToString()).Append(" }");
 
@@ -206,38 +203,38 @@ public class Licitador{
             this.nrCartao == other.nrCartao &&
             this.email.Equals(other.email) &&
             this.nif == other.nif &&
-            this.nCC == other.nCC);
+            this.nCc == other.nCc);
     }
 
-        internal void setDataNascimento(DateTime novaDataNascimento)
+        internal void SetDataNascimento(DateTime novaDataNascimento)
         {
             throw new NotImplementedException();
         }
 
-        public Notificacao criarNotificacaoUltrapassada(string titulo)
+        public Notificacao CriarNotificacaoUltrapassada(string titulo)
         {
             DateTime data = DateTime.Now;
             Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo, this.idLicitador,data, 0);
-            this.notificacaoDAO.put(ultrapassada.getId(), ultrapassada);
+            this.notificacaoDao.Put(ultrapassada.GetId(), ultrapassada);
             //  Fazer put do licitador
 
             return ultrapassada;
         }
 
-        public Notificacao criarNotificacaoPerdedora(int idLeilao, string titulo, float valor)
+        public Notificacao CriarNotificacaoPerdedora(int idLeilao, string titulo, float valor)
         {
             DateTime data = DateTime.Now;
             string mensagem = "Leilão " + idLeilao + " terminado! Infelizmente não ganhou. Obrigado por ter participado.";
             string titulo2 = titulo + " foi vendido por " + valor;
             Notificacao perdedora = new Notificacao(mensagem, titulo2,this.idLicitador, data, 2);
-            this.notificacaoDAO.put(perdedora.getId(), perdedora);
+            this.notificacaoDao.Put(perdedora.GetId(), perdedora);
             //  Fazer put do licitador
 
 
             return perdedora;
         }
         
-        public Notificacao criarNotificacaoVencedora(int idLeilao, string titulo, float valor)
+        public Notificacao CriarNotificacaoVencedora(int idLeilao, string titulo, float valor)
         {
             DateTime data = DateTime.Now;
             string mensagem = "Parabéns! Você ganhou o leilão " + idLeilao + ". " +
@@ -245,7 +242,7 @@ public class Licitador{
 
             string tituloNotificacao = "Você é o Vencedor - " + titulo;
             Notificacao vencedora = new Notificacao(mensagem, tituloNotificacao, this.idLicitador,data, 1);
-            this.notificacaoDAO.put(vencedora.getId(), vencedora);
+            this.notificacaoDao.Put(vencedora.GetId(), vencedora);
             return vencedora;
         }
 
@@ -256,76 +253,59 @@ public class Licitador{
             
             foreach (int idLicitacao in this.minhasLicitacoes)
             {
-                try
+                Licitacao atual = this.licitacaoDao.Get(idLicitacao);
+                if (!ultimasLicitacoes.ContainsKey(atual.GetIdLeilao()))
                 {
-                    Licitacao atual = this.licitacaoDAO.get(idLicitacao);
-                    if (!ultimasLicitacoes.ContainsKey(atual.GetIdLeilao()))
-                    {
-                        ultimasLicitacoes.Add(atual.GetIdLeilao(), atual);
-                    }
-                    else
-                    {
-                        Licitacao presente = ultimasLicitacoes[atual.GetIdLeilao()];
-                        if (atual.GetDataHora() > presente.GetDataHora())
-                            ultimasLicitacoes[atual.GetIdLeilao()] = atual;
-                    }
-
+                    ultimasLicitacoes.Add(atual.GetIdLeilao(), atual);
                 }
-                catch (LicitadorNaoExisteException e)
+                else
                 {
-                    throw;
+                    Licitacao presente = ultimasLicitacoes[atual.GetIdLeilao()];
+                    if (atual.GetDataHora() > presente.GetDataHora())
+                        ultimasLicitacoes[atual.GetIdLeilao()] = atual;
                 }
-                
-
             }
 
             return ultimasLicitacoes;
         }
 
-        public SortedSet<Fatura> getFaturas()
+        public SortedSet<Fatura> GetFaturas()
         {
             SortedSet<Fatura> faturasOrdenadas = new SortedSet<Fatura>();
             
             foreach (int id in this.minhasFaturas)
             {
-                Fatura f = this.faturaDAO.get(id);
+                Fatura f = this.faturaDao.Get(id);
                 faturasOrdenadas.Add(f);
             }
 
             return faturasOrdenadas;
         }
 
-        public float valorTotalDoado()
+        public float ValorTotalDoado()
         {
             float valorTotal = 0;
             foreach (int idFatura in this.minhasFaturas)
             {
-                Fatura f = this.faturaDAO.get(idFatura);
-                valorTotal += f.getValor();
+                Fatura f = this.faturaDao.Get(idFatura);
+                valorTotal += f.GetValor();
             }
 
             return valorTotal;
         }
 
-        public void adicionarFatura(Fatura f)
+        public void AdicionarFatura(Fatura f)
         {
-            try
-            {
-                faturaDAO.put(f.getIdFatura(),f);
-            }
-            catch (DadosInvalidosException e)
-            {
-                throw;
-            }
+            faturaDao.Put(f.GetIdFatura(),f);
         }
 
-        public SortedSet<Licitacao> getLicitacoesLeilao(int idLeilao)
+        public SortedSet<Licitacao> GetLicitacoesLeilao(int idLeilao)
         {
             SortedSet<Licitacao> licitacoes = new SortedSet<Licitacao>();
 
             foreach (int idLicitacao in minhasLicitacoes)
             {
-                Licitacao l = licitacaoDAO.get(idLicitacao);
+                Licitacao l = licitacaoDao.Get(idLicitacao);
                 if (l.GetIdLeilao() == idLeilao)
                 {
                     licitacoes.Add(l);

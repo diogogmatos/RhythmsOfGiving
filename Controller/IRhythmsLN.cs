@@ -1,10 +1,10 @@
 ﻿namespace RhythmsOfGiving.Controller;
 
-public interface IRhythmsLN
+public interface IRhythmsLn
 {
 
     //Registar elementos novos
-    public void RegistarLicitador (string nome, string email, string palavraPasse, int nCC, int nif, DateOnly dataNascimento, int nrCartao);
+    public void RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
 
     public bool RegistarArtista(string nome,String imagem, int idAdmin);
         
@@ -20,7 +20,7 @@ public interface IRhythmsLN
 
     
     //Alterar  informações pessoais
-    public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCC, string novaPalavraPasse);
+    public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCc, string novaPalavraPasse);
 
     
     //Ver leilões ativos e filtrá-los

@@ -1,33 +1,33 @@
 
 using System;
 using System.Data.SqlClient;
-using RhythmsOfGiving.Controller;
+using RhythmsOfGiving.Controller.UI;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class InstituicaoDAO
+    public class InstituicaoDao
     {
-        private static InstituicaoDAO? singleton = null;
+        private static InstituicaoDao? _singleton = null;
 
-        private InstituicaoDAO()
+        private InstituicaoDao()
         {
         }
 
-        public static InstituicaoDAO getInstance()
+        public static InstituicaoDao GetInstance()
         {
-            if (singleton == null)
+            if (_singleton == null)
             {
-                singleton = new InstituicaoDAO();
+                _singleton = new InstituicaoDao();
             }
 
-            return singleton;
+            return _singleton;
         }
 
-        public static int size()
+        public static int Size()
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -49,11 +49,11 @@ namespace RhythmsOfGiving.Controller
             return totalRows;
         }
 
-        internal List<int> keySet()
+        internal List<int> KeySet()
         {
             List<int> instituicoesIds = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -67,8 +67,8 @@ namespace RhythmsOfGiving.Controller
                         {
                             while (reader.Read())
                             {
-                                int instituicaoID = Convert.ToInt32(reader["id"]);
-                                instituicoesIds.Add(instituicaoID);
+                                int instituicaoId = Convert.ToInt32(reader["id"]);
+                                instituicoesIds.Add(instituicaoId);
                             }
                         }
                     }
@@ -83,10 +83,10 @@ namespace RhythmsOfGiving.Controller
             return instituicoesIds;
         }
         
-         public Instituicao get(int idInstituicao)
+         public Instituicao Get(int idInstituicao)
     {
 
-        using SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString());
+        using SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString());
         connection.Open();
 
         string query = "SELECT * FROM Instituicao WHERE id = @id";
@@ -113,10 +113,10 @@ namespace RhythmsOfGiving.Controller
         }
     }
 
-    public Instituicao put(int id, Instituicao instituicao)
+    public Instituicao Put(int id, Instituicao instituicao)
     {
 
-        using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
         {
             connection.Open();
                 
@@ -133,16 +133,14 @@ namespace RhythmsOfGiving.Controller
     
             using (SqlCommand cmd = new SqlCommand(sql, connection))
             {
-                cmd.Parameters.AddWithValue("@IdInstituicao", instituicao.getId());
-                cmd.Parameters.AddWithValue("@Nome", instituicao.getNome());
-                cmd.Parameters.AddWithValue("@Descricao", instituicao.getDescricao());
-                cmd.Parameters.AddWithValue("@Logotipo", instituicao.getLogoPath());
-                cmd.Parameters.AddWithValue("@Hiperligacao", instituicao.getLink());
-                cmd.Parameters.AddWithValue("@IdAdmin", instituicao.getIdAdmin());
-                cmd.Parameters.AddWithValue("@Iban", instituicao.getIban());
-                cmd.Parameters.AddWithValue("@Id", id);
-                    
-
+                cmd.Parameters.AddWithValue("@IdInstituicao", instituicao.GetId());
+                cmd.Parameters.AddWithValue("@Nome", instituicao.GetNome());
+                cmd.Parameters.AddWithValue("@Descricao", instituicao.GetDescricao());
+                cmd.Parameters.AddWithValue("@Logotipo", instituicao.GetLogoPath());
+                cmd.Parameters.AddWithValue("@Hiperligacao", instituicao.GetLink());
+                cmd.Parameters.AddWithValue("@IdAdmin", instituicao.GetIdAdmin());
+                cmd.Parameters.AddWithValue("@Iban", instituicao.GetIban());
+                cmd.Parameters.AddWithValue("@Id", id);              
                 cmd.ExecuteNonQuery();
             }
         }
@@ -150,36 +148,26 @@ namespace RhythmsOfGiving.Controller
         return instituicao;
     }
 
-        public bool existeInstituicao(string nome)
+        public bool ExisteInstituicao(string nome)
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
-                try
+                connection.Open();
+
+                string query = "SELECT COUNT(*) FROM Instituicao WHERE nome = @Nome";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    connection.Open();
+                    command.Parameters.AddWithValue("@Nome", nome);
 
-                    string query = "SELECT COUNT(*) FROM Instituicao WHERE nome = @Nome";
+                    int count = Convert.ToInt32(command.ExecuteScalar());
 
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if (count > 0)
                     {
-                        command.Parameters.AddWithValue("@Nome", nome);
-
-                        int count = Convert.ToInt32(command.ExecuteScalar());
-
-                        if (count > 0)
-                        {
-                            return true; // já existe artista na base de dados
-                        }
-                        else
-                        {
-                            return false; // Não existe
-                        }
+                        return true; // já existe artista na base de dados
                     }
-                }
-                catch (Exception ex)
-                {
-                    // Trate a exceção conforme necessário, ou apenas a lance novamente.
-                    throw;
+
+                    return false; // Não existe
                 }
             }
         }
