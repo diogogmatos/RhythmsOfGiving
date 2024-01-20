@@ -28,7 +28,7 @@ namespace RhythmsOfGiving.Controller
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -53,7 +53,7 @@ namespace RhythmsOfGiving.Controller
         public Fatura Get(int id){
             Fatura fatura = null;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
             {
                 try
                 {
@@ -101,7 +101,7 @@ namespace RhythmsOfGiving.Controller
         { 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
                 {
                     connection.Open();
 

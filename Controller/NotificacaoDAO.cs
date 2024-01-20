@@ -20,7 +20,7 @@ public class NotificacaoDao{
             
             string query = "SELECT COUNT(*) FROM Notificação";
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 connection.Open();
@@ -32,7 +32,7 @@ public class NotificacaoDao{
         
          public Notificacao Get(int id)
         {
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -72,7 +72,7 @@ public class NotificacaoDao{
          
          public void Put(int id, Notificacao n)
 {
-    using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+    using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
     {
         connection.Open();
         try

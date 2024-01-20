@@ -27,7 +27,7 @@ namespace RhythmsOfGiving.Controller
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -53,7 +53,7 @@ namespace RhythmsOfGiving.Controller
         {
             List<int> instituicoesIds = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -86,7 +86,7 @@ namespace RhythmsOfGiving.Controller
          public Instituicao Get(int idInstituicao)
     {
 
-        using SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString());
+        using SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString());
         connection.Open();
 
         string query = "SELECT * FROM Instituicao WHERE id = @id";
@@ -116,7 +116,7 @@ namespace RhythmsOfGiving.Controller
     public Instituicao Put(int id, Instituicao instituicao)
     {
 
-        using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
         {
             connection.Open();
                 
@@ -133,13 +133,13 @@ namespace RhythmsOfGiving.Controller
     
             using (SqlCommand cmd = new SqlCommand(sql, connection))
             {
-                cmd.Parameters.AddWithValue("@IdInstituicao", instituicao.getId());
-                cmd.Parameters.AddWithValue("@Nome", instituicao.getNome());
-                cmd.Parameters.AddWithValue("@Descricao", instituicao.getDescricao());
-                cmd.Parameters.AddWithValue("@Logotipo", instituicao.getLogoPath());
-                cmd.Parameters.AddWithValue("@Hiperligacao", instituicao.getLink());
-                cmd.Parameters.AddWithValue("@IdAdmin", instituicao.getIdAdmin());
-                cmd.Parameters.AddWithValue("@Iban", instituicao.getIban());
+                cmd.Parameters.AddWithValue("@IdInstituicao", instituicao.GetId());
+                cmd.Parameters.AddWithValue("@Nome", instituicao.GetNome());
+                cmd.Parameters.AddWithValue("@Descricao", instituicao.GetDescricao());
+                cmd.Parameters.AddWithValue("@Logotipo", instituicao.GetLogoPath());
+                cmd.Parameters.AddWithValue("@Hiperligacao", instituicao.GetLink());
+                cmd.Parameters.AddWithValue("@IdAdmin", instituicao.GetIdAdmin());
+                cmd.Parameters.AddWithValue("@Iban", instituicao.GetIban());
                 cmd.Parameters.AddWithValue("@Id", id);              
                 cmd.ExecuteNonQuery();
             }
@@ -150,7 +150,7 @@ namespace RhythmsOfGiving.Controller
 
         public bool ExisteInstituicao(string nome)
         {
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
 

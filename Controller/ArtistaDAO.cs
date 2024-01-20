@@ -18,7 +18,7 @@ public class ArtistaDao{
         public static int Size(){
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -44,7 +44,7 @@ public class ArtistaDao{
            
            Artista artista = null;
 
-           using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString())) 
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
            {
                try
                {
@@ -89,7 +89,7 @@ public class ArtistaDao{
 
        public Artista Put (int id, Artista a)
        {
-           using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
            {
                connection.Open();
                 
@@ -121,7 +121,7 @@ public class ArtistaDao{
 
        public bool ExisteArtista(string nome)
        {
-           using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
            {
                connection.Open();
 

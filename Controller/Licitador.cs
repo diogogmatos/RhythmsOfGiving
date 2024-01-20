@@ -23,17 +23,17 @@ public class Licitador{
 
     public Licitador()
     {
-        this.licitacaoDAO = LicitacaoDAO.getInstance();
-        this.notificacaoDAO = NotificacaoDAO.getInstance();
+        this.licitacaoDao = LicitacaoDao.GetInstance();
+        this.notificacaoDao = NotificacaoDao.GetInstance();
     }
 
     public Licitacao teste()
     {
-        return licitacaoDAO.get(1);
+        return licitacaoDao.Get(1);
     }
     
 
-    private static int contadorLicitadores = LicitadorDAO.size();
+    private static int contadorLicitadores = LicitadorDao.Size();
 
     //Construtor para fazer get
     public Licitador (int idLicitador, string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCc, HashSet<int> minhasLicitacoes, HashSet<int> minhasFaturas){
@@ -54,7 +54,7 @@ public class Licitador{
 
     //Construtor para criar o Licitador
     public Licitador(string nome, string palavraPasse, DateOnly data, int nrCartao, string email, int nif, Int64 nCc){
-        this.idLicitador = ++_contadorLicitadores;
+        this.idLicitador = ++contadorLicitadores;
         this.nome = nome;
         this.palavraPasse = palavraPasse;
         this.dataNascimento = data;

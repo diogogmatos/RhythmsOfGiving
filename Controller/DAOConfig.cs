@@ -2,7 +2,7 @@ using System.Data.SqlClient;
 
 namespace RhythmsOfGiving.Controller
 {
-    public class DaOconfig
+    public class DAOConfig
     {
         public const string USER = "RhythmsOfGiving";
         public const string PASSWORD = "RhythmsOfGiving";

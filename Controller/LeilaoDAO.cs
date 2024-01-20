@@ -24,7 +24,7 @@ namespace RhythmsOfGiving.Controller
 
         public Leilao Put(int id, Leilao l)
         {
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -102,7 +102,7 @@ namespace RhythmsOfGiving.Controller
         {
             Leilao leilao = null;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -210,7 +210,7 @@ namespace RhythmsOfGiving.Controller
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -239,7 +239,7 @@ namespace RhythmsOfGiving.Controller
 
             Dictionary<Leilao, Artista> leiloesAtivosMap = new Dictionary<Leilao, Artista>();
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -366,7 +366,7 @@ namespace RhythmsOfGiving.Controller
         {
             Dictionary<Leilao, Artista> leiloesPorArtista = new Dictionary<Leilao, Artista>();
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                     
@@ -510,7 +510,7 @@ namespace RhythmsOfGiving.Controller
         {
             GeneroMusical generoMusical = null;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
             {
                 try
                 {
@@ -556,7 +556,7 @@ namespace RhythmsOfGiving.Controller
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -603,7 +603,7 @@ namespace RhythmsOfGiving.Controller
 
         public GeneroMusical PutGeneroMusical(int id, GeneroMusical novoGenero)
         {
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                 
@@ -638,7 +638,7 @@ namespace RhythmsOfGiving.Controller
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -746,7 +746,7 @@ namespace RhythmsOfGiving.Controller
 
         try
         {
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -849,7 +849,7 @@ namespace RhythmsOfGiving.Controller
         {
             HashSet<int> leilaoIds = new HashSet<int>();
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {

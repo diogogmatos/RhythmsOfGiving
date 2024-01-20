@@ -26,7 +26,7 @@ namespace RhythmsOfGiving.Controller
             
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -50,7 +50,7 @@ namespace RhythmsOfGiving.Controller
 
     internal Licitador Get(string email)
     {
-        using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
         {
             connection.Open();
             try
@@ -126,7 +126,7 @@ namespace RhythmsOfGiving.Controller
     }
              public Licitador get(int id)
         {
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -207,7 +207,7 @@ namespace RhythmsOfGiving.Controller
 
        internal void put(string email, Licitador licitador)
         {
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                 
@@ -232,13 +232,13 @@ namespace RhythmsOfGiving.Controller
 
                         using (SqlCommand updateCommand = new SqlCommand(mergeSql, connection))
                         {
-                            updateCommand.Parameters.AddWithValue("@id", licitador.getIdLicitador());
-                            updateCommand.Parameters.AddWithValue("@Nome", licitador.getNome());
-                            updateCommand.Parameters.AddWithValue("@PalavraPasse", licitador.getPalavraPasse());
-                            updateCommand.Parameters.AddWithValue("@DataNascimento", new DateTime(licitador.getDataNascimento().Year, licitador.getDataNascimento().Month, licitador.getDataNascimento().Day));
-                            updateCommand.Parameters.AddWithValue("@NrCartao", licitador.getNrCartao());
-                            updateCommand.Parameters.AddWithValue("@Nif", licitador.getNIF());
-                            updateCommand.Parameters.AddWithValue("@NumeroCC", licitador.getNcc());
+                            updateCommand.Parameters.AddWithValue("@id", licitador.GetIdLicitador());
+                            updateCommand.Parameters.AddWithValue("@Nome", licitador.GetNome());
+                            updateCommand.Parameters.AddWithValue("@PalavraPasse", licitador.GetPalavraPasse());
+                            updateCommand.Parameters.AddWithValue("@DataNascimento", new DateTime(licitador.GetDataNascimento().Year, licitador.GetDataNascimento().Month, licitador.GetDataNascimento().Day));
+                            updateCommand.Parameters.AddWithValue("@NrCartao", licitador.GetNrCartao());
+                            updateCommand.Parameters.AddWithValue("@Nif", licitador.GetNif());
+                            updateCommand.Parameters.AddWithValue("@NumeroCC", licitador.GetNcc());
                             updateCommand.Parameters.AddWithValue("@Email", email);
                             updateCommand.ExecuteNonQuery();
                         }
@@ -257,7 +257,7 @@ namespace RhythmsOfGiving.Controller
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -265,7 +265,7 @@ namespace RhythmsOfGiving.Controller
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@NovoNumeroCC", novoNumeroCC);
+                        command.Parameters.AddWithValue("@NovoNumeroCC", novoNumeroCc);
                         int count = (int)command.ExecuteScalar();
 
                         numeroCcUnico = count == 0;
@@ -284,7 +284,7 @@ namespace RhythmsOfGiving.Controller
         {
             List<int> keySet = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(DaOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
 
