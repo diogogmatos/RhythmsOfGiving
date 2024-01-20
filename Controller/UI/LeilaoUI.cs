@@ -2,6 +2,8 @@
 
 public class LeilaoUi
 {
+    private static readonly int shortDescSize = 100;
+    
     private readonly int id;
     private readonly string artista;
     private readonly string title;
@@ -32,6 +34,24 @@ public class LeilaoUi
         this.authorImagePath = authorImagePath;
         this.asCegas = asCegas;
         this.valorBase = valorBase;
+    }
+
+    public LeilaoUi(Leilao leilao, Artista artista)
+    {
+        this.id = leilao.IdLeilao;
+        this.artista = artista.GetNome();
+        this.title = leilao.Titulo;
+        this.localizacao = leilao.Experiencia.GetLocalizacao();
+        this.genero = leilao.Experiencia.GetGeneroMusical().GetNome();
+        this.tipo = leilao.GetTipo() == 0 ? "Ás Cegas" : "Inglês";
+        this.fim = leilao.DataHoraFinal;
+        this.shortDescricao = leilao.Experiencia.GetDescricao().Substring(0,
+            Math.Min(leilao.Experiencia.GetDescricao().Length, shortDescSize));
+        this.descricao = leilao.Experiencia.GetDescricao();
+        this.imagePath = leilao.Experiencia.GetImagem();
+        this.authorImagePath = artista.GetImagem();
+        this.asCegas = leilao.GetTipo() == 0;
+        this.valorBase = leilao.ValorBase;
     }
 
     public int GetId() {
