@@ -142,5 +142,39 @@ public class ArtistaDao{
                }
            }
        }
+       
+       public List<int> keySet()
+       {
+           List<int> artistaId = new List<int>();
+
+           using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+           {
+               try
+               {
+                   connection.Open();
+
+                   string query = "SELECT id FROM Artista";
+
+                   using (SqlCommand command = new SqlCommand(query, connection))
+                   {
+                       using (SqlDataReader reader = command.ExecuteReader())
+                       {
+                           while (reader.Read())
+                           {
+                               int artista = Convert.ToInt32(reader["id"]);
+                               artistaId.Add(artista);
+                           }
+                       }
+                   }
+               }
+               catch (Exception ex)
+               {
+                   // Trate exceções conforme necessário (registre, relance, etc.)
+                   Console.WriteLine("Error: " + ex.Message);
+               }
+           }
+
+           return artistaId;
+       }
 }
 }
