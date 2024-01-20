@@ -131,7 +131,7 @@ public class NotificacaoDao{
 
     public List<Notificacao> getNotificacoesLicitador(idLicitador)
     {
-        List<Notificacao> notificacoes = new List<Notificacao>;
+        List<Notificacao> notificacoes = new List<Notificacao>();
 
         using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {

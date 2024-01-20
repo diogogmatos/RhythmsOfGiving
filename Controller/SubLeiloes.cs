@@ -344,5 +344,23 @@ namespace RhythmsOfGiving.Controller
             return leilaoDao.Get(id);
         }
 
+        public List<string> GetNomesGenerosMusicais()
+        {
+            List<string> nomes = new List<string>();
+
+            foreach (GeneroMusical genero in generos.Values)
+            {
+                string nomeDoGenero = genero.GetNome();
+                nomesDosGeneros.Add(nomeDoGenero);
+            }
+
+            return nomes;
+        }
+
+        public List<string> GetNomesArtistasMusicais()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

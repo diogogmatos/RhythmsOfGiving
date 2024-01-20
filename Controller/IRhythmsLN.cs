@@ -109,4 +109,8 @@ public interface IRhythmsLn
     //SubLeilões
     public Leilao GetLeilaoById(int id);
 
+    public List<string> GetNomesGenerosMusicais();
+
+    public List<string> GetNomesArtistasMusicais();
+
 }

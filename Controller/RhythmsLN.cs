@@ -201,4 +201,14 @@ public class RhythmsLn : IRhythmsLn
     {
         return subUtilizadores.GetNotificacoesUtilizador(idLicitador);
     }
+
+    public List<string> GetNomesGenerosMusicais()
+    {
+        return subLeiloes.GetNomesGenerosMusicais();
+    }
+
+    public List<string> GetNomesArtistasMusicais()
+    {
+        return subLeiloes.GetNomesArtistasMusicais();
+    }
 }

@@ -45,5 +45,9 @@ namespace RhythmsOfGiving.Controller
 
         public Leilao GetLeilaoById(int id);
 
+        public List<string> GetNomesGenerosMusicais();
+
+        public List<string> GetNomesArtistasMusicais();
+
     }
 }
