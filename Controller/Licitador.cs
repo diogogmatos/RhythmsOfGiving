@@ -208,7 +208,8 @@ public class Licitador{
 
         internal void SetDataNascimento(DateTime novaDataNascimento)
         {
-            throw new NotImplementedException();
+            this.dataNascimento = novaDataNascimento
+            //throw new NotImplementedException();
         }
 
         public Notificacao CriarNotificacaoUltrapassada(string titulo)

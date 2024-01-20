@@ -26,6 +26,7 @@ public class UiService
     {
         valorTeste = valor;
         // TODO: Método AdicionarLicitacao da LN recebe idLicitador, não email; recebe idLicitacao, não idLeilao
+        //Acho que é suposto receber isso: Primeiro tens de chamar a CriarLicitacao que te dá o idLicitacao
         await BroadcastAuctionUpdate();
     }
 

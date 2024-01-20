@@ -72,14 +72,14 @@ namespace RhythmsOfGiving.Controller
             Licitador l  = this.licitadores.get(idLicitacao); 
             l.GetMinhasLicitacoes().Add(idLicitacao);
             licitadores.put(l.GetEmail(),l);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public Notificacao CriarNotificacaoUltrapassada(int idLicitador, string titulo)
         {
             Licitador l = this.licitadores.get(idLicitador); 
             return l.CriarNotificacaoUltrapassada(titulo);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         
         public Dictionary<int, Notificacao> CriarNotificacaoPerdedora (HashSet<int> idLicitadores, int idLeilao, string titulo, float valor)
@@ -91,7 +91,7 @@ namespace RhythmsOfGiving.Controller
                 Licitador l = this.licitadores.get(id); 
                 Notificacao n = l.CriarNotificacaoPerdedora(idLeilao, titulo, valor);
                 notificacoesPerdedoras.Add(id, n);
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
 
             return notificacoesPerdedoras;
@@ -102,7 +102,7 @@ namespace RhythmsOfGiving.Controller
             Licitador l = this.licitadores.get(idLicitador); // ERRO
             Dictionary<int, Licitacao> resultado = l.saberLeiloesParticipa_Licitacao();
             return resultado;
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         
         public  Notificacao CriarNotificacaoVencedora(int idLicitador, int idLeilao, string titulo, float valor)
@@ -110,7 +110,7 @@ namespace RhythmsOfGiving.Controller
             Licitador l = licitadores.get(idLicitador);
             Notificacao notificacao = l.CriarNotificacaoVencedora(idLeilao, titulo, valor);
             return notificacao;
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public SortedSet<Fatura> MinhasFaturas(int idLicitador)
@@ -124,7 +124,7 @@ namespace RhythmsOfGiving.Controller
             }
                 
             return resultado;
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public Dictionary<Licitador, float> LicitadoresTop10()
@@ -136,7 +136,7 @@ namespace RhythmsOfGiving.Controller
                 Licitador l = this.licitadores.get(id);
                 float valorTotal = l.ValorTotalDoado();
                 resultado.Add(l, valorTotal);
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
 
             if (resultado.Count == 0)
@@ -169,14 +169,14 @@ namespace RhythmsOfGiving.Controller
             //
             Fatura f = new Fatura(dataHoraAtual, idInstituicao, nomeLicitador, nif, idLicitacao, idLicitador);
             l.AdicionarFatura(f);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         
         public SortedSet<Licitacao> PesquisarLicitacoes (int idLicitador, int idLeilao)
         {
             Licitador l = this.licitadores.get(idLicitador);
             return l.GetLicitacoesLeilao(idLeilao);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
