@@ -315,5 +315,31 @@ public class Licitador{
 
             return licitacoes;
         }
+
+
+        public float GetUltimaLicitacao (int idLeilao)
+        {
+            float valor = -1;
+            
+            foreach (int idLicitacao in this.minhasLicitacoes)
+            {
+                Licitacao atual = this.licitacaoDao.Get(idLicitacao);
+                if (atual.GetIdLeilao() == idLeilao)
+                {
+                    if (atual.GetValor() > valor)
+                    {
+                        valor = atual.GetValor();
+                    }
+                }
+            }
+            if (valor == -1)
+            {
+                throw new NaoExistemLicitacoesException("O licitador " + idLicitador + " não tem licitações no leilão " + idLeilao);
+            }
+            else
+            {
+                return valor;
+            }
+        }
 }
 }

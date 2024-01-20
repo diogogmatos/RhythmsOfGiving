@@ -59,7 +59,6 @@ namespace RhythmsOfGiving.Controller
             
                         licitadores.put(l.GetEmail(), l);
                           }
-
             }
             else
             {
@@ -177,6 +176,12 @@ namespace RhythmsOfGiving.Controller
             Licitador l = this.licitadores.get(idLicitador);
             return l.GetLicitacoesLeilao(idLeilao);
             //throw new NotImplementedException();
+        }
+
+        public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
+        {
+            Licitador l = this.licitadores.get(idLicitador);
+            return l.GetUltimaLicitacao(idLeilao);
         }
     }
 }

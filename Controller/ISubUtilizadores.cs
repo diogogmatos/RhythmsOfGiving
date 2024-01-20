@@ -28,5 +28,7 @@ namespace RhythmsOfGiving.Controller
         
         public SortedSet<Licitacao> PesquisarLicitacoes (int idLicitador, int idLeilao);
 
+        public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
+
     }
 }

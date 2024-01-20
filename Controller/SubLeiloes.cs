@@ -204,7 +204,7 @@ namespace RhythmsOfGiving.Controller
         public float GetValorFimLeilao(int idLeilao)
         {
             Leilao leilao = this.leilaoDao.Get(idLeilao);
-            return (leilao.GetValorFim());
+            return (leilao.GetValorUltimaLicitacao());
         }
 
 

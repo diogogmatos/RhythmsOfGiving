@@ -181,4 +181,9 @@ public class RhythmsLn : IRhythmsLn
     {
         return subLeiloes.GetTotalValorDoado();
     }
+
+    public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
+    {
+        return GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
+    }
 }

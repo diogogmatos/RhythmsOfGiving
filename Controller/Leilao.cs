@@ -265,14 +265,14 @@ public abstract class Leilao
         throw new TempoExcedidoException("O tempo do leilão " + this.idLeilao + " foi excedido.");
     }
 
-    public float GetValorFim()
+    public float GetValorUltimaLicitacao()
     {
         if (minhasLicitacoes.Count == 0)
         {
             throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
         }
 
-        float resultado = -1;
+        /*float resultado = -1;
         foreach (int idLicitacao in minhasLicitacoes)
         {
             Licitacao licitacao = licitacaoDao.Get(idLicitacao);
@@ -282,7 +282,8 @@ public abstract class Leilao
                 resultado = valorAtual;
             }
         }
-        return resultado;
+        return resultado;*/
+        return valorAtual
     }
 
     public HashSet<int> GetLicitadores()

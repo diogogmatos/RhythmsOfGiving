@@ -34,6 +34,8 @@ public class UiService
     public float GetUltimaLicitacaoUtilizador(string email, int idLeilao)
     {
         return valorTeste;
+        //return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
+        
     }
 
     // TODO: Sem método necessário na LN
