@@ -32,5 +32,7 @@ namespace RhythmsOfGiving.Controller
 
         public string GetNomeUtilizador(int idLicitador);
 
+        public List<Notificacao> GetNotificacoesUtilizador(int idLicitador);
+
     }
 }

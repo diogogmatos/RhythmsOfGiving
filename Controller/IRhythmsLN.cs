@@ -103,6 +103,8 @@ public interface IRhythmsLn
 
     public string GetNomeUtilizador(int idLicitador);
 
+    public List<Notificacao> GetNotificacoesUtilizador(int idLicitador);
+
 
     //SubLeilões
     public Leilao GetLeilaoById(int id);

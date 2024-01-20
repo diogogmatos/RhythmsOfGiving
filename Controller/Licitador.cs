@@ -341,5 +341,10 @@ public class Licitador{
                 return valor;
             }
         }
+
+        public List<Notificacao> GetNotificacoes()
+        {
+            return notificacaoDao.getNotificacoesLicitador(idLicitador);
+        }
 }
 }

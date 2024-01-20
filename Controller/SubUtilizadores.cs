@@ -191,5 +191,11 @@ namespace RhythmsOfGiving.Controller
             return l.GetNome();
         }
 
+        public List<Notificacao> GetNotificacoesUtilizador(int idLicitador)
+        {
+            Licitador l = this.licitadores.get(idLicitador);
+            return l.GetNotificacoes();
+        }
+
     }
 }
