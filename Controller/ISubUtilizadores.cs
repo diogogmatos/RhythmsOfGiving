@@ -5,7 +5,7 @@ namespace RhythmsOfGiving.Controller
     {
         public void RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
 
-        public bool ValidarAutenticacao(string email, string palavraPasse);
+        public int ValidarAutenticacao(string email, string palavraPasse);
 
         public void AlterarInfosPessoais(string email, string novoNome, DateTime novaDataNascimento, int novoNumeroCc, string novaPalavraPasse);
 

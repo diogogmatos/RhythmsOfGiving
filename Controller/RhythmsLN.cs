@@ -17,7 +17,7 @@ public class RhythmsLn : IRhythmsLn
         subUtilizadores.RegistarLicitador(nome, email, palavraPasse, nCc, nif, dataNascimento, nrCartao);
     }
 
-    public bool ValidarAutenticacao(string email, string palavraPasse)
+    public int ValidarAutenticacao(string email, string palavraPasse)
     {
         return subUtilizadores.ValidarAutenticacao(email, palavraPasse);
     }

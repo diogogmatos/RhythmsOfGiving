@@ -29,15 +29,15 @@ namespace RhythmsOfGiving.Controller
             licitadores.put(email,l);
         }
 
-        public bool ValidarAutenticacao(string email, string palavraPasse)
+        public int ValidarAutenticacao(string email, string palavraPasse)
         {
             Licitador l = this.licitadores.Get(email);
 
             if (l.GetPalavraPasse().Equals(palavraPasse))
             {
-                return true;
+                return l.GetIdLicitador();
             }
-            return false;
+            return -1;
         }
 
         
