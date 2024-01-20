@@ -20,7 +20,7 @@ public abstract class Leilao
     private InstituicaoDao instituicaoDao;
 
     public static int percentagemAumento = 1;
-    private static int _contador = LeilaoDao.Size();
+    private static int _contador = LeilaoDAO.size();
     
 
     //método abstract

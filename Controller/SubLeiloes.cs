@@ -6,7 +6,7 @@ namespace RhythmsOfGiving.Controller
     public class SubLeiloes : ISubLeiloes
     {
 
-        private LeilaoDao leilaoDao;
+        private LeilaoDAO leilaoDao;
         private ArtistaDao artistaDao;
         private Dictionary<int, GeneroMusical> generos;
         private InstituicaoDao instituicaoDao;
@@ -14,7 +14,7 @@ namespace RhythmsOfGiving.Controller
         //Construtor
         public SubLeiloes()
         {
-            this.leilaoDao = LeilaoDao.GetInstance();
+            this.leilaoDao = LeilaoDAO.getInstance();
             this.artistaDao = ArtistaDao.GetInstance();
             this.PreencherGeneros(); // Prencher Map de Generos no leilãoDAO
             this.instituicaoDao = InstituicaoDao.GetInstance();
@@ -24,7 +24,7 @@ namespace RhythmsOfGiving.Controller
 
         private void PreencherGeneros()
         {
-            this.generos = this.leilaoDao.PreencherGeneros();
+            this.generos = this.leilaoDao.preencherGeneros();
         }
 
 
@@ -57,7 +57,7 @@ namespace RhythmsOfGiving.Controller
             GeneroMusical novoGenero = new GeneroMusical(++size, nome, idAdmin);
 
             generos.Add(novoGenero.GetIdGenero(), novoGenero);
-            this.leilaoDao.PutGeneroMusical(novoGenero.GetIdGenero(), novoGenero);
+            this.leilaoDao.putGeneroMusical(novoGenero.GetIdGenero(), novoGenero);
 
             return true;
         }
@@ -80,26 +80,26 @@ namespace RhythmsOfGiving.Controller
 
         public void RegistarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao)
         {
-            GeneroMusical g = this.leilaoDao.GetGenero(idGenero);
+            GeneroMusical g = this.leilaoDao.getGenero(idGenero);
             Experiencia e = new Experiencia(descricao, imagem, localizacao, idArtista, g);
             if (tipoLeilao == 0)
             {
                 Leilao l = new LeilaoAsCegas(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now,
                     idAdmin, -1, new List<int>(), e);
-                this.leilaoDao.Put(l.IdLeilao, l);
+                this.leilaoDao.put(l.IdLeilao, l);
             }
             else
             {
                 Leilao l = new LeilaoIngles(true, valorBase, valorBase, dataHoraFinal, titulo, DateTime.Now,
                     idAdmin, -1, new List<int>(), e);
-                this.leilaoDao.Put(l.IdLeilao, l);
+                this.leilaoDao.put(l.IdLeilao, l);
             }
         }
 
         public int GetLicitadorGanhador(int idLeilao)
         {
-            Leilao leilao = this.leilaoDao.Get(idLeilao);
-            this.leilaoDao.Put(leilao.IdLeilao, leilao);
+            Leilao leilao = this.leilaoDao.get(idLeilao);
+            this.leilaoDao.put(leilao.IdLeilao, leilao);
 
             return leilao.GetLicitadorGanhador();
         }
@@ -122,9 +122,9 @@ namespace RhythmsOfGiving.Controller
 
 
 
-        public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero)
+       /* public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero)
         {
-            List<Leilao> leiloes = leilaoDao.ObterLeiloesPorIdsGenero(idsGenero);
+            List<Leilao> leiloes = leilaoDao.obterLeiloesPorIdsGenero(idsGenero);
             Dictionary<Leilao, Artista> resultado = new Dictionary<Leilao, Artista>();
 
             foreach (var leilao in leiloes)
@@ -138,12 +138,12 @@ namespace RhythmsOfGiving.Controller
                 }
             }
             return resultado;
-        }
+        }*/
 
         //Função definida no DAO do leilao
         public Dictionary<Leilao, Artista> ConsultarLeiloesAtivos()
         {
-            Dictionary<Leilao, Artista> resultado = this.leilaoDao.LeiloesAtivos();
+            Dictionary<Leilao, Artista> resultado = this.leilaoDao.leiloesAtivos();
             if (resultado.Count == 0)
             {
                 throw new LeiloesAtivosNaoExistemException("Não existem leilões ativos neste momento.");
@@ -154,7 +154,7 @@ namespace RhythmsOfGiving.Controller
 
         public Dictionary<Leilao, Artista> FiltrarLeiloesPorArtista(string nome)
         {
-            Dictionary<Leilao, Artista> resultado = this.leilaoDao.FiltrarLeiloesPorArtista(nome);
+            Dictionary<Leilao, Artista> resultado = this.leilaoDao.filtrarLeiloesPorArtista(nome);
             if (resultado.Count == 0)
             {
                 throw new LeiloesArtistaNaoExisteException("De momento, não existem leilões ativos com o artista " +
@@ -166,14 +166,14 @@ namespace RhythmsOfGiving.Controller
 
         public int CriarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo)
         {
-            Leilao leilao = this.leilaoDao.Get(idLeilao);
+            Leilao leilao = this.leilaoDao.get(idLeilao);
             int idLicitacao = leilao.VerificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
             return idLicitacao;
         }
 
         public string GetTituloLeilao(int idLeilao)
         {
-            Leilao leilao = this.leilaoDao.Get(idLeilao);
+            Leilao leilao = this.leilaoDao.get(idLeilao);
             return (leilao.Titulo);
         }
 
@@ -183,10 +183,10 @@ namespace RhythmsOfGiving.Controller
 
             foreach (int idLeilao in ultimasLicitações.Keys)
             {
-                Leilao leilao = leilaoDao.Get(idLeilao);
+                Leilao leilao = leilaoDao.get(idLeilao);
                 if (leilao.Ativo == false)
                 {
-                    resultado.Add(leilaoDao.Get(idLeilao), ultimasLicitações[idLeilao]);
+                    resultado.Add(leilaoDao.get(idLeilao), ultimasLicitações[idLeilao]);
                 }
             }
 
@@ -196,21 +196,21 @@ namespace RhythmsOfGiving.Controller
 
         public float CalcularValorMinimo(int idLeilao)
         {
-            Leilao leilao = this.leilaoDao.Get(idLeilao);
+            Leilao leilao = this.leilaoDao.get(idLeilao);
             return (float)Math.Round(leilao.ValorAtual * 1.01f, 2);
         }
 
 
         public float GetValorFimLeilao(int idLeilao)
         {
-            Leilao leilao = this.leilaoDao.Get(idLeilao);
+            Leilao leilao = this.leilaoDao.get(idLeilao);
             return (leilao.GetValorUltimaLicitacao());
         }
 
 
         public HashSet<int> GetLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou)
         {
-            Leilao leilao = this.leilaoDao.Get(idLeilao);
+            Leilao leilao = this.leilaoDao.get(idLeilao);
             HashSet<int> licitadores = leilao.GetLicitadores();
             licitadores.Remove(idLicitadorGanhou);
             return licitadores;
@@ -222,10 +222,10 @@ namespace RhythmsOfGiving.Controller
 
             foreach (int idLeilao in leiloesLicitacoes.Keys)
             {
-                Leilao leilao = leilaoDao.Get(idLeilao);
+                Leilao leilao = leilaoDao.get(idLeilao);
                 if (leilao.Ativo == true)
                 {
-                    resultado.Add(leilaoDao.Get(idLeilao), leiloesLicitacoes[idLeilao]);
+                    resultado.Add(leilaoDao.get(idLeilao), leiloesLicitacoes[idLeilao]);
                 }
             }
 
@@ -236,9 +236,9 @@ namespace RhythmsOfGiving.Controller
         {
             Dictionary<Instituicao, float> valoresInstituicoes = new Dictionary<Instituicao, float>();
 
-            foreach (int idLeilao in leilaoDao.KeySet())
+            foreach (int idLeilao in leilaoDao.keySet())
             {
-                Leilao leilao = leilaoDao.Get(idLeilao);
+                Leilao leilao = leilaoDao.get(idLeilao);
 
                 if (leilao.Ativo == false)
                 {
@@ -264,11 +264,11 @@ namespace RhythmsOfGiving.Controller
 
         public void PreencherInstituicaoLeilao(int idLeilao, int idInstituicao)
         {
-            Leilao l = this.leilaoDao.Get(idLeilao);
+            Leilao l = this.leilaoDao.get(idLeilao);
             l.SetIdInstituicao(idInstituicao);
-            this.leilaoDao.Put(l.IdLeilao, l);
+            this.leilaoDao.put(l.IdLeilao, l);
         }
-
+    /*
         public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos)
         {
             List<Leilao> leiloes = leilaoDao.ObterLeiloesPorTipo(tipos);
@@ -286,13 +286,13 @@ namespace RhythmsOfGiving.Controller
             }
 
             return resultado;
-        }
+        }*/
         
 
 
         public TimeSpan CalcularTempoRestante (int idLeilao)
         {
-            Leilao l = this.leilaoDao.Get(idLeilao);
+            Leilao l = this.leilaoDao.get(idLeilao);
             DateTime atual = DateTime.Now;
             DateTime fim = l.DataHoraFinal;
             DateTime contador = l.DataHoraContador;
@@ -317,7 +317,7 @@ namespace RhythmsOfGiving.Controller
 
         public Licitacao ProcurarLicitacaoAtual(int idLeilao)
         {
-            Leilao l = this.leilaoDao.Get(idLeilao);
+            Leilao l = this.leilaoDao.get(idLeilao);
             return (l.LicitacaoAtualAnterior());
         }
 
@@ -325,9 +325,9 @@ namespace RhythmsOfGiving.Controller
         {
             float valor = 0;
 
-            foreach (int idLeilao in leilaoDao.KeySet())
+            foreach (int idLeilao in leilaoDao.keySet())
             {
-                Leilao leilao = leilaoDao.Get(idLeilao);
+                Leilao leilao = leilaoDao.get(idLeilao);
 
                 if (leilao.Ativo == false)
                 {
@@ -341,7 +341,7 @@ namespace RhythmsOfGiving.Controller
         }
 
         public Leilao GetLeilaoById(int id){
-            return leilaoDao.Get(id);
+            return leilaoDao.get(id);
         }
 
     }

@@ -9,7 +9,7 @@ namespace RhythmsOfGiving.Controller
         public void RegistarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
             string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao);
 
-        public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero);
+        //public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero);
 
         public int GetLicitadorGanhador(int idLeilao);
         public Dictionary<Leilao, Artista> ConsultarLeiloesAtivos();
@@ -29,7 +29,7 @@ namespace RhythmsOfGiving.Controller
 
         public HashSet<int> GetLicitadoresPerdedores(int idLeilao, int idLicitadorGanhou);
 
-        public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos);
+        //public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos);
 
         public Dictionary<Leilao, Licitacao> GetLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes);
 

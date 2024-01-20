@@ -91,12 +91,12 @@ public class RhythmsLn : IRhythmsLn
     {
         subLeiloes.RegistarLeilao(valorBase, dataHoraFinal, titulo, descricao, imagem, localizacao, idArtista, idGenero, idAdmin, tipoLeilao);
     }
-
+    /*
     public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero)
     {
         return subLeiloes.FiltrarLeiloesPorGenero(idsGenero);
     }
-
+*/
     public int GetLicitadorGanhador(int idLeilao)
     {
         return subLeiloes.GetLicitadorGanhador(idLeilao);
@@ -146,11 +146,12 @@ public class RhythmsLn : IRhythmsLn
     {
         return subLeiloes.GetLicitadoresPerdedores(idLeilao, idLicitadorGanhou);
     }
+    /*
 
     public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos)
     {
         return subLeiloes.FiltrarLeiloesPorTipo(tipos);
-    }
+    }*/
 
     public Dictionary<Leilao, Licitacao> GetLeiloesAtivosInfos(Dictionary<int, Licitacao> leiloesLicitacoes)
     {

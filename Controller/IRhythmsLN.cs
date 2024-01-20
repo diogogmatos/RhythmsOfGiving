@@ -28,9 +28,9 @@ public interface IRhythmsLn
 
     public Dictionary<Leilao, Artista> FiltrarLeiloesPorArtista(string nome);
 
-    public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero);
+   // public Dictionary<Leilao, Artista> FiltrarLeiloesPorGenero(List<int> idsGenero);
 
-    public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos);
+    //public Dictionary<Leilao, Artista> FiltrarLeiloesPorTipo(List<int> tipos);
 
     
     //Realizar licitação
