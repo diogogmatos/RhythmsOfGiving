@@ -4,10 +4,10 @@ namespace RhythmsOfGiving.Controller
 {
     public class DaOconfig
     {
-        public const string User = "FaltaDefinir";
-        public const string Password = "FaltaDefinir";
-        public const string Machine = "FaltaDefinir";
-        public const string Database = "FaltaDefinir";
+        public const string USER = "RhythmsOfGiving";
+        public const string PASSWORD = "RhythmsOfGiving";
+        public const string MACHINE = "FaltaDefinir";
+        public const string DATABASE = "RhythmsOfGiving";
 
         public static string GetConnectionString()
         {

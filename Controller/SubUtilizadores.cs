@@ -52,13 +52,13 @@ namespace RhythmsOfGiving.Controller
             if (DateTime.Now.Subtract(novaDataNascimento).TotalDays / 365.25 >= 18)
             {
                 l.SetDataNascimento(novaDataNascimento);
-
-                // Ver se é necessario
-                if (licitadores.VerificarUnicoNumeroCc(novoNumeroCc))
-                {
-                    l.SetNcc(novoNumeroCc);
-                }
-                licitadores.Put(l.GetEmail(), l);
+                        // Ver se é necessario
+                        if (licitadores.VerificarUnicoNumeroCC(novoNumeroCC))
+                        {
+                            l.setNcc(novoNumeroCC);
+            
+                        licitadores.put(l.getEmail(), l);
+                          }
 
             }
             else
