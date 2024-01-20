@@ -16,7 +16,7 @@ namespace RhythmsOfGiving.Controller
         private LicitacaoDao licitacaoDao;
         private InstituicaoDao instituicaoDao;
 
-        private static int _contadorFat = FaturaDao.Size();
+        private static int _contadorFat = FaturaDAO.size();
 
         //Construtor para criar
         public Fatura(DateTime dataHora, int idInstituicao, string nomeLicitador, int nif, int idLicitacao, int idLicitador)

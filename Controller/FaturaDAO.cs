@@ -28,7 +28,7 @@ namespace RhythmsOfGiving.Controller
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 try
                 {
@@ -53,7 +53,7 @@ namespace RhythmsOfGiving.Controller
         public Fatura get(int id){
             Fatura fatura = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
             {
                 try
                 {
@@ -101,7 +101,7 @@ namespace RhythmsOfGiving.Controller
         { 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -116,11 +116,11 @@ namespace RhythmsOfGiving.Controller
 
                     using (SqlCommand cmd = new SqlCommand(sql, connection))
                     {
-                        cmd.Parameters.AddWithValue("@IdFatura", f.getIdFatura());
-                        cmd.Parameters.AddWithValue("@DataHora", f.getDataHoraEmissao());
-                        cmd.Parameters.AddWithValue("@IdLicitador", f.getIdLicitador());
-                        cmd.Parameters.AddWithValue("@IdLicitacao", f.getIdLicitacao());
-                        cmd.Parameters.AddWithValue("@IdInstituicao", f.getIdInstituicao());
+                        cmd.Parameters.AddWithValue("@IdFatura", f.GetIdFatura());
+                        cmd.Parameters.AddWithValue("@DataHora", f.GetDataHoraEmissao());
+                        cmd.Parameters.AddWithValue("@IdLicitador", f.GetIdLicitador());
+                        cmd.Parameters.AddWithValue("@IdLicitacao", f.GetIdLicitacao());
+                        cmd.Parameters.AddWithValue("@IdInstituicao", f.GetIdInstituicao());
 
                         cmd.Parameters.AddWithValue("@Id", id);
 

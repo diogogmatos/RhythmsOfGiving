@@ -17,7 +17,7 @@ public class Licitador{
     private Int64 nCc;
     private LicitacaoDao licitacaoDao;
     private HashSet<int> minhasLicitacoes;
-    private FaturaDao faturaDao;
+    private FaturaDAO faturaDao;
     private HashSet<int> minhasFaturas;
     private NotificacaoDao notificacaoDao;
 
@@ -47,7 +47,7 @@ public class Licitador{
         this.nCc = nCc;
         this.licitacaoDao = LicitacaoDao.GetInstance();
         this.minhasLicitacoes = minhasLicitacoes;
-        this.faturaDao = FaturaDao.GetInstance();
+        this.faturaDao = FaturaDAO.getInstance();
         this.minhasFaturas = minhasFaturas;
         this.notificacaoDao = NotificacaoDao.GetInstance();
     }
@@ -64,7 +64,7 @@ public class Licitador{
         this.nCc = nCc;
         this.licitacaoDao = LicitacaoDao.GetInstance();
         this.minhasLicitacoes = new HashSet<int>();
-        this.faturaDao = FaturaDao.GetInstance();
+        this.faturaDao = FaturaDAO.getInstance();
         this.minhasFaturas = new HashSet<int>();
         this.notificacaoDao = NotificacaoDao.GetInstance();
     }
@@ -275,7 +275,7 @@ public class Licitador{
             
             foreach (int id in this.minhasFaturas)
             {
-                Fatura f = this.faturaDao.Get(id);
+                Fatura f = this.faturaDao.get(id);
                 faturasOrdenadas.Add(f);
             }
 
@@ -287,7 +287,7 @@ public class Licitador{
             float valorTotal = 0;
             foreach (int idFatura in this.minhasFaturas)
             {
-                Fatura f = this.faturaDao.Get(idFatura);
+                Fatura f = this.faturaDao.get(idFatura);
                 valorTotal += f.GetValor();
             }
 
@@ -296,7 +296,7 @@ public class Licitador{
 
         public void AdicionarFatura(Fatura f)
         {
-            faturaDao.Put(f.GetIdFatura(),f);
+            faturaDao.put(f.GetIdFatura(),f);
         }
 
         public SortedSet<Licitacao> GetLicitacoesLeilao(int idLeilao)
