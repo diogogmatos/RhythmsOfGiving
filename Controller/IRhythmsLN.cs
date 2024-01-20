@@ -95,9 +95,14 @@ public interface IRhythmsLn
     public Dictionary<Licitador, float> LicitadoresTop10();
 
 
+
     //Novas funções
 
     //SubUtilizadores
     public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
+
+
+    //SubLeilões
+    public Leilao GetLeilaoById(int id);
 
 }

@@ -118,6 +118,7 @@ public class UiService
     }
 
     // TODO: Sem método necessário na LN
+    //Já há método GetLeilaoById mas devolve Leilao e não LeilaoUi
     public LeilaoUi GetLeilaoById(int id)
     {
         return new LeilaoUi(

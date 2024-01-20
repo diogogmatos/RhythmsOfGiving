@@ -340,5 +340,9 @@ namespace RhythmsOfGiving.Controller
             return valor;
         }
 
+        public Leilao GetLeilaoById(int id){
+            return leilaoDao.Get(id);
+        }
+
     }
 }

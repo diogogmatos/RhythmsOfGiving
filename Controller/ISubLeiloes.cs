@@ -43,5 +43,7 @@ namespace RhythmsOfGiving.Controller
 
         public float GetTotalValorDoado();
 
+        public Leilao GetLeilaoById(int id);
+
     }
 }

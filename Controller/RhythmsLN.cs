@@ -186,4 +186,9 @@ public class RhythmsLn : IRhythmsLn
     {
         return subUtilizadores.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
     }
+
+    public Leilao GetLeilaoById(int id)
+    {
+        return subLeiloes.GetLeilaoById(int id);
+    }
 }
