@@ -12,42 +12,40 @@ public class UiService
         this.context = context;
     }
     
+    // TODO: método de gerar notificação de ultrapassagem quando é feita licitação
+    
+    // TODO: página redimir para escolher instituição de leilão terminado
+    
     // leilões
     
     private async Task BroadcastAuctionUpdate(int idLeilao)
     {
         await context.Clients.All.UpdateAuctionInfo(idLeilao);
     }
-
-    private float valorTeste = 7600f;
-
-    // TODO
+    
     public async void Licitar(int idLeilao, string email, float valor)
     {
-        valorTeste = valor;
-        // TODO: Método AdicionarLicitacao da LN recebe idLicitador, não email; recebe idLicitacao, não idLeilao
-        //Acho que é suposto receber isso: Primeiro tens de chamar a CriarLicitacao que te dá o idLicitacao
+        int idLicitador = 1; // TODO: Método que dado o email devolva o idLicitador
+        float valorBase = rhythmsLn.CalcularValorMinimo(idLeilao);
+        int idLicitacao = rhythmsLn.CriarLicitacao(idLicitador, idLeilao, valor, valorBase);
+        rhythmsLn.AdicionarLicitacao(idLicitacao, idLicitador);
         await BroadcastAuctionUpdate(idLeilao);
     }
-
-    // TODO: Sem método necessário na LN
+    
     public float GetUltimaLicitacaoUtilizador(string email, int idLeilao)
     {
-        return valorTeste;
-        //return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
-        
+        // int idLicitador = 1; // TODO: Método que dado o email devolva o idLicitador
+        // return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
+        return 9000f;
     }
-
-    // TODO: Sem método necessário na LN
-    public float GetUltimaLicitacaoLeilao(string email, int idLeilao)
+    
+    public float GetUltimaLicitacaoLeilao(int idLeilao)
     {
-        return 8543.92f;
-        //return rhythmsLn.GetValorFimLeilao(idLeilao);
+        // TODO: ?
+        // return rhythmsLn.GetValorFimLeilao(idLeilao);
+        return 9000f;
     }
     
-    private int shortDescSize = 100;
-    
-    // TODO
     public List<LeilaoUi> GetLeiloesDisponiveis()
     {
         List<LeilaoUi> leiloes = new List<LeilaoUi>();
@@ -56,7 +54,6 @@ public class UiService
             Dictionary<Leilao, Artista> leiloesLn = rhythmsLn.ConsultarLeiloesAtivos();
             foreach (KeyValuePair<Leilao, Artista> leilao in leiloesLn)
             {
-                string tipoLeilao = leilao.Key.GetTipo() == 0 ? "Ás Cegas" : "Inglês";
                 leiloes.Add(new LeilaoUi(leilao.Key, leilao.Value));
             }
         }
@@ -83,6 +80,28 @@ public class UiService
         return leiloes;
     }
 
+    // TODO: Sem método necessário na LN
+    //Já há método GetLeilaoById mas devolve Leilao e não LeilaoUi
+    public LeilaoUi GetLeilaoById(int idLeilao)
+    {
+        return new LeilaoUi(
+            1,
+            "Taylor Swift",
+            "The Eras Tour: Exclusive VIP Seating ",
+            "Lisboa",
+            "Pop",
+            "Inglês",
+            DateTime.Parse("2023-12-24"),
+            "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.",
+            "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.",
+            "https://assets.teenvogue.com/photos/641b2a23912ddccbabf80f80/16:9/w_2560%2Cc_limit/GettyImages-1474459622.jpg",
+            "https://i.scdn.co/image/ab67616100005174859e4c14fa59296c8649e0e4",
+            false,
+            7500f
+        );
+    }
+    
+    // GetNomeGenerosMusicais()
     public List<String> GetGenerosMusicais()
     {
         List<String> generos = new List<String>();
@@ -102,34 +121,33 @@ public class UiService
         return generos;
     }
 
-    // TODO: Sem método necessário na LN
-    //Já há método GetLeilaoById mas devolve Leilao e não LeilaoUi
-    public LeilaoUi GetLeilaoById(int id)
+    public List<String> GetArtistas()
     {
-        return new LeilaoUi(
-            1,
-            "Taylor Swift",
-            "The Eras Tour: Exclusive VIP Seating ",
-            "Lisboa",
-            "Pop",
-            "Inglês",
-            DateTime.Parse("2023-12-24"),
-            "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.",
-            "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.",
-            "https://assets.teenvogue.com/photos/641b2a23912ddccbabf80f80/16:9/w_2560%2Cc_limit/GettyImages-1474459622.jpg",
-            "https://i.scdn.co/image/ab67616100005174859e4c14fa59296c8649e0e4",
-            false,
-            7500f
-        );
+        // GetNomesArtistasMusicais()
+        List<String> artistas = new List<String>();
+        artistas.Add("Taylor Swift");
+        artistas.Add("Harry Styles");
+        artistas.Add("Ariana Grande");
+        artistas.Add("Billie Eilish");
+        artistas.Add("Drake");
+        artistas.Add("Ed Sheeran");
+        artistas.Add("Dua Lipa");
+        artistas.Add("Justin Bieber");
+        artistas.Add("The Weeknd");
+        return artistas;
     }
     
     // notificações
-
-    // TODO: Sem método necessário na LN
-    //Já há método GetNotificacoesUtilizador mas devolve Notificacao e não NotificacaoUi e recebe idLicitador
+    
     public List<NotificacaoUi> GetNotificacoesUtilizador(string email)
     {
+        int idLicitador = 1;
+        List<Notificacao> notificacoesLn = rhythmsLn.GetNotificacoesUtilizador(idLicitador);
         List<NotificacaoUi> notificacoes = new List<NotificacaoUi>();
+        foreach (Notificacao not in notificacoesLn)
+        {
+            notificacoes.Add(new NotificacaoUi(not));
+        }
         notificacoes.Add(new NotificacaoUi(
             "A sua licitação foi ultrapassada!",
             "The Eras Tour: Exclusive VIP Seating",
@@ -160,12 +178,23 @@ public class UiService
         return instituicoes;
     }
     
-    // perfil
+    // autenticação
     
-    // TODO: Sem método necessário na LN
-    public string GetNomeUtilizador(string email)
+    public bool Login(string email, string password)
     {
-        return "Diogo";
-        //return rhythmsLn.GetNomeUtilizador(idLicitador);
+        // ValidarAutenticacao(email, password);
+        return true;
+    }
+    
+    public void Registar(string nome, DateOnly dataNascimento, int nrCc, int nif, int cartaoDebitoCredito,
+        string email, string password)
+    {
+        rhythmsLn.RegistarLicitador(nome, email, password, nrCc, nif, dataNascimento, cartaoDebitoCredito);
+    }
+    
+    // TODO: Sem método necessário na LN - preciso do nome do utilizador e de se ele é admin ou não
+    public UserUI GetInformacaoUtilizador(string email)
+    {
+        return new UserUI(email, "Admin", "User");
     }
 }
