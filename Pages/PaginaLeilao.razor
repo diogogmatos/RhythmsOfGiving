@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @inject UiService UiService
 @implements IAsyncDisposable
+@inject IJSRuntime js
 
 <div class="space-y-6">
     @* Capa *@
@@ -33,59 +34,84 @@
             @* Título *@
             <h1 class="font-[600] text-3xl pb-4 border-b">Leilão</h1>
             @* Licitações *@
-            <div class="space-y-2 text-xl">                
+            <div class="space-y-2 text-xl">
                 <p class="flex text-gray-400 font-[600] items-center">
                     <text class="w-fit ml-0 m-auto">Valor base: </text>
                     <text class="w-fit mr-0 m-auto text-2xl">@GetValorBase().ToString("0.00€")</text>
                 </p>
-                @if (!@ExisteLicitacoes()) {
-                    <p class="text-rhythms font-medium">
+                @if (!@ExisteLicitacoes() && !IsAsCegas())
+                {
+                    <p class="text-rhythms font-[600]">
                         Faça a primeira licitação!
                     </p>
                 }
-                else {
-                    @if (@IsAsCegas()) {
+                else
+                {
+                    @if (@IsAsCegas() && ownLicitacao != 0)
+                    {
                         <p class="flex font-medium items-center">
-                        <text class="w-fit ml-0 m-auto">A sua licitação: </text>
-                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
+                            <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
                         </p>
                     }
-                    else if (ownLicitacao < lastLicitacao) {
-                        <p class="flex text-gray-400 font-medium items-center">
-                        <text class="w-fit ml-0 m-auto">A sua licitação: </text>
-                        <text class="w-fit mr-0 m-auto text-2xl">@ownLicitacao.ToString("0.00€")</text>
-                        </p>
+                    else if (ownLicitacao < lastLicitacao)
+                    {
+                        @if (ownLicitacao != 0)
+                        {
+                            <p class="flex text-gray-400 font-medium items-center">
+                                <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                                <text class="w-fit mr-0 m-auto text-2xl">@ownLicitacao.ToString("0.00€")</text>
+                            </p>
+                        }
+                        @if (!IsAsCegas())
+                        {
+                            <p class="flex font-medium items-center">
+                                <text class="w-fit ml-0 m-auto font-[600]">Última licitação: </text>
+                                <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@lastLicitacao.ToString("0.00€")</text>
+                            </p>
+                        }
+                    }
+                    else if (ownLicitacao != 0)
+                    {
                         <p class="flex font-medium items-center">
-                            <text class="w-fit ml-0 m-auto font-[600]">Última licitação: </text>
-                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@lastLicitacao.ToString("0.00€")</text>
+                            <text class="w-fit ml-0 m-auto font-[600]">A sua licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
                         </p>
                     }
-                    else {                    
-                        <p class="flex text-gray-400 font-medium items-center">
-                            <text class="w-fit ml-0 m-auto">Última licitação: </text>
-                            <text class="w-fit mr-0 m-auto text-2xl font-medium">@lastLicitacao.ToString("0.00€")</text>
-                        </p>
-                        <p class="flex font-medium items-center">
-                        <text class="w-fit ml-0 m-auto font-[600]">A sua licitação: </text>
-                        <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
-                        </p>
-                    }      
-                }                  
+                }
             </div>
             @* Licitar *@
             <EditForm Model="@Valor" class="flex w-full space-x-2">
-                <button type="submit" @onclick="@Licitar" class="ml-0 m-auto min-w-44 hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
-                    Licitar
-                </button>
-                <div class="relative rounded-lg shadow-sm mr-0 m-auto w-fit">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <span class="text-gray-500 sm:text-sm">€</span>
-                    </div>
-                    <InputNumber @bind-Value="Valor" class="block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency" />
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                        <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
-                    </div>
-                </div>
+                <AuthorizeView>
+                    <Authorized Context="rhythmscontext">
+                        <button type="submit" @onclick="@Licitar" class="ml-0 m-auto min-w-44 hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
+                            Licitar
+                        </button>
+                        <div class="relative rounded-lg shadow-sm mr-0 m-auto w-fit">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="text-gray-500 sm:text-sm">€</span>
+                            </div>
+                            <InputNumber @bind-Value="Valor" class="block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency"/>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                            </div>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized Context="rhythmscontext">
+                        <button disabled type="submit" @onclick="@Licitar" class="cursor-not-allowed ml-0 m-auto min-w-44 bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
+                            Licitar
+                        </button>
+                        <div class="relative rounded-lg shadow-sm mr-0 m-auto w-fit">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="text-gray-500 sm:text-sm">€</span>
+                            </div>
+                            <input disabled class="cursor-not-allowed block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                            </div>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
             </EditForm>
         </div>
     </div>
@@ -93,7 +119,9 @@
 
 @code {
     // TODO: Erro quando mete valor menor que última licitação
-    // 
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
     
     [Parameter]
     public string? IdLeilao { get; set; }
@@ -142,18 +170,42 @@
         }
     }
 
-    private void GetOwnLicitacao()
+    private async void GetOwnLicitacao()
     {
+        if (AuthenticationState is null)
+        {
+            ownLicitacao = 0;
+            return;
+        }
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            ownLicitacao = 0;
+            return;
+        }
         ownLicitacao = UiService.GetUltimaLicitacaoUtilizador("diogo@mail.com", int.Parse((IdLeilao)));
     }
+    
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao("diogo@mail.com", int.Parse(IdLeilao));
+        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao));
     }
     
     // TODO
-    private void Licitar() {
-        UiService.Licitar(int.Parse(IdLeilao), "diogo@mail.com", Valor);
+    private async void Licitar() {
+        try
+        {
+            UiService.Licitar(int.Parse(IdLeilao), "diogo@mail.com", Valor);
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+    }
+    
+    private bool ExisteLicitacoes()
+    {
+        return ! (ownLicitacao == 0 && lastLicitacao == 0);
     }
     
     // info
@@ -190,10 +242,5 @@
     }
     private bool IsAsCegas() {
         return GetLeilao().IsAsCegas();
-    }
-
-    private bool ExisteLicitacoes()
-    {
-        return true;
     }
 }

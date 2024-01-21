@@ -16,6 +16,15 @@ public class NotificacaoUi
         this.tipo = tipo;
         this.idLeilao = idLeilao;
     }
+
+    public NotificacaoUi(Notificacao notificacao)
+    {
+        this.title = notificacao.GetTitle();
+        this.message = notificacao.GetMessage();
+        this.date = notificacao.GetDate();
+        this.tipo = notificacao.GetTipo();
+        this.idLeilao = notificacao.GetId(); // GetIdLeilao()
+    }
     
     public int GetIdLeilao()
     {

@@ -1,14 +1,17 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.SignalR;
+using RhythmsOfGiving.Authentication;
 using RhythmsOfGiving.Controller.UI;
-using RhythmsOfGiving.Data; 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAuthenticationCore();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, RhythmsAuthStateProvider>();
 builder.Services.AddSingleton<UiService>();
 builder.Services.AddSignalR();
 builder.Services.AddCors();
