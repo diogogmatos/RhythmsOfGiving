@@ -373,5 +373,24 @@ namespace RhythmsOfGiving.Controller
             
         }
 
+        public List<Leilao> LeiloesAtivosParaTerminados()
+        {
+            Dictionary<Leilao, Artista> leiloesArtistaAtivos = this.ConsultarLeiloesAtivos();
+            DateTime atual = DateTime.Now;
+            List<Leilao> leiloesTerminados = new List<Leilao>();
+
+            foreach (Leilao l in leiloesArtistaAtivos.Keys)
+            {
+                if (l.DataHoraFinal < atual)
+                {
+                    l.SetAtivo(false);
+                    this.leilaoDao.put(l.IdLeilao, l);
+                    leiloesTerminados.Add(l);
+                }
+            }
+
+            return leiloesTerminados;
+        }
+
     }
 }

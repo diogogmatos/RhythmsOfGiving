@@ -151,6 +151,11 @@ public abstract class Leilao
         this.idInstituicao = id;
     }
 
+    public void SetAtivo(bool b)
+    {
+        this.ativo = b;
+    }
+
     public List<int> MinhasLicitacoes
     {
         get { return minhasLicitacoes; }

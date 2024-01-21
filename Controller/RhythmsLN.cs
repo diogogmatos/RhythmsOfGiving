@@ -212,4 +212,23 @@ public class RhythmsLn : IRhythmsLn
     {
         return subLeiloes.GetNomesArtistasMusicais();
     }
+    
+
+    public void CriarNotificacoesFimLeilao()
+    {
+        //Leiloes terminados
+        List<Leilao> leiloes = subLeiloes.LeiloesAtivosParaTerminados();
+
+        foreach (Leilao l in leiloes)
+        {
+            int idLicitadorGanhador = subLeiloes.GetLicitadorGanhador(l.IdLeilao);
+            subUtilizadores.CriarNotificacaoVencedora(idLicitadorGanhador, l.IdLeilao, l.Titulo, l.ValorAtual);
+            
+            HashSet<int> idLicitadoresPerdedores = subLeiloes.GetLicitadoresPerdedores(l.IdLeilao, idLicitadorGanhador);
+            subUtilizadores.CriarNotificacaoPerdedora(idLicitadoresPerdedores, l.IdLeilao, l.Titulo, l.ValorAtual);
+
+        }
+
+    }
+    
 }

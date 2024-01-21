@@ -49,5 +49,7 @@ namespace RhythmsOfGiving.Controller
 
         public List<string> GetNomesArtistasMusicais();
 
+        public List<Leilao> LeiloesAtivosParaTerminados();
+
     }
 }
