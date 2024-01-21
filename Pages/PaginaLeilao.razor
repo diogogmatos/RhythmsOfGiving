@@ -1,9 +1,11 @@
 @page "/leiloes/{IdLeilao}"
 @using RhythmsOfGiving.Controller.UI
 @using Microsoft.AspNetCore.SignalR.Client
+@using System.Security.Claims
 @inject UiService UiService
 @implements IAsyncDisposable
 @inject IJSRuntime js
+@inject NavigationManager NavManager
 
 <div class="space-y-6">
     @* Capa *@
@@ -127,10 +129,19 @@
     public string? IdLeilao { get; set; }
 
     private float Valor { get; set; }
+    
+    private LeilaoUi Leilao { get; set; }
 
-    private LeilaoUi GetLeilao()
+    private void GetLeilao()
     {
-        return UiService.GetLeilaoById(Int32.Parse(IdLeilao));
+        try
+        {
+            Leilao = UiService.GetLeilaoById(Int32.Parse(IdLeilao));
+        }
+        catch (Exception e)
+        {
+            NavManager.NavigateTo("404");
+        }
     }
     
     // licitações
@@ -142,6 +153,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        GetLeilao();
         GetOwnLicitacao();
         GetLastLicitacao();
         
@@ -183,7 +195,9 @@
             ownLicitacao = 0;
             return;
         }
-        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador("diogo@mail.com", int.Parse((IdLeilao)));
+
+        int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, int.Parse((IdLeilao)));
     }
     
     private void GetLastLicitacao()
@@ -195,7 +209,9 @@
     private async void Licitar() {
         try
         {
-            UiService.Licitar(int.Parse(IdLeilao), "diogo@mail.com", Valor);
+            var authState = await AuthenticationState;
+            int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await UiService.Licitar(int.Parse(IdLeilao), idLicitador, Valor);
         }
         catch (Exception e)
         {
@@ -211,36 +227,36 @@
     // info
     
     private string GetArtista() {
-        return GetLeilao().GetArtista();
+        return Leilao.GetArtista();
     }
     private string GetTitle() {
-        return GetLeilao().GetTitle();
+        return Leilao.GetTitle();
     }
     private string GetLocalizacao() {
-        return GetLeilao().GetLocalizacao();
+        return Leilao.GetLocalizacao();
     }
     private string GetGenero() {
-        return GetLeilao().GetGenero();
+        return Leilao.GetGenero();
     }
     private string GetTipo() {
-        return GetLeilao().GetTipo();
+        return Leilao.GetTipo();
     }
     private string GetFim() {
-        return GetLeilao().GetFim().ToShortDateString();
+        return Leilao.GetFim().ToShortDateString();
     }
     private string GetDescricao() {
-        return GetLeilao().GetDescricao();
+        return Leilao.GetDescricao();
     }
     private float GetValorBase() {
-        return GetLeilao().GetValorBase();
+        return Leilao.GetValorBase();
     }
     private string GetImagePath() {
-        return GetLeilao().GetImagePath();
+        return Leilao.GetImagePath();
     }
     private string GetAuthorImagePath() {
-        return GetLeilao().GetAuthorImagePath();
+        return Leilao.GetAuthorImagePath();
     }
     private bool IsAsCegas() {
-        return GetLeilao().IsAsCegas();
+        return Leilao.IsAsCegas();
     }
 }

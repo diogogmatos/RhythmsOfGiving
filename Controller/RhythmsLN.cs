@@ -5,14 +5,15 @@ namespace RhythmsOfGiving.Controller;
 
 public class RhythmsLn : IRhythmsLn
 {
-    private ISubUtilizadores subUtilizadores;
-    private ISubLeiloes subLeiloes;
+    private readonly ISubUtilizadores subUtilizadores;
+    private readonly ISubLeiloes subLeiloes;
     
     //Construtor
     public RhythmsLn()
     {
-        this.subUtilizadores = new SubUtilizadores();
-        this.subLeiloes = new SubLeiloes();
+        Console.WriteLine("criou RhythmsLn");
+        subUtilizadores = new SubUtilizadores();
+        subLeiloes = new SubLeiloes();
     }
 
     public int RegistarLicitador(string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)

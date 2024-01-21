@@ -1,5 +1,6 @@
 @using RhythmsOfGiving.Controller.UI
 @using Microsoft.AspNetCore.SignalR.Client
+@using System.Security.Claims
 @inject UiService UiService
 @implements IAsyncDisposable
 
@@ -162,7 +163,9 @@
             ownLicitacao = 0;
             return;
         }
-        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador("diogo@mail.com", GetId());
+
+        int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, GetId());
     }
     
     private void GetLastLicitacao()
@@ -191,7 +194,7 @@
         return Leilao.GetTipo();
     }
     private string GetFim() {
-        return Leilao.GetFim().ToShortDateString();
+        return Leilao.GetFim().ToShortDateString(); // TODO: mudar para aparecer tempo
     }
     private string GetDescricao() {
         return Leilao.GetShortDescricao();

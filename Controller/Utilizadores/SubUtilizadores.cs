@@ -6,14 +6,17 @@ namespace RhythmsOfGiving.Controller.Utilizadores
 {
     public class SubUtilizadores: ISubUtilizadores {
         private LicitadorDao licitadores;
-        private  Dictionary<int, Administrador> administradores;
+        private Dictionary<int, Administrador> administradores;
 
 
         //Construtor
         public SubUtilizadores()
         {
-            this.licitadores = LicitadorDao.GetInstance();
-            this.administradores = this.licitadores.preencherAdmins();
+            Console.WriteLine("entrou no construtor");
+            licitadores = LicitadorDao.GetInstance();
+            Console.WriteLine("Size:" + LicitadorDao.Size());
+            administradores = licitadores.preencherAdmins();
+            
             //preencher o map administradores
             //ver classe SubServicos no trabalho DSS para ajudar
         }
@@ -36,13 +39,19 @@ namespace RhythmsOfGiving.Controller.Utilizadores
         
         public int ValidarAutenticacao(string email, string palavraPasse)
         {
-            foreach(var admin in this.administradores.Values)
+            Console.WriteLine("entrou no validar");
+            if (licitadores == null)
+                Console.WriteLine("licitadorDAO null");
+            Console.WriteLine(administradores);
+            foreach(Administrador admin in administradores.Values)
             {
+                Console.WriteLine("entrou no for");
+                Console.WriteLine(admin);
                 if (admin.GetEmail().Equals(email) && admin.GetPalavraPasse().Equals(palavraPasse))
                     return -1;
             }
             
-            Licitador l = this.licitadores.Get(email);
+            Licitador l = licitadores.Get(email);
 
             if (l.GetPalavraPasse().Equals(palavraPasse))
             {

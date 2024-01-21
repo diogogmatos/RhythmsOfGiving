@@ -93,18 +93,23 @@
     
     private async Task Authenticate()
     {
-        bool result = UiService.Login(Email, Password);
-        if (!result)
+        int idLicitador;
+        try
         {
-            await js.InvokeVoidAsync("alert", "Credenciais inválidas");
+            idLicitador = UiService.Login(Email, Password);
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
             return;
         }
 
         RhythmsAuthStateProvider rhythmsAuthStateProvider = (RhythmsAuthStateProvider) AuthStateProvider;
-        UserUI infoUser = UiService.GetInformacaoUtilizador(Email);
+        UserUI infoUser = UiService.GetInformacaoUtilizador(idLicitador, Email);
         await rhythmsAuthStateProvider.UpdateAuthenticationState(new UserSession
         {
             Email = Email,
+            IdLicitador = idLicitador,
             Name = infoUser.GetNome(),
             Role = infoUser.GetRole()
         });

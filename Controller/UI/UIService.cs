@@ -25,27 +25,29 @@ public class UiService
         await context.Clients.All.UpdateAuctionInfo(idLeilao);
     }
     
-    public async void Licitar(int idLeilao, string email, float valor)
+    public async Task Licitar(int idLeilao, int idLicitador, float valor)
     {
-        int idLicitador = 1; // TODO: Método que dado o email devolva o idLicitador
         float valorBase = rhythmsLn.CalcularValorMinimo(idLeilao);
         int idLicitacao = rhythmsLn.CriarLicitacao(idLicitador, idLeilao, valor, valorBase);
         rhythmsLn.AdicionarLicitacao(idLicitacao, idLicitador);
         await BroadcastAuctionUpdate(idLeilao);
     }
     
-    public float GetUltimaLicitacaoUtilizador(string email, int idLeilao)
+    public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
     {
-        // int idLicitador = 1; // TODO: Método que dado o email devolva o idLicitador
-        // return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
-        return 9000f;
+        try
+        {
+            return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
     }
     
     public float GetUltimaLicitacaoLeilao(int idLeilao)
     {
-        // TODO: ?
-        // return rhythmsLn.GetValorFimLeilao(idLeilao);
-        return 9000f;
+        return rhythmsLn.GetValorFimLeilao(idLeilao);
     }
     
     public List<LeilaoUi> GetLeiloesDisponiveis()
@@ -63,84 +65,40 @@ public class UiService
         {
             Console.WriteLine(e);
         }
-        // TODO: Remover
-        leiloes.Add(new LeilaoUi(
-            1,
-            "Taylor Swift",
-            "The Eras Tour: Exclusive VIP Seating ",
-            "Lisboa",
-            "Pop",
-            "Inglês",
-            DateTime.Parse("2023-12-24"),
-            "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.",
-            "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.",
-            "https://assets.teenvogue.com/photos/641b2a23912ddccbabf80f80/16:9/w_2560%2Cc_limit/GettyImages-1474459622.jpg",
-            "https://i.scdn.co/image/ab67616100005174859e4c14fa59296c8649e0e4",
-            false,
-            7500f
-        ));
         return leiloes;
     }
-
-    // TODO: Sem método necessário na LN
-    //Já há método GetLeilaoById mas devolve Leilao e não LeilaoUi
+    
     public LeilaoUi GetLeilaoById(int idLeilao)
     {
-        return new LeilaoUi(
-            1,
-            "Taylor Swift",
-            "The Eras Tour: Exclusive VIP Seating ",
-            "Lisboa",
-            "Pop",
-            "Inglês",
-            DateTime.Parse("2023-12-24"),
-            "Viva uma experiência única e exclusiva num espetáculo do maior nome na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco, com acesso incluído a bar e outras vantagens.",
-            "Participe neste emocionante leilão e tenha a oportunidade de experienciar o espetáculo mais esperado do ano de uma forma que nunca imaginou possível. Para além de desfrutar de uma vista privilegiada e desobstruída do palco, será tratado como uma verdadeira celebridade. O seu acesso VIP inclui uma entrada exclusiva para o bar, onde poderá degustar os melhores cocktails e petiscos enquanto se prepara para uma noite inesquecível. Sinta-se como parte integrante do espetáculo, enquanto Taylor Swift hipnotiza o público com seus êxitos lendários e faixas do seu último álbum.",
-            "https://assets.teenvogue.com/photos/641b2a23912ddccbabf80f80/16:9/w_2560%2Cc_limit/GettyImages-1474459622.jpg",
-            "https://i.scdn.co/image/ab67616100005174859e4c14fa59296c8649e0e4",
-            false,
-            7500f
-        );
+        Dictionary<Leilao, Artista> leilaoInfo = rhythmsLn.GetLeilaoArtistaById(idLeilao);
+        foreach (var leilao in leilaoInfo)
+        {
+            Leilao l = leilao.Key;
+            Artista a = leilao.Value;
+            return new LeilaoUi(l, a);
+        }
+        throw new Exception("Leilão não encontrado.");
+    }
+
+    public int GetLicitadorGanhador(int idLeilao)
+    {
+        return rhythmsLn.GetLicitadorGanhador(idLeilao);
     }
     
     // GetNomeGenerosMusicais()
     public List<String> GetGenerosMusicais()
     {
-        List<String> generos = new List<String>();
-        generos.Add("Pop");
-        generos.Add("Rock");
-        generos.Add("Hip Hop");
-        generos.Add("Rap");
-        generos.Add("Funk");
-        generos.Add("Fado");
-        generos.Add("Jazz");
-        generos.Add("Blues");
-        generos.Add("Soul");
-        generos.Add("Reggae");
-        generos.Add("Eletrónica");
-        generos.Add("Clássica");
-        generos.Add("Alternativa");
-        return generos;
+        return rhythmsLn.GetNomesGenerosMusicais();
     }
 
     public List<String> GetArtistas()
     {
-        // GetNomesArtistasMusicais()
-        List<String> artistas = new List<String>();
-        artistas.Add("Taylor Swift");
-        artistas.Add("Harry Styles");
-        artistas.Add("Ariana Grande");
-        artistas.Add("Billie Eilish");
-        artistas.Add("Drake");
-        artistas.Add("Ed Sheeran");
-        artistas.Add("Dua Lipa");
-        artistas.Add("Justin Bieber");
-        artistas.Add("The Weeknd");
-        return artistas;
+        return rhythmsLn.GetNomesArtistasMusicais();
     }
     
     // notificações
     
+    // TODO: apresentar texto no elemento quando n tem not
     public List<NotificacaoUi> GetNotificacoesUtilizador(string email)
     {
         int idLicitador = 1;
@@ -150,13 +108,13 @@ public class UiService
         {
             notificacoes.Add(new NotificacaoUi(not));
         }
-        notificacoes.Add(new NotificacaoUi(
-            "A sua licitação foi ultrapassada!",
-            "The Eras Tour: Exclusive VIP Seating",
-            DateTime.Parse("2023-11-04"),
-            0,
-            1
-        ));
+        // notificacoes.Add(new NotificacaoUi(
+        //     "A sua licitação foi ultrapassada!",
+        //     "The Eras Tour: Exclusive VIP Seating",
+        //     DateTime.Parse("2023-11-04"),
+        //     0,
+        //     1
+        // ));
         return notificacoes;
     }
     
@@ -182,10 +140,9 @@ public class UiService
     
     // autenticação
     
-    public bool Login(string email, string password)
+    public int Login(string email, string password)
     {
-        // ValidarAutenticacao(email, password);
-        return true;
+        return rhythmsLn.ValidarAutenticacao(email, password);
     }
     
     public void Registar(string nome, DateOnly dataNascimento, int nrCc, int nif, int cartaoDebitoCredito,
@@ -194,9 +151,9 @@ public class UiService
         rhythmsLn.RegistarLicitador(nome, email, password, nrCc, nif, dataNascimento, cartaoDebitoCredito);
     }
     
-    // TODO: Sem método necessário na LN - preciso do nome do utilizador e de se ele é admin ou não
-    public UserUI GetInformacaoUtilizador(string email)
+    public UserUI GetInformacaoUtilizador(int idLicitador, string email)
     {
-        return new UserUI(email, "Admin", "User");
+        string nome = rhythmsLn.GetNomeUtilizador(idLicitador);
+        return new UserUI(email, nome, idLicitador == -1 ? "Admin" : "User");
     }
 }
