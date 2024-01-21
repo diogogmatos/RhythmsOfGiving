@@ -238,5 +238,10 @@ public class RhythmsLn : IRhythmsLn
     {
         return subLeiloes.GetLeilaoArtistaById(idLeilao);
     }
+
+    public int ConverterEmailparaID(string email)
+    {
+        return subUtilizadores.ConverterEmailparaID(email);
+    }
     
 }
