@@ -36,5 +36,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
 
         public List<Notificacao> GetNotificacoesUtilizador(int idLicitador);
 
+        public int ConverterEmailparaID(string email);
+
     }
 }
