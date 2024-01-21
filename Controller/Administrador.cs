@@ -24,6 +24,22 @@ public class Administrador{
         sb.Append(" Palavra Passe: ").Append(this.palavraPasse).Append(" }");
         return sb.ToString();
     }
+
+    public int GetIdAdmin()
+    {
+        return idAdmin;
+    }
+
+    public string GetEmail()
+    {
+        return email;
+    }
+
+    public string GetPalavraPasse()
+    {
+        return palavraPasse;
+    }
+    
    public override bool Equals(object obj){
     // Verifica se o objeto é o próprio objeto
     if (obj == this)

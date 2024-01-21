@@ -30,9 +30,14 @@ namespace RhythmsOfGiving.Controller
             return l.GetIdLicitador();
         }
         
-        //Caso administrador falta
         public int ValidarAutenticacao(string email, string palavraPasse)
         {
+            foreach(var admin in this.administradores.Values)
+            {
+                if (admin.GetEmail().Equals(email) && admin.GetPalavraPasse().Equals(palavraPasse))
+                    return -1;
+            }
+            
             Licitador l = this.licitadores.Get(email);
 
             if (l.GetPalavraPasse().Equals(palavraPasse))
