@@ -50,7 +50,7 @@ public class Licitacao : IComparable<Licitacao>
 
      public int GetIdLicitacao()
     {
-        return idLeilao;
+        return idLicitacao;
     }
 
     public DateTime GetDataHora()
