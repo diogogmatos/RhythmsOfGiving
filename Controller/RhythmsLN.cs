@@ -1,4 +1,6 @@
-﻿namespace RhythmsOfGiving.Controller;
+﻿using RhythmsOfGiving.Controller.Utilizadores;
+
+namespace RhythmsOfGiving.Controller;
 
 public class RhythmsLn : IRhythmsLn
 {

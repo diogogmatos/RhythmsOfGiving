@@ -1,9 +1,7 @@
-
 using System.Text;
-using Microsoft.Extensions.Primitives;
 using RhythmsOfGiving.Controller.Dados;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Utilizadores
 {
     public class Fatura : IComparable<Fatura>
     {

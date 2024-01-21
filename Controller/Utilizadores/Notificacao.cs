@@ -1,7 +1,7 @@
 
 using RhythmsOfGiving.Controller.Dados;
 
-namespace RhythmsOfGiving.Controller {
+namespace RhythmsOfGiving.Controller.Utilizadores {
     public class Notificacao {
         private int idNotificacao;
         private string title;

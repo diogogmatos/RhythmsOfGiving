@@ -1,7 +1,7 @@
 using RhythmsOfGiving.Controller.Dados;
 using RhythmsOfGiving.Controller.Excecoes;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Utilizadores
 {
     public class SubUtilizadores: ISubUtilizadores {
         private LicitadorDao licitadores;

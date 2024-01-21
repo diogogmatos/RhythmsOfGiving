@@ -1,5 +1,5 @@
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Utilizadores
 {
     public interface ISubUtilizadores
     {

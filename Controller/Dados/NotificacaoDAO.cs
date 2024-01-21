@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using RhythmsOfGiving.Controller;
 using RhythmsOfGiving.Controller.Dados;
 using RhythmsOfGiving.Controller.Excecoes;
+using RhythmsOfGiving.Controller.Utilizadores;
 
 namespace RhythmsOfGiving.Controller.Dados{
     public class NotificacaoDao

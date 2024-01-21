@@ -1,3 +1,5 @@
+using RhythmsOfGiving.Controller.Utilizadores;
+
 namespace RhythmsOfGiving.Controller.UI;
 
 public class NotificacaoUi

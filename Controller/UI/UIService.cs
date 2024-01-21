@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using RhythmsOfGiving.Controller.Utilizadores;
 
 namespace RhythmsOfGiving.Controller.UI;
 
