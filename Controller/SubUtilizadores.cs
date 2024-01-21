@@ -1,4 +1,5 @@
 using RhythmsOfGiving.Controller.Dados;
+using RhythmsOfGiving.Controller.Excecoes;
 
 namespace RhythmsOfGiving.Controller
 {

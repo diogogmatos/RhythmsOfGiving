@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using RhythmsOfGiving.Controller;
 using RhythmsOfGiving.Controller.Dados;
+using RhythmsOfGiving.Controller.Excecoes;
 
 public abstract class Leilao
 {

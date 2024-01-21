@@ -1,4 +1,4 @@
-﻿namespace RhythmsOfGiving.Controller{
+﻿namespace RhythmsOfGiving.Controller.Excecoes{
     public class DataNascimentoMenor18 : Exception
     {
         public DataNascimentoMenor18() { }

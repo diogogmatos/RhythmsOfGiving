@@ -1,6 +1,4 @@
-using System;
-
-namespace RhythmsOfGiving.Controller{
+namespace RhythmsOfGiving.Controller.Excecoes{
 public class LeilaoJaAcabouException : Exception
 {
     public LeilaoJaAcabouException() { }

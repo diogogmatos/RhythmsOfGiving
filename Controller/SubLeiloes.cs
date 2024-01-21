@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using RhythmsOfGiving.Controller.Dados;
+using RhythmsOfGiving.Controller.Excecoes;
 
 namespace RhythmsOfGiving.Controller
 {
