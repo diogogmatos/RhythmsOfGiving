@@ -171,12 +171,12 @@ namespace RhythmsOfGiving.Controller.Leiloes
             {
                 int idLicitacao = leilao.VerificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
 
-                if (leilao.GetTipo() == 1 || (leilao.GetTipo() == 0 && valorLicitacao >= valorMinimo))
+                if (leilao.GetTipo() == 1 || (leilao.GetTipo() == 0 && valorLicitacao >= leilao.ValorAtual))
                 {
                     leilao.SetValorAtual(valorLicitacao);
-                    this.leilaoDao.put(leilao.IdLeilao, leilao);
                 }
-               
+                this.leilaoDao.put(leilao.IdLeilao, leilao);
+
                 return idLicitacao;
             }
             catch (ValorLicitacaoException ex)
