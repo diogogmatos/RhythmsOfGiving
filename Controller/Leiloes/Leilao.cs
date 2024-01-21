@@ -163,6 +163,11 @@ namespace RhythmsOfGiving.Controller.Leiloes
             this.ativo = b;
         }
 
+        public void SetValorAtual(float valor)
+        {
+            this.valorAtual = valor;
+        }
+
         public List<int> MinhasLicitacoes
         {
             get { return minhasLicitacoes; }
@@ -237,6 +242,10 @@ namespace RhythmsOfGiving.Controller.Leiloes
                     this.dataHoraContador = atual.AddMinutes(5);
                     return this.CriarLicitacao(valorLicitacao, idLicitador);
                 }
+                else if (this.GetTipo() == 0)
+                {
+                    return this.CriarLicitacao(valorLicitacao, idLicitador);
+                }
 
                 throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
                                                   "O valor mínimo da licitação é de: " + valorMinimo);
@@ -256,6 +265,10 @@ namespace RhythmsOfGiving.Controller.Leiloes
                         this.dataHoraContador = atual.AddMinutes(5);
                         return this.CriarLicitacao(valorLicitacao, idLicitador);
                     }
+                    else if (this.GetTipo() == 0)
+                    {
+                        return this.CriarLicitacao(valorLicitacao, idLicitador);
+                    }
 
                     throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
                                                       "O valor mínimo da licitação é de: " + valorMinimo);
@@ -266,6 +279,10 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
                     //Acrescentar diferençaTempo ao contador
                     this.dataHoraContador = atual.AddMinutes(diferencaEmMinutos);
+                    return this.CriarLicitacao(valorLicitacao, idLicitador);
+                }
+                else if (this.GetTipo() == 0)
+                {
                     return this.CriarLicitacao(valorLicitacao, idLicitador);
                 }
 
