@@ -25,7 +25,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -51,7 +51,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             List<int> instituicoesIds = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -84,7 +84,7 @@ namespace RhythmsOfGiving.Controller.Dados
          public Instituicao Get(int idInstituicao)
     {
 
-        using SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString());
+        using SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString());
         connection.Open();
 
         string query = "SELECT * FROM Instituicao WHERE id = @id";
@@ -114,7 +114,7 @@ namespace RhythmsOfGiving.Controller.Dados
     public Instituicao Put(int id, Instituicao instituicao)
     {
 
-        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+        using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
         {
             connection.Open();
                 
@@ -148,7 +148,7 @@ namespace RhythmsOfGiving.Controller.Dados
 
         public bool ExisteInstituicao(string nome)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
 

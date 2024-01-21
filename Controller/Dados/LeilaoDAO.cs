@@ -24,7 +24,7 @@ namespace RhythmsOfGiving.Controller.Dados
 
         public Leilao put(int id, Leilao l)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -103,7 +103,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             Leilao leilao = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -233,7 +233,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -262,7 +262,7 @@ namespace RhythmsOfGiving.Controller.Dados
 
             Dictionary<Leilao, Artista> leiloesAtivosMap = new Dictionary<Leilao, Artista>();
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -408,7 +408,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             Dictionary<Leilao, Artista> leiloesPorArtista = new Dictionary<Leilao, Artista>();
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -572,7 +572,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             GeneroMusical generoMusical = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -619,7 +619,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -666,7 +666,7 @@ namespace RhythmsOfGiving.Controller.Dados
 
         public GeneroMusical putGeneroMusical(int id, GeneroMusical novoGenero)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -698,7 +698,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             HashSet<int> leilaoIds = new HashSet<int>();
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
