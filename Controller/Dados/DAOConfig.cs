@@ -1,14 +1,18 @@
 using System.Data.SqlClient;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Dados
 {
     public class DAOconfig
     {
-        public const string USER = "RhythmsOfGiving";
+        public const string USER = "sa";
+        public const string PASSWORD = "F7gY6c4r";
+        public const string MACHINE = "localhost";
+        public const string DATABASE = "RhythmsOfGiving2";
+        /*public const string USER = "RhythmsOfGiving";
         public const string PASSWORD = "RhythmsOfGiving";
         public const string MACHINE = "LAPTOP-N09LPQI4"; // Coloque o nome do servidor SQL Server aqui
-        public const string DATABASE = "RhythmsOfGiving";
-
+        public const string DATABASE = "RhythmsOfGiving";*/
+      
         public static string GetConnectionString()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
@@ -16,8 +20,7 @@ namespace RhythmsOfGiving.Controller
             builder.UserID = USER;
             builder.Password = PASSWORD;
             builder.InitialCatalog = DATABASE;
-            builder.IntegratedSecurity = true; 
-            Console.WriteLine(builder.ConnectionString);
+            // builder.IntegratedSecurity = true;
             return builder.ConnectionString;
         }
     }

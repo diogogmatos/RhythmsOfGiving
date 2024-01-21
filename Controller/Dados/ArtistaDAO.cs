@@ -66,7 +66,7 @@ public class ArtistaDao{
                                    string imagem = reader.GetString(reader.GetOrdinal("imagem"));
                                    string nome = reader.GetString(reader.GetOrdinal("nome"));
                                    int idAdministrador = reader.GetInt32(reader.GetOrdinal("idAdministrador"));
-                                   artista = new Artista(id, imagem, nome, idAdministrador);
+                                   artista = new Artista(id, nome, imagem, idAdministrador);
                                    // Preencha outros campos do objeto GeneroMusical conforme necessário
                                };
                            }

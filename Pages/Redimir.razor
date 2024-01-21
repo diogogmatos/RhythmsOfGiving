@@ -1,0 +1,110 @@
+@page "/leiloes/redimir/{IdLeilao}"
+
+@using RhythmsOfGiving.Controller.UI
+@using System.Security.Claims
+@inject UiService UiService
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <Authorized>
+        <div class="py-8 space-y-8">
+            <div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden bg-white">
+                @* Informações *@
+                <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
+                    <div class="space-y-4">
+                        @* Nome Artista *@
+                        <div class="flex space-x-2 items-center select-none">
+                            <img class="object-cover w-8 h-8 rounded-full" src=@GetAuthorImagePath()/>
+                            <p class="font-[600]">@GetArtista()</p>
+                        </div>
+                        @* Titulo Leilao *@
+                        <p class="font-[600] text-2xl">
+                            @GetTitle()
+                        </p>
+                        @* Detalhes *@
+                        <div class="flex text-gray-400 select-none">
+                            <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
+                            <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
+                            <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+                        </div>
+                    </div>
+                    @* Descrição *@
+                    <p class="text-justify">
+                        @GetDescricao()
+                    </p>
+                </div>
+                @* Imagem *@
+                <div class="min-w-[25rem] h-96 bg-gray-300 hidden xl:block">
+                    <img class="object-cover h-full w-full" src=@GetImagePath()/>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-[600]">@context.User.Identity.Name, a sua licitação venceu!</h1>
+                <p>
+                    O pagamento para '@GetTitle()' foi efetuado com sucesso.
+                </p>
+            </div>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-[600]"> Redimir Experiência</h1>
+                <p>
+                    Tome os próximos passos para redimir a sua experiência, por favor selecione a instituição de caridade que deseja apoiar.
+                </p>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    [Parameter]
+    public string? IdLeilao { get; set; }
+
+    private LeilaoUi? leilao;
+    private int idLicitadorGanhador;
+
+    protected override async Task OnInitializedAsync()
+    {
+        leilao = UiService.GetLeilaoById(Int32.Parse(IdLeilao));
+        idLicitadorGanhador = UiService.GetLicitadorGanhador(Int32.Parse(IdLeilao));
+        
+        var authState = await AuthenticationState;
+        var nameId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (leilao == null || nameId == null || idLicitadorGanhador != Int32.Parse(nameId))
+        {
+            NavigationManager.NavigateTo("404");
+        }
+    }
+
+    // info
+    
+    private string GetArtista() {
+        return leilao.GetArtista();
+    }
+    private string GetTitle() {
+        return leilao.GetTitle();
+    }
+    private string GetLocalizacao() {
+        return leilao.GetLocalizacao();
+    }
+    private string GetGenero() {
+        return leilao.GetGenero();
+    }
+    private string GetTipo() {
+        return leilao.GetTipo();
+    }
+    private string GetFim() {
+        return leilao.GetFim().ToShortDateString();
+    }
+    private string GetDescricao() {
+        return leilao.GetDescricao();
+    }
+    private string GetImagePath() {
+        return leilao.GetImagePath();
+    }
+    private string GetAuthorImagePath() {
+        return leilao.GetAuthorImagePath();
+    }
+}

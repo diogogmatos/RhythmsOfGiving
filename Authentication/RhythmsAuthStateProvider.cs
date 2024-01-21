@@ -25,6 +25,7 @@ public class RhythmsAuthStateProvider : AuthenticationStateProvider
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new Claim(ClaimTypes.Email, userSession.Email),
+                new Claim(ClaimTypes.NameIdentifier, userSession.IdLicitador.ToString()),
                 new Claim(ClaimTypes.Name, userSession.Name),
                 new Claim(ClaimTypes.Role, userSession.Role)
             }, "RhythmsAuth"));
@@ -46,6 +47,7 @@ public class RhythmsAuthStateProvider : AuthenticationStateProvider
             claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new Claim(ClaimTypes.Email, userSession.Email),
+                new Claim(ClaimTypes.NameIdentifier, userSession.IdLicitador.ToString()),
                 new Claim(ClaimTypes.Name, userSession.Name),
                 new Claim(ClaimTypes.Role, userSession.Role)
             }));

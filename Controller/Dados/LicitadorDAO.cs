@@ -24,7 +24,6 @@ namespace RhythmsOfGiving.Controller.Dados
 
         public static int Size()
         {
-            
             int totalRows = 0;
 
             using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
@@ -122,11 +121,10 @@ namespace RhythmsOfGiving.Controller.Dados
                     throw new LicitadorNaoExisteException($"O licitador com o email '{email}' não existe!");
                 }
             }
-
-            return null;
+            
+            throw new LicitadorNaoExisteException($"O licitador com o email '{email}' não existe!");
         }
-
-             public Licitador get(int id)
+        public Licitador get(int id)
         {
             using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
@@ -204,7 +202,7 @@ namespace RhythmsOfGiving.Controller.Dados
                 }
             }
 
-            return null;
+            return null; // mudar
         }
 
        internal void put(string email, Licitador licitador)
@@ -309,9 +307,9 @@ namespace RhythmsOfGiving.Controller.Dados
         public static int SizeAdmin()
         {
             int totalRows = 0;
-
-            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
+                Console.WriteLine("depois conexao");
                 try
                 {
                     connection.Open();
@@ -377,20 +375,18 @@ namespace RhythmsOfGiving.Controller.Dados
         //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
         public Dictionary<int, Administrador> preencherAdmins()
         {
-            int tamanho = LicitadorDao.SizeAdmin();
+            Console.WriteLine("entrou no preencher");
+            int tamanho = SizeAdmin();
+            Console.WriteLine("Tamanho: " + tamanho);
             Dictionary<int, Administrador> resultado = new Dictionary<int, Administrador>();
 
             for (int i = 0; i < tamanho; i++)
             {
-                Administrador a = this.GetAdmin(i+1);
+                Administrador a = GetAdmin(i+1);
                 resultado.Add(i+1, a);
-                    
             }
 
             return resultado;
         }
-        
     }
-    
-    
 }

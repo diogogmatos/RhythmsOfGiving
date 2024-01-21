@@ -9,6 +9,7 @@
         <div>
             <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Género Musical</label>
             <select @onchange="@OnSelectedGeneroMusicalChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Todos</option>
                 @foreach (var option in UiService.GetGenerosMusicais())
                 {
                     <option>@option</option>
@@ -18,6 +19,7 @@
         <div>
             <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Tipo Leilão</label>
             <select @onchange="@OnSelectedTipoLeilaoChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Todos</option>
                 <option>Inglês</option>
                 <option>Ás Cegas</option>
             </select>
@@ -25,6 +27,7 @@
         <div>
             <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Artista</label>
             <select @onchange="@OnSelectedArtistaChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Todos</option>
                 @foreach (var option in UiService.GetArtistas())
                 {
                     <option>@option</option>
@@ -55,21 +58,24 @@
     private void OnSelectedGeneroMusicalChanged(ChangeEventArgs args)
     {
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
-        leiloesDisponiveis.RemoveAll(leilao => leilao.GetGenero() != args.Value.ToString());
+        if (args.Value.ToString() != "Todos")
+            leiloesDisponiveis.RemoveAll(leilao => leilao.GetGenero() != args.Value.ToString());
         StateHasChanged();
     }
 
     private void OnSelectedTipoLeilaoChanged(ChangeEventArgs args)
     {
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
-        leiloesDisponiveis.RemoveAll(leilao => leilao.GetTipo() != args.Value.ToString());
+        if (args.Value.ToString() != "Todos")
+            leiloesDisponiveis.RemoveAll(leilao => leilao.GetTipo() != args.Value.ToString());
         StateHasChanged();
     }
     
     private void OnSelectedArtistaChanged(ChangeEventArgs args)
     {
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
-        leiloesDisponiveis.RemoveAll(leilao => leilao.GetArtista() != args.Value.ToString());
+        if (args.Value.ToString() != "Todos")
+            leiloesDisponiveis.RemoveAll(leilao => leilao.GetArtista() != args.Value.ToString());
         StateHasChanged();
     }
 }
