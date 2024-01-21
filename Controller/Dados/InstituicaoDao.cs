@@ -1,4 +1,5 @@
 using System.Data.SqlClient;
+using RhythmsOfGiving.Controller.Excecoes;
 using RhythmsOfGiving.Controller.Leiloes;
 
 namespace RhythmsOfGiving.Controller.Dados
@@ -107,7 +108,8 @@ namespace RhythmsOfGiving.Controller.Dados
         else
         {
 
-            return null; // Retorna null se a instituição não for encontrada
+            throw new InstituicaoNaoEncontradaException("A instituição com o id " + idInstituicao +
+                                                        " não foi encontrada!");
         }
     }
 

@@ -39,7 +39,7 @@ public class Licitacao : IComparable<Licitacao>
     {
         StringBuilder sb = new StringBuilder();
         sb.Append("Licitacao:: { ");
-        sb.Append(" IdLicitacao: ").Append(this.idLeilao).Append(", ");
+        sb.Append(" IdLicitacao: ").Append(this.idLicitacao).Append(", ");
         sb.Append(" DataHora: ").Append(this.dataHora).Append(", ");
         sb.Append(" Valor: ").Append(this.valor).Append(", ");
         sb.Append(" IdLeilao: ").Append(this.idLeilao).Append(", ");

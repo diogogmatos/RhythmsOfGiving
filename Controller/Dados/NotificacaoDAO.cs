@@ -79,7 +79,7 @@ namespace RhythmsOfGiving.Controller.Dados{
                 }
             }
 
-            return null;
+            throw new NaoExistemNotificacao("Não existe notificação para o id=" + id);
         }
 
         public void Put(int id, Notificacao n)

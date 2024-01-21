@@ -93,6 +93,11 @@ namespace RhythmsOfGiving.Controller.Dados
                 }
             }
 
+            if (fatura == null)
+            {
+                throw new FaturaNaoEncontradaException("A fatura com o id " + id + " não existe!");
+            }
+
             return fatura;
         } 
 
@@ -132,7 +137,7 @@ namespace RhythmsOfGiving.Controller.Dados
         
             }
             catch (Exception ex) {
-                throw new DadosInvalidosException("Não foi possível realizar a fatura");
+                throw new DadosInvalidosException("Não foi possível inserir a fatura");
             }
            
         }

@@ -202,7 +202,7 @@ namespace RhythmsOfGiving.Controller.Dados
                 }
             }
 
-            return null; // mudar
+            throw new LicitadorNaoExisteException("O licitador com o id " + id + " não existe!");
         }
 
        internal void put(string email, Licitador licitador)
@@ -307,7 +307,7 @@ namespace RhythmsOfGiving.Controller.Dados
         public static int SizeAdmin()
         {
             int totalRows = 0;
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 Console.WriteLine("depois conexao");
                 try
