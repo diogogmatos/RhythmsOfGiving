@@ -1,9 +1,6 @@
-
-
-using System.Data;
 using System.Data.SqlClient;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Dados
 {
     public class FaturaDAO
     {

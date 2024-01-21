@@ -1,7 +1,6 @@
 using System.Data.SqlClient;
-using System.Drawing;
 
-namespace RhythmsOfGiving.Controller{
+namespace RhythmsOfGiving.Controller.Dados{
 public class ArtistaDao{
     private static ArtistaDao? _singleton = null;
         private ArtistaDao() { }

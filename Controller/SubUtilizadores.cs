@@ -1,3 +1,5 @@
+using RhythmsOfGiving.Controller.Dados;
+
 namespace RhythmsOfGiving.Controller
 {
     public class SubUtilizadores: ISubUtilizadores {

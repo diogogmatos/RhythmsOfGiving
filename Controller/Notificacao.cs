@@ -1,4 +1,6 @@
 
+using RhythmsOfGiving.Controller.Dados;
+
 namespace RhythmsOfGiving.Controller {
     public class Notificacao {
         private int idNotificacao;

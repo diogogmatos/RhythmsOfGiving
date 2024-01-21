@@ -1,9 +1,6 @@
-
-using System.Data;
 using System.Data.SqlClient;
-using RhythmsOfGiving.Controller;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Dados
 {
     public class LeilaoDAO
     {

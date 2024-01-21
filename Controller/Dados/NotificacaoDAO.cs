@@ -1,9 +1,16 @@
 
 using System.Data.SqlClient;
-using RhythmsOfGiving.Controller;   
-public class NotificacaoDao{
-    private static NotificacaoDao? _singleton = null;
-        private NotificacaoDao() { }
+using RhythmsOfGiving.Controller;
+using RhythmsOfGiving.Controller.Dados;
+
+namespace RhythmsOfGiving.Controller.Dados{
+    public class NotificacaoDao
+    {
+        private static NotificacaoDao? _singleton = null;
+
+        private NotificacaoDao()
+        {
+        }
 
         public static NotificacaoDao GetInstance()
         {
@@ -11,13 +18,14 @@ public class NotificacaoDao{
             {
                 _singleton = new NotificacaoDao();
             }
+
             return _singleton;
         }
-        
+
         public static int Size()
         {
             int rowCount = 0;
-            
+
             string query = "SELECT COUNT(*) FROM Notificação";
 
             using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
@@ -27,10 +35,11 @@ public class NotificacaoDao{
 
                 rowCount = (int)command.ExecuteScalar();
             }
+
             return rowCount;
         }
-        
-         public Notificacao Get(int id)
+
+        public Notificacao Get(int id)
         {
             using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
@@ -70,72 +79,73 @@ public class NotificacaoDao{
 
             return null;
         }
-         
-         public void Put(int id, Notificacao n)
-{
-    using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
-    {
-        connection.Open();
-        try
+
+        public void Put(int id, Notificacao n)
         {
-            // Check if the record with the specified id exists
-            bool recordExists = Exite(id, connection);
-
-            string query;
-            if (recordExists)
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
-                // Update the existing record
-                query = "UPDATE Notificação " +
-                        "SET titulo = @Titulo, mensagem = @Mensagem, " +
-                        "idLicitador = @IdLicitador, dataHora = @DataHora, tipo = @Tipo, idLeilao = @IdLeilao " +
-                        "WHERE idNotificacao = @Id";
-            }
-            else
-            {
-                // Insert a new record if the record with the specified id does not exist
-                query = "INSERT INTO Notificação (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo, idLeilao) " +
-                        "VALUES (@Id, @Titulo, @Mensagem, @IdLicitador, @DataHora, @Tipo, @IdLeilao)";
-            }
+                connection.Open();
+                try
+                {
+                    // Check if the record with the specified id exists
+                    bool recordExists = Exite(id, connection);
 
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@Id", id);
-                command.Parameters.AddWithValue("@Titulo", n.GetTitle());
-                command.Parameters.AddWithValue("@Mensagem", n.GetMessage());
-                command.Parameters.AddWithValue("@IdLicitador", n.GetIdLicitador());
-                command.Parameters.AddWithValue("@DataHora", n.GetDate());
-                command.Parameters.AddWithValue("@Tipo", n.GetTipo());
-                command.Parameters.AddWithValue("@IdLeilao", n.GetIdLeilao());
+                    string query;
+                    if (recordExists)
+                    {
+                        // Update the existing record
+                        query = "UPDATE Notificação " +
+                                "SET titulo = @Titulo, mensagem = @Mensagem, " +
+                                "idLicitador = @IdLicitador, dataHora = @DataHora, tipo = @Tipo, idLeilao = @IdLeilao " +
+                                "WHERE idNotificacao = @Id";
+                    }
+                    else
+                    {
+                        // Insert a new record if the record with the specified id does not exist
+                        query =
+                            "INSERT INTO Notificação (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo, idLeilao) " +
+                            "VALUES (@Id, @Titulo, @Mensagem, @IdLicitador, @DataHora, @Tipo, @IdLeilao)";
+                    }
 
-                command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Titulo", n.GetTitle());
+                        command.Parameters.AddWithValue("@Mensagem", n.GetMessage());
+                        command.Parameters.AddWithValue("@IdLicitador", n.GetIdLicitador());
+                        command.Parameters.AddWithValue("@DataHora", n.GetDate());
+                        command.Parameters.AddWithValue("@Tipo", n.GetTipo());
+                        command.Parameters.AddWithValue("@IdLeilao", n.GetIdLeilao());
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions appropriately, e.g., log or throw a custom exception
+                    throw new Exception("Não foi possível fazer o put da notificação " + id);
+                }
             }
         }
-        catch (Exception ex)
+
+        private bool Exite(int id, SqlConnection connection)
         {
-            // Handle exceptions appropriately, e.g., log or throw a custom exception
-            throw new Exception("Não foi possível fazer o put da notificação " + id);
+            // Check if the record with the specified id exists in the database
+            string checkQuery = "SELECT COUNT(*) FROM Notificação WHERE idNotificacao = @Id";
+            using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@Id", id);
+                int count = (int)checkCommand.ExecuteScalar();
+                return count > 0;
+            }
         }
-    }
-}
 
-    private bool Exite(int id, SqlConnection connection)
-    {
-        // Check if the record with the specified id exists in the database
-        string checkQuery = "SELECT COUNT(*) FROM Notificação WHERE idNotificacao = @Id";
-        using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+
+        public List<Notificacao> getNotificacoesLicitador(int idLicitador)
         {
-            checkCommand.Parameters.AddWithValue("@Id", id);
-            int count = (int)checkCommand.ExecuteScalar();
-            return count > 0;
-        }
-    }
+            List<Notificacao> notificacoes = new List<Notificacao>();
 
-
-    public List<Notificacao> getNotificacoesLicitador(int idLicitador)
-    {
-        List<Notificacao> notificacoes = new List<Notificacao>();
-
-        using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -173,7 +183,7 @@ public class NotificacaoDao{
             }
 
             return notificacoes;
+        }
+
     }
-
-
 }

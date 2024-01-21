@@ -1,10 +1,17 @@
 
 using System.Data.SqlClient;
 using RhythmsOfGiving.Controller;
+using RhythmsOfGiving.Controller.Dados;
 
-public class LicitacaoDao{
-    private static LicitacaoDao? _singleton = null;
-        private LicitacaoDao() { }
+namespace RhythmsOfGiving.Controller.Dados
+{
+    public class LicitacaoDao
+    {
+        private static LicitacaoDao? _singleton = null;
+
+        private LicitacaoDao()
+        {
+        }
 
         public static LicitacaoDao GetInstance()
         {
@@ -12,10 +19,11 @@ public class LicitacaoDao{
             {
                 _singleton = new LicitacaoDao();
             }
+
             return _singleton;
         }
 
-    
+
         internal Licitacao Get(int idLicitacao)
         {
             Licitacao result = null;
@@ -47,13 +55,13 @@ public class LicitacaoDao{
             }
             catch
             {
-                 throw new LicitacaoNaoExisteException("A licitação que se deseja tirar não existe" + idLicitacao);
+                throw new LicitacaoNaoExisteException("A licitação que se deseja tirar não existe" + idLicitacao);
             }
 
             return result;
         }
 
-        
+
 
         internal void Put(int idLicitacao, Licitacao l)
         {
@@ -95,7 +103,7 @@ public class LicitacaoDao{
 
             }
         }
-    
+
         public static int Size()
         {
             int rowCount = 0;
@@ -118,4 +126,5 @@ public class LicitacaoDao{
 
             return rowCount;
         }
+    }
 }
