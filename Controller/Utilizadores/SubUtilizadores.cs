@@ -1,5 +1,6 @@
 using RhythmsOfGiving.Controller.Dados;
 using RhythmsOfGiving.Controller.Excecoes;
+using RhythmsOfGiving.Controller.Leiloes;
 
 namespace RhythmsOfGiving.Controller.Utilizadores
 {

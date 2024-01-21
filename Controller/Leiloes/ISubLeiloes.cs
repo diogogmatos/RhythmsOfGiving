@@ -1,4 +1,4 @@
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Leiloes
 {
     public interface ISubLeiloes
     {

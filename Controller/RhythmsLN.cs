@@ -1,4 +1,5 @@
-﻿using RhythmsOfGiving.Controller.Utilizadores;
+﻿using RhythmsOfGiving.Controller.Leiloes;
+using RhythmsOfGiving.Controller.Utilizadores;
 
 namespace RhythmsOfGiving.Controller;
 

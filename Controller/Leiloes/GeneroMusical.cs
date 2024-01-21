@@ -1,7 +1,7 @@
 
 using System.Text;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Leiloes
 {
     public class GeneroMusical
     {

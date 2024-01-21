@@ -1,4 +1,6 @@
 
+using RhythmsOfGiving.Controller.Leiloes;
+
 namespace RhythmsOfGiving.Controller.Utilizadores
 {
     public interface ISubUtilizadores

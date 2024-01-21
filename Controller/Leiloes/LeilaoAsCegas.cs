@@ -1,5 +1,5 @@
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Leiloes
 {
     public class LeilaoAsCegas : Leilao
     {

@@ -1,3 +1,5 @@
+using RhythmsOfGiving.Controller.Leiloes;
+
 namespace RhythmsOfGiving.Controller.UI;
 
 public class InstituicaoUi

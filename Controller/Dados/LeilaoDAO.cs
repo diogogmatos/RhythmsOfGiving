@@ -1,5 +1,6 @@
 using System.Data.SqlClient;
 using RhythmsOfGiving.Controller.Excecoes;
+using RhythmsOfGiving.Controller.Leiloes;
 
 namespace RhythmsOfGiving.Controller.Dados
 {

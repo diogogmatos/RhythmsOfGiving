@@ -1,9 +1,7 @@
-
-
 using System.Text;
 using RhythmsOfGiving.Controller.Dados;
 
-namespace RhythmsOfGiving.Controller{
+namespace RhythmsOfGiving.Controller.Leiloes{
 public class Artista{
 
     private int idArtista;

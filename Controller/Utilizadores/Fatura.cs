@@ -1,5 +1,6 @@
 using System.Text;
 using RhythmsOfGiving.Controller.Dados;
+using RhythmsOfGiving.Controller.Leiloes;
 
 namespace RhythmsOfGiving.Controller.Utilizadores
 {

@@ -1,9 +1,7 @@
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using RhythmsOfGiving.Controller.Dados;
 using RhythmsOfGiving.Controller.Excecoes;
 
-namespace RhythmsOfGiving.Controller
+namespace RhythmsOfGiving.Controller.Leiloes
 {
     public class SubLeiloes : ISubLeiloes
     {
