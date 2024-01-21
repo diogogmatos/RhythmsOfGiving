@@ -6,20 +6,22 @@
 <div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden bg-white">
     @* Informações *@
     <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
-        @* Nome Artista *@
-        <div class="flex space-x-2 items-center select-none">
-            <img class="object-cover w-8 h-8 rounded-full" src=@GetAuthorImagePath()/>
-            <p class="font-[600]">@GetArtista()</p>
-        </div>
-        @* Titulo Leilao *@
-        <p class="font-[600] text-2xl">
-            @GetTitle()
-        </p>
-        @* Detalhes *@
-        <div class="flex text-gray-400 select-none">
-            <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
-            <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
-            <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+        <div class="space-y-4">
+            @* Nome Artista *@
+            <div class="flex space-x-2 items-center select-none">
+                <img class="object-cover w-8 h-8 rounded-full" src=@GetAuthorImagePath()/>
+                <p class="font-[600]">@GetArtista()</p>
+            </div>
+            @* Titulo Leilao *@
+            <p class="font-[600] text-2xl">
+                @GetTitle()
+            </p>
+            @* Detalhes *@
+            <div class="flex text-gray-400 select-none">
+                <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
+                <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
+                <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+            </div>
         </div>
         @* Descrição *@
         <p class="text-justify">
@@ -30,8 +32,9 @@
             <button onclick="location.href='/leiloes/@GetId()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
                 Licitar ->
             </button>
-            @if (ownLicitacao != 0) {
-                @if (ownLicitacao > lastLicitacao)
+            @if (ownLicitacao != 0)
+            {
+                @if (ownLicitacao >= lastLicitacao || (ownLicitacao > GetValorBase() && IsAsCegas()))
                 {
                     <div class="text-center min-w-fit">
                         <p class="text-sm text-gray-400 font-medium">
@@ -55,33 +58,42 @@
                 }
             }
             <div class="text-center min-w-fit">
-                @if (lastLicitacao != 0 && !IsAsCegas()) {
+                @if (lastLicitacao != 0 && !IsAsCegas() && ownLicitacao != lastLicitacao)
+                {
+                    <p class="text-sm text-gray-400 font-medium">
+                        última licitação:
+                    </p>
                     @if (lastLicitacao > ownLicitacao)
                     {
-                        <p class="text-sm text-gray-400 font-medium">
-                            última licitação:
-                        </p>
+                        
                         <p class="text-xl font-[600] text-rhythms">
                             @lastLicitacao.ToString("0.00€")
                         </p>
                     }
                     else
                     {
-                        <p class="text-sm text-gray-400 font-medium">
-                            última licitação:
-                        </p>
                         <p class="text-xl font-[600] text-rhythms/50">
                             @lastLicitacao.ToString("0.00€")
                         </p>
                     }
                 }
-                else {
+                else
+                {
                     <p class="text-sm text-gray-400 font-medium">
                         valor base:
                     </p>
-                    <p class="text-xl font-[600] text-rhythms">
-                        @GetValorBase().ToString("0.00€")
-                    </p>
+                    @if (GetValorBase() > ownLicitacao)
+                    {
+                        <p class="text-xl font-[600] text-rhythms">
+                            @GetValorBase().ToString("0.00€")
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-xl font-[600] text-rhythms/50">
+                            @GetValorBase().ToString("0.00€")
+                        </p>
+                    }
                 }
             </div>
         </div>
@@ -93,6 +105,9 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+    
     [EditorRequired]
     [Parameter]
     public LeilaoUi Leilao { get; set; }
@@ -134,14 +149,25 @@
         }
     }
 
-    private void GetOwnLicitacao()
+    private async void GetOwnLicitacao()
     {
+        if (AuthenticationState is null)
+        {
+            ownLicitacao = 0;
+            return;
+        }
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            ownLicitacao = 0;
+            return;
+        }
         ownLicitacao = UiService.GetUltimaLicitacaoUtilizador("diogo@mail.com", GetId());
     }
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao("diogo@mail.com", GetId());
+        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(GetId());
     }
     
     // info

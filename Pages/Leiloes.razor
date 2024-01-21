@@ -22,6 +22,15 @@
                 <option>Ás Cegas</option>
             </select>
         </div>
+        <div>
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Artista</label>
+            <select @onchange="@OnSelectedArtistaChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                @foreach (var option in UiService.GetArtistas())
+                {
+                    <option>@option</option>
+                }
+            </select>
+        </div>
     </div>
     @if (leiloesDisponiveis.Count == 0)
     {
@@ -43,12 +52,8 @@
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
     }
     
-    string selectedGeneroMusical;
-    string selectedTipoLeilao;
-    
     private void OnSelectedGeneroMusicalChanged(ChangeEventArgs args)
     {
-        selectedGeneroMusical = args.Value.ToString();
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
         leiloesDisponiveis.RemoveAll(leilao => leilao.GetGenero() != args.Value.ToString());
         StateHasChanged();
@@ -56,9 +61,15 @@
 
     private void OnSelectedTipoLeilaoChanged(ChangeEventArgs args)
     {
-        selectedTipoLeilao = args.Value.ToString();
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
         leiloesDisponiveis.RemoveAll(leilao => leilao.GetTipo() != args.Value.ToString());
+        StateHasChanged();
+    }
+    
+    private void OnSelectedArtistaChanged(ChangeEventArgs args)
+    {
+        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
+        leiloesDisponiveis.RemoveAll(leilao => leilao.GetArtista() != args.Value.ToString());
         StateHasChanged();
     }
 }
