@@ -3,7 +3,7 @@ namespace RhythmsOfGiving.Controller
 {
     public interface ISubUtilizadores
     {
-        public void RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
+        public int RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
 
         public int ValidarAutenticacao(string email, string palavraPasse);
 

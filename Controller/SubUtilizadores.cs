@@ -16,7 +16,7 @@ namespace RhythmsOfGiving.Controller
 
 
         //DUVIDA É preciso alguma verificação dos dados?
-        public void RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)
+        public int RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)
         {
             DateOnly idadeAdulta = dataNascimento.AddYears(18);
             DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Now);
@@ -27,8 +27,10 @@ namespace RhythmsOfGiving.Controller
 
             Licitador l = new Licitador(nome, palavraPasse, dataNascimento, nrCartao, email, nif, nCc);
             licitadores.put(email,l);
+            return l.GetIdLicitador();
         }
         
+        //Caso administrador falta
         public int ValidarAutenticacao(string email, string palavraPasse)
         {
             Licitador l = this.licitadores.Get(email);

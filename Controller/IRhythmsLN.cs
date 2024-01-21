@@ -4,7 +4,7 @@ public interface IRhythmsLn
 {
 
     //Registar elementos novos
-    public void RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
+    public int RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
 
     public bool RegistarArtista(string nome,String imagem, int idAdmin);
         
@@ -115,5 +115,7 @@ public interface IRhythmsLn
     
     //Verifica os leilões que terminaram e cria as respetivas notificações
     public void CriarNotificacoesFimLeilao();
+
+    public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao);
 
 }

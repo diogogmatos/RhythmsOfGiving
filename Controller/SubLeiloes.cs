@@ -344,6 +344,16 @@ namespace RhythmsOfGiving.Controller
             return leilaoDao.get(id);
         }
 
+        public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao)
+        {
+            Leilao l = this.leilaoDao.get(idLeilao);
+            int idArtista = l.Experiencia.GetIdArtista();
+            Artista a = this.artistaDao.Get(idArtista);
+            Dictionary<Leilao, Artista> leilaoArtista = new Dictionary<Leilao, Artista>();
+            leilaoArtista.Add(l,a);
+            return leilaoArtista;
+        }
+
         public List<string> GetNomesGenerosMusicais()
         {
             List<string> nomes = new List<string>();

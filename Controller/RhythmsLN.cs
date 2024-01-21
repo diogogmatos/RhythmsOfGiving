@@ -12,9 +12,9 @@ public class RhythmsLn : IRhythmsLn
         this.subLeiloes = new SubLeiloes();
     }
 
-    public void RegistarLicitador(string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)
+    public int RegistarLicitador(string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)
     {
-        subUtilizadores.RegistarLicitador(nome, email, palavraPasse, nCc, nif, dataNascimento, nrCartao);
+        return subUtilizadores.RegistarLicitador(nome, email, palavraPasse, nCc, nif, dataNascimento, nrCartao);
     }
 
     public int ValidarAutenticacao(string email, string palavraPasse)
@@ -229,6 +229,11 @@ public class RhythmsLn : IRhythmsLn
 
         }
 
+    }
+
+    public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao)
+    {
+        return subLeiloes.GetLeilaoArtistaById(idLeilao);
     }
     
 }

@@ -51,5 +51,7 @@ namespace RhythmsOfGiving.Controller
 
         public List<Leilao> LeiloesAtivosParaTerminados();
 
+        public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao);
+
     }
 }
