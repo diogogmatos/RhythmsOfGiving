@@ -30,7 +30,7 @@ namespace RhythmsOfGiving.Controller.Dados{
 
             string query = "SELECT COUNT(*) FROM Notificação";
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 connection.Open();
@@ -43,7 +43,7 @@ namespace RhythmsOfGiving.Controller.Dados{
 
         public Notificacao Get(int id)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -84,7 +84,7 @@ namespace RhythmsOfGiving.Controller.Dados{
 
         public void Put(int id, Notificacao n)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -147,7 +147,7 @@ namespace RhythmsOfGiving.Controller.Dados{
         {
             List<Notificacao> notificacoes = new List<Notificacao>();
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try

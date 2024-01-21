@@ -163,6 +163,11 @@ namespace RhythmsOfGiving.Controller.Leiloes
             this.ativo = b;
         }
 
+        public void SetValorAtual(float valor)
+        {
+            this.valorAtual = valor;
+        }
+
         public List<int> MinhasLicitacoes
         {
             get { return minhasLicitacoes; }
@@ -230,9 +235,12 @@ namespace RhythmsOfGiving.Controller.Leiloes
             DateTime atual = DateTime.Now;
             if (atual < this.dataHoraFinal)
             {
-                if (valorLicitacao >= valorMinimo)
+                if (this.GetTipo() == 0)
                 {
-
+                    return this.CriarLicitacao(valorLicitacao, idLicitador);
+                }
+                else if (valorLicitacao >= valorMinimo)
+                {
                     //Acrescentar 5 min ao contador
                     this.dataHoraContador = atual.AddMinutes(5);
                     return this.CriarLicitacao(valorLicitacao, idLicitador);
@@ -249,9 +257,12 @@ namespace RhythmsOfGiving.Controller.Leiloes
             {
                 if (diferencaEmMinutos >= 5)
                 {
-                    if (valorLicitacao >= valorMinimo)
+                    if (this.GetTipo() == 0)
                     {
-
+                        return this.CriarLicitacao(valorLicitacao, idLicitador);
+                    }
+                    else if (valorLicitacao >= valorMinimo)
+                    {
                         //Acrescentar 5 min ao contador
                         this.dataHoraContador = atual.AddMinutes(5);
                         return this.CriarLicitacao(valorLicitacao, idLicitador);
@@ -261,14 +272,17 @@ namespace RhythmsOfGiving.Controller.Leiloes
                                                       "O valor mínimo da licitação é de: " + valorMinimo);
                 }
 
-                if (valorLicitacao >= valorMinimo)
+                if (this.GetTipo() == 0)
                 {
-
+                    return this.CriarLicitacao(valorLicitacao, idLicitador);
+                }
+                else if (valorLicitacao >= valorMinimo)
+                {
                     //Acrescentar diferençaTempo ao contador
                     this.dataHoraContador = atual.AddMinutes(diferencaEmMinutos);
                     return this.CriarLicitacao(valorLicitacao, idLicitador);
                 }
-
+                 
                 throw new ValorLicitacaoException("O valor introduzido é inválido.\n" +
                                                   "O valor mínimo da licitação é de: " + valorMinimo);
 

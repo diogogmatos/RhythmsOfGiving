@@ -26,7 +26,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             int totalRows = 0;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 try
                 {
@@ -50,7 +50,7 @@ namespace RhythmsOfGiving.Controller.Dados
 
         internal Licitador Get(string email)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -126,7 +126,7 @@ namespace RhythmsOfGiving.Controller.Dados
         }
         public Licitador get(int id)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 try
@@ -202,12 +202,12 @@ namespace RhythmsOfGiving.Controller.Dados
                 }
             }
 
-            return null;
+            return null; // mudar
         }
 
        internal void put(string email, Licitador licitador)
         {
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
                 
@@ -257,7 +257,7 @@ namespace RhythmsOfGiving.Controller.Dados
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 {
                     connection.Open();
 
@@ -284,7 +284,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             List<int> keySet = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 connection.Open();
 
@@ -307,7 +307,6 @@ namespace RhythmsOfGiving.Controller.Dados
         public static int SizeAdmin()
         {
             int totalRows = 0;
-            Console.WriteLine("antes conexao");
             using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
             {
                 Console.WriteLine("depois conexao");
@@ -335,7 +334,7 @@ namespace RhythmsOfGiving.Controller.Dados
         {
             Administrador a = null;
 
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString())) 
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString())) 
             {
                 try
                 {

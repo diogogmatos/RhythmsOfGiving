@@ -121,4 +121,6 @@ public interface IRhythmsLn
 
     public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao);
 
+    public int ConverterEmailparaID(string email);
+
 }

@@ -167,8 +167,26 @@ namespace RhythmsOfGiving.Controller.Leiloes
         public int CriarLicitacao(int idLicitador, int idLeilao, float valorLicitacao, float valorMinimo)
         {
             Leilao leilao = this.leilaoDao.get(idLeilao);
-            int idLicitacao = leilao.VerificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
-            return idLicitacao;
+            try
+            {
+                int idLicitacao = leilao.VerificarLicitacao(idLicitador, valorLicitacao, valorMinimo);
+
+                if (leilao.GetTipo() == 1 || (leilao.GetTipo() == 0 && valorLicitacao >= leilao.ValorAtual))
+                {
+                    leilao.SetValorAtual(valorLicitacao);
+                }
+                this.leilaoDao.put(leilao.IdLeilao, leilao);
+
+                return idLicitacao;
+            }
+            catch (ValorLicitacaoException ex)
+            {
+                throw;
+            }
+            catch (TempoExcedidoException)
+            {
+                throw;
+            }
         }
 
         public string GetTituloLeilao(int idLeilao)

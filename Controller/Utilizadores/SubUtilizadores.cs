@@ -217,5 +217,19 @@ namespace RhythmsOfGiving.Controller.Utilizadores
             return l.GetNotificacoes();
         }
 
+        public int ConverterEmailparaID(string email)
+        {
+            foreach (Administrador administrador in administradores.Values)
+            {
+                if (administrador.GetEmail().Equals(email))
+                {
+                    return -1;
+                }
+                
+            }
+            return licitadores.Get(email).GetIdLicitador();
+
+        }
+
     }
 }

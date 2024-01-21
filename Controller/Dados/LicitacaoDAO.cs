@@ -33,7 +33,7 @@ namespace RhythmsOfGiving.Controller.Dados
             {
                 string query = "SELECT * FROM Licitacao WHERE id = @idLicitacao";
 
-                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@idLicitacao", idLicitacao);
@@ -82,7 +82,7 @@ namespace RhythmsOfGiving.Controller.Dados
                                + "    INSERT (id, dataHora, valor, idLicitador, idLeilao)\n"
                                + "    VALUES (Source.id, Source.dataHora, Source.valor, Source.idLicitador, Source.idLeilao);";
 
-                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     // Add parameters for the new Licitacao
@@ -114,7 +114,7 @@ namespace RhythmsOfGiving.Controller.Dados
             {
                 string query = "SELECT COUNT(*) FROM Licitacao";
 
-                using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
