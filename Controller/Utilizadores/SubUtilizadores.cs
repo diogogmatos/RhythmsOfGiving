@@ -88,7 +88,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
         
         public void AdicionarLicitacao(int idLicitacao, int idLicitador)
         {
-            Licitador l  = this.licitadores.get(idLicitacao); 
+            Licitador l  = this.licitadores.get(idLicitador); 
             l.GetMinhasLicitacoes().Add(idLicitacao);
             licitadores.put(l.GetEmail(),l);
             //throw new NotImplementedException();
