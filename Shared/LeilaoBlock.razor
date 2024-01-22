@@ -194,7 +194,7 @@
         return Leilao.GetTipo();
     }
     private string GetFim() {
-        return Leilao.GetFim().ToShortDateString(); // TODO: mudar para aparecer tempo
+        return Leilao.GetFim().ToString("dd/MM/yy HH:mm");
     }
     private string GetDescricao() {
         return Leilao.GetShortDescricao();

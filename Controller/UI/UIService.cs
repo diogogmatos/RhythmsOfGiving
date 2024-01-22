@@ -8,6 +8,7 @@ public class UiService
 {
     private readonly RhythmsLn rhythmsLn = new();
     private readonly IHubContext<InfoHub, IInfoHub> context;
+    private readonly ReaderWriterLockSlim lockSlim = new();
     
     public UiService(IHubContext<InfoHub, IInfoHub> context)
     {
@@ -24,13 +25,31 @@ public class UiService
     {
         await context.Clients.All.UpdateAuctionInfo(idLeilao);
     }
+
+    private async Task BroadcastNotificationUpdate(List<int> idsLicitador)
+    {
+        await context.Clients.All.UpdateNotificationInfo(idsLicitador);
+    }
     
     public async Task Licitar(int idLeilao, int idLicitador, float valor)
     {
+        // adicionar licitação
         float valorBase = rhythmsLn.CalcularValorMinimo(idLeilao);
         int idLicitacao = rhythmsLn.CriarLicitacao(idLicitador, idLeilao, valor, valorBase);
         rhythmsLn.AdicionarLicitacao(idLicitacao, idLicitador);
         await BroadcastAuctionUpdate(idLeilao);
+        // notificar licitador anterior
+        Leilao leilao = rhythmsLn.GetLeilaoById(idLeilao);
+        if (leilao.GetTipo() != 0)
+        {
+            Licitacao licitacao = rhythmsLn.ProcurarLicitacaoAtual(idLeilao);
+            rhythmsLn.CriarNotificacaoUltrapassada(licitacao.GetIdLicitador(), "'" + leilao.Titulo + "'",
+                idLeilao);
+            // notificar apenas licitador ultrapassado
+            List<int> idsLicitador = new List<int>();
+            idsLicitador.Add(licitacao.GetIdLicitador());
+            await BroadcastNotificationUpdate(idsLicitador);
+        }
     }
     
     public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
@@ -52,6 +71,13 @@ public class UiService
     
     public List<LeilaoUi> GetLeiloesDisponiveis()
     {
+        // terminar leilões que já acabaram, notificar licitadores
+        new Thread(async () =>
+        {
+            List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
+            await BroadcastNotificationUpdate(idsLicitador);
+        }).Start();
+        
         List<LeilaoUi> leiloes = new List<LeilaoUi>();
         try
         {
@@ -70,6 +96,13 @@ public class UiService
     
     public LeilaoUi GetLeilaoById(int idLeilao)
     {
+        // terminar leilões que já acabaram, notificar licitadores
+        new Thread(async () =>
+        {
+            List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
+            await BroadcastNotificationUpdate(idsLicitador);
+        }).Start();
+        
         Dictionary<Leilao, Artista> leilaoInfo = rhythmsLn.GetLeilaoArtistaById(idLeilao);
         foreach (var leilao in leilaoInfo)
         {
@@ -86,12 +119,27 @@ public class UiService
         return leilaoInfo.Ativo;
     }
 
+    public bool IsLeilaoFinalizado(int idLeilao)
+    {
+        Leilao leilaoInfo = rhythmsLn.GetLeilaoById(idLeilao);
+        return leilaoInfo.IdInstituicao != -1;
+    }
+
     public int GetLicitadorGanhador(int idLeilao)
     {
         return rhythmsLn.GetLicitadorGanhador(idLeilao);
     }
+
+    public void TerminarLeilao(int idLeilao)
+    {
+        ; // TODO
+    }
+
+    public void RedimirExperiencia(int idLeilao, int idInstituicao)
+    {
+        rhythmsLn.PreencherInstituicaoLeilao(idLeilao, idInstituicao);
+    }
     
-    // GetNomeGenerosMusicais()
     public List<String> GetGenerosMusicais()
     {
         return rhythmsLn.GetNomesGenerosMusicais();

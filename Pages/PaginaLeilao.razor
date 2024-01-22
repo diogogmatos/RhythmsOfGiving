@@ -34,7 +34,13 @@
         @* Área de Interação *@
         <div class="min-w-[25rem] h-full rounded-xl border p-6 space-y-4 m-auto bg-white">
             @* Título *@
-            <h1 class="font-[600] text-3xl pb-4 border-b">Leilão</h1>
+            <div class="pb-4 border-b space-y-2">
+                <h1 class="font-[600] text-3xl">Leilão</h1>
+                <div class="flex place-content-between">
+                    <h2 class="font-[500] text-xl">Termina em:</h2>
+                    <h2 class="font-[500] text-xl text-rhythms">@ConvertSecondsToTimeString(counter)</h2>
+                </div>
+            </div>
             @* Licitações *@
             <div class="space-y-2 text-xl">
                 <p class="flex text-gray-400 font-[600] items-center">
@@ -120,8 +126,6 @@
 </div>
 
 @code {
-    // TODO: Erro quando mete valor menor que última licitação
-    
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationState { get; set; }
     
@@ -131,6 +135,9 @@
     private float Valor { get; set; }
     
     private LeilaoUi Leilao { get; set; }
+
+    private static System.Timers.Timer timer;
+    private int counter;
 
     private void GetLeilao()
     {
@@ -151,12 +158,22 @@
 
     private HubConnection? infoHubConnection;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         GetLeilao();
+        if (!UiService.IsLeilaoAtivo(int.Parse(IdLeilao)))
+        {
+            NavManager.NavigateTo("404");
+        }
         GetOwnLicitacao();
         GetLastLicitacao();
-        
+        TimeSpan ts = Leilao.GetFim() - DateTime.Now;
+        counter = (int) ts.TotalSeconds;
+        StartTimer();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
         infoHubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5269/infohub")
             .Build();
@@ -242,7 +259,7 @@
         return Leilao.GetTipo();
     }
     private string GetFim() {
-        return Leilao.GetFim().ToShortDateString();
+        return Leilao.GetFim().ToString("dd/MM/yy HH:mm");
     }
     private string GetDescricao() {
         return Leilao.GetDescricao();
@@ -258,5 +275,58 @@
     }
     private bool IsAsCegas() {
         return Leilao.IsAsCegas();
+    }
+    
+    // Timer
+
+    public void StartTimer()
+    {
+        timer = new System.Timers.Timer(60000);
+        timer.Elapsed += CountDownTimer;
+        timer.Enabled = true;
+    }
+
+    public void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 60;
+        }
+        else
+        {
+            timer.Enabled = false;
+            timer.Dispose();
+            UiService.TerminarLeilao(int.Parse(IdLeilao));
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    static string ConvertSecondsToTimeString(int totalSeconds)
+    {
+        int days = totalSeconds / (24 * 3600);
+        int remainingSeconds = totalSeconds % (24 * 3600);
+        int hours = remainingSeconds / 3600;
+        remainingSeconds %= 3600;
+        int minutes = remainingSeconds / 60;
+        int seconds = remainingSeconds % 60;
+
+        string result = "";
+
+        if (days > 0)
+        {
+            result += $"{days:D2}:";
+        }
+
+        if (hours > 0)
+        {
+            result += $"{hours:D2}:";
+        }
+
+        if (minutes > 0)
+        {
+            result += $"{minutes:D2}";
+        }
+
+        return result.Trim();
     }
 }

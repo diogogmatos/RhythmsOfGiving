@@ -3,5 +3,5 @@ namespace RhythmsOfGiving.Controller.UI;
 public interface IInfoHub
 {
     Task UpdateAuctionInfo(int idLeilao);
-    Task UpdateNotificationInfo();
+    Task UpdateNotificationInfo(List<int> idsLicitador);
 }

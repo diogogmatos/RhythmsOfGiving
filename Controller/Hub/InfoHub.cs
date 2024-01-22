@@ -9,8 +9,8 @@ public class InfoHub: Hub<IInfoHub>
         await Clients.All.UpdateAuctionInfo(idLeilao);
     }
     
-    public async Task SendUpdateNotificationMessage()
+    public async Task SendUpdateNotificationMessage(List<int> idsLicitador)
     {
-        await Clients.All.UpdateNotificationInfo();
+        await Clients.All.UpdateNotificationInfo(idsLicitador);
     }
 }
