@@ -25,7 +25,7 @@ public class NotificacaoUi
         this.message = notificacao.GetMessage();
         this.date = notificacao.GetDate();
         this.tipo = notificacao.GetTipo();
-        this.idLeilao = notificacao.GetId(); // GetIdLeilao()
+        this.idLeilao = notificacao.GetIdLeilao();
     }
     
     public int GetIdLeilao()

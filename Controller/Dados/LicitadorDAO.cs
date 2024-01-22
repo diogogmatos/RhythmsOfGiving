@@ -245,7 +245,7 @@ namespace RhythmsOfGiving.Controller.Dados
                     }
                     catch (Exception ex)
                     {
-                        throw new DadosInvalidosException("Erro ao atualizar o licitador.", ex);
+                        throw new DadosInvalidosException("Informações inválidas, verifique os dados introduzidos.", ex);
                     }
             }
         }
@@ -307,7 +307,7 @@ namespace RhythmsOfGiving.Controller.Dados
         public static int SizeAdmin()
         {
             int totalRows = 0;
-            using (SqlConnection connection = new SqlConnection(DAOConfig.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
                 Console.WriteLine("depois conexao");
                 try

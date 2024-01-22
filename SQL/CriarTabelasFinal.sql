@@ -6,9 +6,9 @@
 
 -- Drop database RhythmsOfGiving;
 
--- CREATE DATABASE RhythmsOfGiving2;
+-- CREATE DATABASE RhythmsOfGiving;
 
-USE RhythmsOfGiving2;
+-- USE RhythmsOfGiving;
 
 GO
 CREATE TABLE [Administrador] (
@@ -23,7 +23,7 @@ CREATE TABLE [GeneroMusical] (
     nome varchar(45) NOT NULL UNIQUE,
     idAdministrador int NOT NULL,
     CONSTRAINT [PK_GENEROMUSICAL] PRIMARY KEY CLUSTERED ([id] ASC) WITH (IGNORE_DUP_KEY = OFF),
-    CONSTRAINT [GeneroMusical_fk0] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE CASCADE
+    CONSTRAINT [GeneroMusical_fk0] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GO
 CREATE TABLE [Artista] (
@@ -32,7 +32,7 @@ CREATE TABLE [Artista] (
     nome varchar(45) NOT NULL UNIQUE,
     idAdministrador int NOT NULL,
     CONSTRAINT [PK_ARTISTA] PRIMARY KEY CLUSTERED ([id] ASC) WITH (IGNORE_DUP_KEY = OFF),
-    CONSTRAINT [Artista_fk0] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE CASCADE
+    CONSTRAINT [Artista_fk0] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GO
 CREATE TABLE [Instituicao] (
@@ -44,7 +44,7 @@ CREATE TABLE [Instituicao] (
     iban varchar(100) NOT NULL UNIQUE,
     idAdministrador int NOT NULL,
     CONSTRAINT [PK_INSTITUICAO] PRIMARY KEY CLUSTERED ([id] ASC) WITH (IGNORE_DUP_KEY = OFF),
-    CONSTRAINT [Instituicao_fk0] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE CASCADE
+    CONSTRAINT [Instituicao_fk0] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GO
 CREATE TABLE [Licitador] (
@@ -61,7 +61,7 @@ CREATE TABLE [Licitador] (
 GO
 CREATE TABLE [Leilao] (
     id INT NOT NULL UNIQUE,
-    titulo VARCHAR(45) NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
     valorAtual DECIMAL(7,2) NOT NULL,
     valorMinimo DECIMAL(7,2) NOT NULL,
     dataHoraFinal DATETIME NOT NULL,
@@ -69,13 +69,13 @@ CREATE TABLE [Leilao] (
     estado BIT NOT NULL,
     tipoLeilao VARCHAR(45) NOT NULL,
     descricao VARCHAR(MAX) NOT NULL,
-    imagem VARCHAR(200) NOT NULL,
+    imagem VARCHAR(MAX) NOT NULL,
     idArtista INT NOT NULL,
     idGeneroMusical INT NOT NULL,
     idAdministrador INT NOT NULL,
     idInstituicao INT NULL,
     CONSTRAINT [PK_LEILAO] PRIMARY KEY CLUSTERED ([id] ASC) WITH (IGNORE_DUP_KEY = OFF),
-    CONSTRAINT [Leilao_fk0] FOREIGN KEY ([idArtista]) REFERENCES [Artista]([id]) ON UPDATE CASCADE ON DELETE NO ACTION,
+    CONSTRAINT [Leilao_fk0] FOREIGN KEY ([idArtista]) REFERENCES [Artista]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT [Leilao_fk1] FOREIGN KEY ([idGeneroMusical]) REFERENCES [GeneroMusical]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT [Leilao_fk2] FOREIGN KEY ([idAdministrador]) REFERENCES [Administrador]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION,
 	CONSTRAINT [Leilao_fk3] FOREIGN KEY ([idInstituicao]) REFERENCES [Instituicao]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION
@@ -88,8 +88,8 @@ CREATE TABLE [Licitacao] (
     idLicitador int NOT NULL,
     idLeilao int NOT NULL,
     CONSTRAINT [PK_LICITACAO] PRIMARY KEY CLUSTERED ([id] ASC) WITH (IGNORE_DUP_KEY = OFF),
-    CONSTRAINT [Licitacao_fk0] FOREIGN KEY ([idLicitador]) REFERENCES [Licitador]([id]) ON UPDATE CASCADE,
-    CONSTRAINT [Licitacao_fk1] FOREIGN KEY ([idLeilao]) REFERENCES [Leilao]([id]) ON UPDATE CASCADE
+    CONSTRAINT [Licitacao_fk0] FOREIGN KEY ([idLicitador]) REFERENCES [Licitador]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT [Licitacao_fk1] FOREIGN KEY ([idLeilao]) REFERENCES [Leilao]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GO
 CREATE TABLE [Fatura] (
@@ -114,7 +114,7 @@ CREATE TABLE [Notificacao] (
     idLicitador int NOT NULL,
 	idLeilao int NOT NULL,
     CONSTRAINT [PK_NOTIFICACAO] PRIMARY KEY CLUSTERED ([idNotificacao] ASC) WITH (IGNORE_DUP_KEY = OFF),
-    CONSTRAINT [Notificacao_fk0] FOREIGN KEY ([idLicitador]) REFERENCES [Licitador]([id]) ON UPDATE CASCADE,
+    CONSTRAINT [Notificacao_fk0] FOREIGN KEY ([idLicitador]) REFERENCES [Licitador]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION,
 	CONSTRAINT [Notificacao_fk1] FOREIGN KEY ([idLeilao]) REFERENCES [Leilao]([id]) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 GO

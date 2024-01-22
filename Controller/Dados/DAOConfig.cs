@@ -4,10 +4,10 @@ namespace RhythmsOfGiving.Controller.Dados
 {
     public class DAOconfig
     {
-        public const string USER = "sa";
+        public const string USER = "diogo";
         public const string PASSWORD = "F7gY6c4r";
-        public const string MACHINE = "localhost";
-        public const string DATABASE = "RhythmsOfGiving2";
+        public const string MACHINE = "rhythms.database.windows.net";
+        public const string DATABASE = "RhythmsOfGiving";
         /*public const string USER = "RhythmsOfGiving";
         public const string PASSWORD = "RhythmsOfGiving";
         public const string MACHINE = "LAPTOP-N09LPQI4"; // Coloque o nome do servidor SQL Server aqui

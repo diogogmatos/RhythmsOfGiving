@@ -153,7 +153,7 @@ namespace RhythmsOfGiving.Controller.Dados{
                 try
                 {
 
-                    string query = "SELECT * FROM Notificação WHERE idLicitador = @Id";
+                    string query = "SELECT * FROM Notificacao WHERE idLicitador = @Id";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {

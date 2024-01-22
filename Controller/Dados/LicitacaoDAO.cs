@@ -89,7 +89,7 @@ namespace RhythmsOfGiving.Controller.Dados
                     command.Parameters.AddWithValue("@id", idLicitacao);
                     command.Parameters.AddWithValue("@dataHora", l.GetDataHora());
                     command.Parameters.AddWithValue("@valor", l.GetValor());
-                    command.Parameters.AddWithValue("@idLicitador", l.GetIdLicitacao());
+                    command.Parameters.AddWithValue("@idLicitador", l.GetIdLicitador());
                     command.Parameters.AddWithValue("@idLeilao", l.GetIdLeilao());
 
                     // Open the connection
@@ -99,10 +99,10 @@ namespace RhythmsOfGiving.Controller.Dados
                     command.ExecuteNonQuery();
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 throw new Exception("Não fui possivel fazer o put licitação");
-
             }
         }
 

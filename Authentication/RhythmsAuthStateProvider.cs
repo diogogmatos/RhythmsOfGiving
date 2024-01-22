@@ -60,4 +60,12 @@ public class RhythmsAuthStateProvider : AuthenticationStateProvider
         
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
     }
+    
+    public async Task<UserSession> GetUserSession()
+    {
+        var userSessionStorageResult = await _sessionStorage.GetAsync<UserSession>("UserSession");
+        if (!userSessionStorageResult.Success || userSessionStorageResult.Value == null)
+            throw new Exception("UserSession not found.");
+        return userSessionStorageResult.Value;
+    }
 }
