@@ -53,5 +53,8 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
         public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao);
 
+
+        public Leilao DesativarLeilao(int idLeilao);
+
     }
 }

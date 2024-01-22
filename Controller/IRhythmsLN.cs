@@ -123,4 +123,6 @@ public interface IRhythmsLn
 
     public int ConverterEmailparaID(string email);
 
+    public void DesativarLeilao(int idLeilao);
+
 }

@@ -243,5 +243,18 @@ public class RhythmsLn : IRhythmsLn
     {
         return subUtilizadores.ConverterEmailparaID(email);
     }
+
+    public void DesativarLeilao(int idLeilao)
+    {
+        // Retorna o leilão do idLeilao
+         Leilao l = this.subLeiloes.DesativarLeilao(idLeilao);
+         
+         int idLicitadorGanhador = subLeiloes.GetLicitadorGanhador(l.IdLeilao);
+         subUtilizadores.CriarNotificacaoVencedora(idLicitadorGanhador, l.IdLeilao, l.Titulo, l.ValorAtual);
+            
+         HashSet<int> idLicitadoresPerdedores = subLeiloes.GetLicitadoresPerdedores(l.IdLeilao, idLicitadorGanhador);
+         subUtilizadores.CriarNotificacaoPerdedora(idLicitadoresPerdedores, l.IdLeilao, l.Titulo, l.ValorAtual);
+        
+    }
     
 }

@@ -420,5 +420,13 @@ namespace RhythmsOfGiving.Controller.Leiloes
             return leiloesTerminados;
         }
 
+        public Leilao DesativarLeilao(int idLeilao)
+        {
+            Leilao l = this.leilaoDao.get(idLeilao);
+            l.SetAtivo(false);
+            this.leilaoDao.put(l.IdLeilao, l);
+            return l;
+        }
+
     }
 }
