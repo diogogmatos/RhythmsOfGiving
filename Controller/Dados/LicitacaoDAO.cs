@@ -59,6 +59,9 @@ namespace RhythmsOfGiving.Controller.Dados
             {
                 throw new LicitacaoNaoExisteException("A licitação que se deseja tirar não existe" + idLicitacao);
             }
+            
+            if(result == null)
+                throw new LicitacaoNaoExisteException("A licitação que se deseja tirar não existe" + idLicitacao);
 
             return result;
         }

@@ -369,6 +369,9 @@ namespace RhythmsOfGiving.Controller.Dados
                 }
             }
 
+            if (a == null)
+                throw new AdministradorNaoExisteException("O administrador com o id " + idAdmin + " não existe!");
+
             return a;
         }
 
