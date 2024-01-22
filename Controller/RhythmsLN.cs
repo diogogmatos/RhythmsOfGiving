@@ -11,7 +11,6 @@ public class RhythmsLn : IRhythmsLn
     //Construtor
     public RhythmsLn()
     {
-        Console.WriteLine("criou RhythmsLn");
         subUtilizadores = new SubUtilizadores();
         subLeiloes = new SubLeiloes();
     }

@@ -1,9 +1,11 @@
 @page "/leiloes/redimir/{IdLeilao}"
 
 @using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Authentication
 @using System.Security.Claims
 @inject UiService UiService
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
 
 <AuthorizeView>
     <Authorized>
@@ -55,24 +57,24 @@
 </AuthorizeView>
 
 @code {
-    [CascadingParameter]
-    Task<AuthenticationState> AuthenticationState { get; set; }
-
     [Parameter]
     public string? IdLeilao { get; set; }
 
     private LeilaoUi? leilao;
     private int idLicitadorGanhador;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         leilao = UiService.GetLeilaoById(Int32.Parse(IdLeilao));
         idLicitadorGanhador = UiService.GetLicitadorGanhador(Int32.Parse(IdLeilao));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        RhythmsAuthStateProvider rhythmsAuthStateProvider = (RhythmsAuthStateProvider) AuthStateProvider;
+        UserSession user = await rhythmsAuthStateProvider.GetUserSession();
         
-        var authState = await AuthenticationState;
-        var nameId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        
-        if (leilao == null || nameId == null || idLicitadorGanhador != Int32.Parse(nameId))
+        if (leilao == null || idLicitadorGanhador != user.IdLicitador || UiService.IsLeilaoAtivo(Int32.Parse(IdLeilao)))
         {
             NavigationManager.NavigateTo("404");
         }

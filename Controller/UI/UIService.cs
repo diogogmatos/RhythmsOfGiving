@@ -80,6 +80,12 @@ public class UiService
         throw new Exception("Leilão não encontrado.");
     }
 
+    public bool IsLeilaoAtivo(int idLeilao)
+    {
+        Leilao leilaoInfo = rhythmsLn.GetLeilaoById(idLeilao);
+        return leilaoInfo.Ativo;
+    }
+
     public int GetLicitadorGanhador(int idLeilao)
     {
         return rhythmsLn.GetLicitadorGanhador(idLeilao);
@@ -98,23 +104,14 @@ public class UiService
     
     // notificações
     
-    // TODO: apresentar texto no elemento quando n tem not
-    public List<NotificacaoUi> GetNotificacoesUtilizador(string email)
+    public List<NotificacaoUi> GetNotificacoesUtilizador(int idLicitador)
     {
-        int idLicitador = 1;
         List<Notificacao> notificacoesLn = rhythmsLn.GetNotificacoesUtilizador(idLicitador);
         List<NotificacaoUi> notificacoes = new List<NotificacaoUi>();
         foreach (Notificacao not in notificacoesLn)
         {
             notificacoes.Add(new NotificacaoUi(not));
         }
-        // notificacoes.Add(new NotificacaoUi(
-        //     "A sua licitação foi ultrapassada!",
-        //     "The Eras Tour: Exclusive VIP Seating",
-        //     DateTime.Parse("2023-11-04"),
-        //     0,
-        //     1
-        // ));
         return notificacoes;
     }
     
@@ -128,13 +125,6 @@ public class UiService
         {
             instituicoes.Add(new InstituicaoUi(instituicao));
         }
-        // TODO: Remover
-        instituicoes.Add(new InstituicaoUi(
-            "The Trevor Project",
-            "The Trevor Project é uma organização sem fins lucrativos norte-americana fundada em 1998 em West Hollywood, Califórnia, com o objetivo de informar e prevenir o suicído entre jovens LGBT, incluindo outros queer.",
-            "https://mma.prnewswire.com/media/1636688/ttp_logo_primary_tagline_rgb_Logo.jpg?p=twitter",
-            "https://www.thetrevorproject.org/"
-        ));
         return instituicoes;
     }
     

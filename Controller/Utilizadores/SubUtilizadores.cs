@@ -12,15 +12,9 @@ namespace RhythmsOfGiving.Controller.Utilizadores
         //Construtor
         public SubUtilizadores()
         {
-            Console.WriteLine("entrou no construtor");
             licitadores = LicitadorDao.GetInstance();
-            Console.WriteLine("Size:" + LicitadorDao.Size());
             administradores = licitadores.preencherAdmins();
-            
-            //preencher o map administradores
-            //ver classe SubServicos no trabalho DSS para ajudar
         }
-
 
         //DUVIDA É preciso alguma verificação dos dados?
         public int RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao)
@@ -39,14 +33,8 @@ namespace RhythmsOfGiving.Controller.Utilizadores
         
         public int ValidarAutenticacao(string email, string palavraPasse)
         {
-            Console.WriteLine("entrou no validar");
-            if (licitadores == null)
-                Console.WriteLine("licitadorDAO null");
-            Console.WriteLine(administradores);
             foreach(Administrador admin in administradores.Values)
             {
-                Console.WriteLine("entrou no for");
-                Console.WriteLine(admin);
                 if (admin.GetEmail().Equals(email) && admin.GetPalavraPasse().Equals(palavraPasse))
                     return -1;
             }

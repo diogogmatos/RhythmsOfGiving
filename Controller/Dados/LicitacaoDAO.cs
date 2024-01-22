@@ -99,10 +99,10 @@ namespace RhythmsOfGiving.Controller.Dados
                     command.ExecuteNonQuery();
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 throw new Exception("Não fui possivel fazer o put licitação");
-
             }
         }
 
