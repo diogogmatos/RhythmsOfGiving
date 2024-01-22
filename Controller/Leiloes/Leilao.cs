@@ -196,8 +196,6 @@ namespace RhythmsOfGiving.Controller.Leiloes
         public int GetLicitadorGanhador()
         {
             int idLicitadorVencedor = -1;
-            this.ativo = false;
-
 
             List<int> licitacoes = this.minhasLicitacoes;
             float valorMaior = 0;

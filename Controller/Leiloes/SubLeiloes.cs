@@ -99,7 +99,6 @@ namespace RhythmsOfGiving.Controller.Leiloes
         public int GetLicitadorGanhador(int idLeilao)
         {
             Leilao leilao = this.leilaoDao.get(idLeilao);
-            this.leilaoDao.put(leilao.IdLeilao, leilao);
 
             return leilao.GetLicitadorGanhador();
         }
