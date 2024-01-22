@@ -1,5 +1,6 @@
 @using RhythmsOfGiving.Controller.UI
 @using System.Security.Claims
+@using Microsoft.AspNetCore.SignalR.Client
 @inject UiService UiService
 
 <AuthorizeView>
@@ -32,7 +33,7 @@
                                     Redimir Experiência ->
                                 </button>
                             }
-                            <p class="text-gray-400 text-sm select-none">@not.GetDate().ToShortDateString()</p>
+                            <p class="text-gray-400 text-sm select-none">@not.GetDate().ToString("dd/MM/yy HH:mm")</p>
                         </div>
                     }
                 }
@@ -46,6 +47,8 @@
     private Task<AuthenticationState> AuthenticationState { get; set; }
     
     private List<NotificacaoUi> notificacoes;
+    
+    private HubConnection? infoHubConnection;
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,5 +56,18 @@
         int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
         notificacoes = UiService.GetNotificacoesUtilizador(idLicitador);
         StateHasChanged();
+        
+        infoHubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5269/infohub")
+            .Build();
+
+        infoHubConnection.On("UpdateNotificationInfo", (List<int> idsLicitador) =>
+        {
+            if (idsLicitador.Contains(idLicitador))
+            {
+                notificacoes = UiService.GetNotificacoesUtilizador(idLicitador);
+                InvokeAsync(StateHasChanged);
+            }
+        });
     }
 }

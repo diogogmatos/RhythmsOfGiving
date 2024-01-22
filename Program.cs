@@ -44,9 +44,9 @@ app.MapPost("broadcast-auction-update", async (IHubContext<InfoHub, IInfoHub> co
     return Results.NoContent();
 });
 
-app.MapPost("broadcast-not-update", async (IHubContext<InfoHub, IInfoHub> context) =>
+app.MapPost("broadcast-not-update", async (IHubContext<InfoHub, IInfoHub> context, List<int> idsLicitadores) =>
 {
-    await context.Clients.All.UpdateNotificationInfo();
+    await context.Clients.All.UpdateNotificationInfo(idsLicitadores);
 
     return Results.NoContent();
 });

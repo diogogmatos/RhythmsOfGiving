@@ -12,9 +12,18 @@
             @GetDescricao()
         </p>
         @* Botão Saiba Mais *@
-        <button onclick="location.href='@GetLink()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
-            Saiba Mais ->
-        </button>
+        @if (IsSelectingMenu)
+        {
+            <button @onclick="() => Selecionar.InvokeAsync(Instituicao)" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
+                Selecionar ->
+            </button>
+        }
+        else
+        {
+            <button onclick="location.href='@GetLink()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
+                Saiba Mais ->
+            </button>
+        }
     </div>
     @* Imagem *@
     <div class="min-w-[25rem] h-96 bg-gray-300 hidden xl:block">
@@ -26,6 +35,11 @@
     [EditorRequired]
     [Parameter]
     public InstituicaoUi Instituicao { get; set; }
+
+    [Parameter]
+    public bool IsSelectingMenu { get; set; }
+    [Parameter]
+    public EventCallback<InstituicaoUi> Selecionar { get; set; }
 
     private string GetNome()
     {

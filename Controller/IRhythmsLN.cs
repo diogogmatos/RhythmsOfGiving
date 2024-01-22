@@ -117,7 +117,7 @@ public interface IRhythmsLn
     public List<string> GetNomesArtistasMusicais();
     
     //Verifica os leilões que terminaram e cria as respetivas notificações
-    public void CriarNotificacoesFimLeilao();
+    public List<int> CriarNotificacoesFimLeilao();
 
     public Dictionary<Leilao, Artista> GetLeilaoArtistaById(int idLeilao);
 
