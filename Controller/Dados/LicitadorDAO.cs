@@ -245,7 +245,7 @@ namespace RhythmsOfGiving.Controller.Dados
                     }
                     catch (Exception ex)
                     {
-                        throw new DadosInvalidosException("Informações inválidas, verifique os dados introduzidos.", ex);
+                        throw new DadosLicitadorInvalidosException("Informações inválidas, verifique os dados introduzidos.", ex);
                     }
             }
         }

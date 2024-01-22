@@ -137,7 +137,7 @@ namespace RhythmsOfGiving.Controller.Dados
         
             }
             catch (Exception ex) {
-                throw new DadosInvalidosException("Não foi possível inserir a fatura");
+                throw new DadosFaturaInvalidosException("Não foi possível inserir a fatura");
             }
            
         }

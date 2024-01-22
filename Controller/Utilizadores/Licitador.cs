@@ -327,7 +327,7 @@ public class Licitador{
             }
             if (valor == -1)
             {
-                throw new NaoExistemLicitacoesException("O licitador " + idLicitador + " não tem licitações no leilão " + idLeilao);
+                throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
             }
             else
             {

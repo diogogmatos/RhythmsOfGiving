@@ -334,7 +334,7 @@ namespace RhythmsOfGiving.Controller.Leiloes
             float valor;
             if (minhasLicitacoes.Count <= 1)
             {
-                throw new NaoExistemLicitacoesException("Não houve uma licitaçao atual anterior");
+                throw new NaoExisteLicitacaoAtualAnteriorException("Não houve uma licitaçao atual anterior");
             }
 
             Licitacao atual = null;
