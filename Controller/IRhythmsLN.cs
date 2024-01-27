@@ -125,4 +125,6 @@ public interface IRhythmsLn
 
     public void DesativarLeilao(int idLeilao);
 
+    public Licitador GetLicitadorById(int idLicitador);
+
 }

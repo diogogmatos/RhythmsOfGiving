@@ -219,5 +219,11 @@ namespace RhythmsOfGiving.Controller.Utilizadores
 
         }
 
+        public Licitador GetLicitadorById(int idLicitador)
+        {
+            Licitador l = this.licitadores.get(idLicitador);
+            return l;
+        }
+
     }
 }

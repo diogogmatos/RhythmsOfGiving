@@ -261,5 +261,10 @@ public class RhythmsLn : IRhythmsLn
          subUtilizadores.CriarNotificacaoPerdedora(idLicitadoresPerdedores, l.IdLeilao, l.Titulo, l.ValorAtual);
         
     }
+
+    public Licitador GetLicitadorById(int idLicitador)
+    {
+        return this.subUtilizadores.GetLicitadorById(idLicitador);
+    }
     
 }

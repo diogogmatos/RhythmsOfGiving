@@ -38,5 +38,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
 
         public int ConverterEmailparaID(string email);
 
+        public Licitador GetLicitadorById(int idLicitador);
+
     }
 }
