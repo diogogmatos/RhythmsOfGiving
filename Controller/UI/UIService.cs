@@ -43,7 +43,7 @@ public class UiService
         if (leilao.GetTipo() != 0)
         {
             Licitacao licitacao = rhythmsLn.ProcurarLicitacaoAtual(idLeilao);
-            rhythmsLn.CriarNotificacaoUltrapassada(licitacao.GetIdLicitador(), "'" + leilao.Titulo + "'",
+            rhythmsLn.CriarNotificacaoUltrapassada(licitacao.GetIdLicitador(), "'" + leilao.Titulo + "': " + valor.ToString("0.00€"),
                 idLeilao);
             // notificar apenas licitador ultrapassado
             List<int> idsLicitador = new List<int>();
@@ -162,6 +162,11 @@ public class UiService
         }
         return notificacoes;
     }
+
+    // public Dictionary<LeilaoUi, Licitacao> GetLeilaoLicitacoes(int idLeilao)
+    // {
+    //     rhythmsLn.InfoLeiloesLicitacoes()
+    // }
     
     // instituições
     
@@ -191,7 +196,7 @@ public class UiService
     
     public UserUI GetInformacaoUtilizador(int idLicitador, string email)
     {
-        string nome = rhythmsLn.GetNomeUtilizador(idLicitador);
+        string nome = idLicitador == -1 ? "Admin" : rhythmsLn.GetNomeUtilizador(idLicitador);
         return new UserUI(email, nome, idLicitador == -1 ? "Admin" : "User");
     }
 }

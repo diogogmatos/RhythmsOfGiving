@@ -90,3 +90,21 @@ VALUES
 -- SELECT * FROM Licitacao
 -- SELECT * FROM Leilao
 -- SELECT * FROM Instituicao
+
+CREATE PROCEDURE CriarAdmin
+    @email varchar(100),
+    @palavraPasse varchar(45)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @novoAdministradorID int
+
+    -- Obter o próximo ID disponível
+    SELECT @novoAdministradorID = ISNULL(MAX(id), 0) + 1 FROM Administrador
+
+    -- Inserir novo administrador
+    INSERT INTO Administrador (id, email, palavraPasse)
+    VALUES (@novoAdministradorID, @email, @palavraPasse)
+
+END;
