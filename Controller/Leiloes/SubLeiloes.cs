@@ -365,6 +365,12 @@ namespace RhythmsOfGiving.Controller.Leiloes
                     }
                 }
             }
+
+            if (valor == 0)
+            {
+                throw new LeiloesSemLicitacoes("De momento, não existem doações no sistema");
+            }
+            
             return valor;
         }
 
