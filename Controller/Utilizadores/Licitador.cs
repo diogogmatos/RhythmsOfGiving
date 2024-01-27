@@ -208,7 +208,7 @@ public class Licitador{
         public Notificacao CriarNotificacaoUltrapassada(string titulo, int idLeilao)
         {
             DateTime data = DateTime.Now;
-            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada", titulo, this.idLicitador,data, 0, idLeilao);
+            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada!", titulo, this.idLicitador,data, 0, idLeilao);
             this.notificacaoDao.Put(ultrapassada.GetId(), ultrapassada);
             //  Fazer put do licitador
 

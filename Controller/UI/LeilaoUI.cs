@@ -4,7 +4,7 @@ namespace RhythmsOfGiving.Controller.UI;
 
 public class LeilaoUi
 {
-    private static readonly int shortDescSize = 100;
+    private static readonly int shortDescSize = 300;
     
     private readonly int id;
     private readonly string artista;
@@ -48,7 +48,7 @@ public class LeilaoUi
         this.tipo = leilao.GetTipo() == 0 ? "Ás Cegas" : "Inglês";
         this.fim = leilao.DataHoraFinal;
         this.shortDescricao = leilao.Experiencia.GetDescricao().Substring(0,
-            Math.Min(leilao.Experiencia.GetDescricao().Length, shortDescSize));
+            Math.Min(leilao.Experiencia.GetDescricao().Length, shortDescSize)) + "...";
         this.descricao = leilao.Experiencia.GetDescricao();
         this.imagePath = leilao.Experiencia.GetImagem();
         this.authorImagePath = artista.GetImagem();

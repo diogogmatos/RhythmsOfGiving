@@ -35,47 +35,81 @@
             </select>
         </div>
     </div>
-    @if (leiloesDisponiveis.Count == 0)
+    @if (leiloesApresentados.Count == 0)
     {
         <p class="py-12 text-center text-xl">
             <i class="bi bi-exclamation-circle-fill text-rhythms"></i>
             Sem correspondências para os filtros selecionados.
         </p>
     }
-    @foreach (LeilaoUi leilao in leiloesDisponiveis)
+    @foreach (LeilaoUi leilao in leiloesApresentados)
     {
         <LeilaoBlock Leilao="leilao"/>
     }
 </div>
 
 @code {
+    List<LeilaoUi> leiloesApresentados;
     List<LeilaoUi> leiloesDisponiveis;
+    private string SelectedGeneroMusical { get; set; }
+    private string SelectedTipoLeilao { get; set; }
+    private string SelectedArtista { get; set; }
+
     protected override void OnInitialized()
     {
+        SelectedGeneroMusical = "Todos";
+        SelectedTipoLeilao = "Todos";
+        SelectedArtista = "Todos";
         leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
+        leiloesApresentados = CloneLeiloes();
+    }
+    
+    private List<LeilaoUi> CloneLeiloes()
+    {
+        List<LeilaoUi> clone = new List<LeilaoUi>();
+        foreach (LeilaoUi leilao in leiloesDisponiveis)
+        {
+            clone.Add(leilao);
+        }
+        return clone;
     }
     
     private void OnSelectedGeneroMusicalChanged(ChangeEventArgs args)
     {
-        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
-        if (args.Value.ToString() != "Todos")
-            leiloesDisponiveis.RemoveAll(leilao => leilao.GetGenero() != args.Value.ToString());
+        SelectedGeneroMusical = args.Value.ToString();
+        leiloesApresentados = CloneLeiloes();
+        if (SelectedGeneroMusical != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetGenero() != SelectedGeneroMusical);
+        if (SelectedTipoLeilao != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetTipo() != SelectedTipoLeilao);
+        if (SelectedArtista != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetArtista() != SelectedArtista);
         StateHasChanged();
     }
 
     private void OnSelectedTipoLeilaoChanged(ChangeEventArgs args)
     {
-        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
-        if (args.Value.ToString() != "Todos")
-            leiloesDisponiveis.RemoveAll(leilao => leilao.GetTipo() != args.Value.ToString());
+        SelectedTipoLeilao = args.Value.ToString();
+        leiloesApresentados = CloneLeiloes();
+        if (SelectedTipoLeilao != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetTipo() != SelectedTipoLeilao);
+        if (SelectedGeneroMusical != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetGenero() != SelectedGeneroMusical);
+        if (SelectedArtista != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetArtista() != SelectedArtista);
         StateHasChanged();
     }
     
     private void OnSelectedArtistaChanged(ChangeEventArgs args)
     {
-        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
-        if (args.Value.ToString() != "Todos")
-            leiloesDisponiveis.RemoveAll(leilao => leilao.GetArtista() != args.Value.ToString());
+        SelectedArtista = args.Value.ToString();
+        leiloesApresentados = CloneLeiloes();
+        if (SelectedArtista != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetArtista() != SelectedArtista);
+        if (SelectedGeneroMusical != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetGenero() != SelectedGeneroMusical);
+        if (SelectedTipoLeilao != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetTipo() != SelectedTipoLeilao);
         StateHasChanged();
     }
 }
