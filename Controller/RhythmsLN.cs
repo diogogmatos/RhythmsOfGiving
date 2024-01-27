@@ -275,5 +275,10 @@ public class RhythmsLn : IRhythmsLn
 
         return resultado;
     }
+
+    public Licitacao GetUltimaLicitacao(int idLeilao)
+    {
+        return this.subLeiloes.GetUltimaLicitacao(idLeilao);
+    }
     
 }

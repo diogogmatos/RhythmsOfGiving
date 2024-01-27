@@ -444,5 +444,11 @@ namespace RhythmsOfGiving.Controller.Leiloes
             return l;
         }
 
+        public Licitacao GetUltimaLicitacao(int idLeilao)
+        {
+            Leilao l = this.leilaoDao.get(idLeilao);
+            return l.GetUltimaLicitacao();
+        }
+
     }
 }

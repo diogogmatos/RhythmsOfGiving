@@ -378,5 +378,19 @@ namespace RhythmsOfGiving.Controller.Leiloes
         {
             return other.dataHoraFinal.CompareTo(this.dataHoraFinal);
         }
+
+        public Licitacao GetUltimaLicitacao()
+        {
+            foreach (int idLicitacao in this.minhasLicitacoes)
+            {
+                Licitacao l = this.licitacaoDao.Get(idLicitacao);
+
+                if (l.GetValor() == this.valorAtual)
+                    return l;
+
+            }
+
+            throw new LicitacaoNaoExisteException();
+        }
     }
 }

@@ -56,5 +56,7 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
         public Leilao DesativarLeilao(int idLeilao);
 
+        public Licitacao GetUltimaLicitacao(int idLeilao);
+
     }
 }

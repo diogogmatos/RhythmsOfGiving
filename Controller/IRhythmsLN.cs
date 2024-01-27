@@ -129,4 +129,6 @@ public interface IRhythmsLn
 
     public SortedDictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador);
 
+    public Licitacao GetUltimaLicitacao(int idLeilao);
+
 }
