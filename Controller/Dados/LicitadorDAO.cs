@@ -355,7 +355,7 @@ namespace RhythmsOfGiving.Controller.Dados
                                     string palavraPasse = reader.GetString(reader.GetOrdinal("palavraPasse"));
                                     string email = reader.GetString(reader.GetOrdinal("email"));
                                     
-                                    a = new Administrador(id, palavraPasse, email);
+                                    a = new Administrador(id, email, palavraPasse);
                                     // Preencha outros campos do objeto GeneroMusical conforme necessário
                                 };
                             }

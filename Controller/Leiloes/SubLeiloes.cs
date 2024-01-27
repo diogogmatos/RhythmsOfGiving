@@ -274,8 +274,19 @@ namespace RhythmsOfGiving.Controller.Leiloes
                     }
                 }
             }
+            // Se estiver a dar erro é aqui:
+            if (valoresInstituicoes.Any())
+            {
+                var listaOrdenada = valoresInstituicoes.OrderByDescending(x => x.Value).ToList();
+                Dictionary<Instituicao, float> 
+                    dicionarioOrdenado = listaOrdenada.ToDictionary(x => x.Key, x => x.Value);
+                return dicionarioOrdenado;
 
-            return valoresInstituicoes;
+            }
+
+            throw new InstituicoesSemDoacoes(
+                "De momento, não existem instituições que recebem doações. Seja o primeiro!");
+
         }
 
 

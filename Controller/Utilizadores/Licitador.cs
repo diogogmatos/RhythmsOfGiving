@@ -225,7 +225,7 @@ public class Licitador{
             //  Fazer put do licitador
 
 
-            return perdedora;
+             return perdedora;
         }
         
         public Notificacao CriarNotificacaoVencedora(int idLeilao, string titulo, float valor)
