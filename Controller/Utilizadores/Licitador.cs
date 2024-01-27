@@ -255,7 +255,7 @@ public class Licitador{
                 else
                 {
                     Licitacao presente = ultimasLicitacoes[atual.GetIdLeilao()];
-                    if (atual.GetDataHora() > presente.GetDataHora())
+                    if (atual.GetValor() > presente.GetValor())
                         ultimasLicitacoes[atual.GetIdLeilao()] = atual;
                 }
             }

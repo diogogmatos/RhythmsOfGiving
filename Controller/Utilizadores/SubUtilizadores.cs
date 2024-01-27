@@ -106,10 +106,9 @@ namespace RhythmsOfGiving.Controller.Utilizadores
 
         public Dictionary<int, Licitacao> saberLeiloesParticipa_Licitacao(int idLicitador)
         {
-            Licitador l = this.licitadores.get(idLicitador); // ERRO
+            Licitador l = this.licitadores.get(idLicitador); 
             Dictionary<int, Licitacao> resultado = l.saberLeiloesParticipa_Licitacao();
             return resultado;
-            //throw new NotImplementedException();
         }
         
         public  Notificacao CriarNotificacaoVencedora(int idLicitador, int idLeilao, string titulo, float valor)

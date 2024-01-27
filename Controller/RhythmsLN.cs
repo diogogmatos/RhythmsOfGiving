@@ -266,5 +266,14 @@ public class RhythmsLn : IRhythmsLn
     {
         return this.subUtilizadores.GetLicitadorById(idLicitador);
     }
+
+    //Leilão e ultima licitação do licitador 
+    public Dictionary<Leilao, Licitacao> HistorialLeilos(int idLicitador)
+    {
+        Dictionary<int, Licitacao> licitacaos = this.subUtilizadores.saberLeiloesParticipa_Licitacao(idLicitador);
+        Dictionary<Leilao, Licitacao> resultado = this.subLeiloes.InfoLeiloesLicitacoes(licitacaos);
+
+        return resultado;
+    }
     
 }
