@@ -131,4 +131,6 @@ public interface IRhythmsLn
 
     public Licitacao GetUltimaLicitacao(int idLeilao);
 
+    public Dictionary<Leilao, Licitacao> GetLeiloesAtivosLicitador(int idLicitador);
+
 }

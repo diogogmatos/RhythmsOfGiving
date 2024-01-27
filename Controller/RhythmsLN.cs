@@ -281,4 +281,14 @@ public class RhythmsLn : IRhythmsLn
         return this.subLeiloes.GetUltimaLicitacao(idLeilao);
     }
     
+    
+    public Dictionary<Leilao, Licitacao> GetLeiloesAtivosLicitador(int idLicitador)
+    {
+        Dictionary<int, Licitacao> leiloes = this.subUtilizadores.saberLeiloesParticipa_Licitacao(idLicitador);
+        return this.subLeiloes.GetLeiloesAtivosInfos(leiloes);
+    }
+    
+    
+    
+    
 }
