@@ -19,7 +19,7 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
         public List<Instituicao> ApresentarInstituicoes();
         
-         public Dictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
+         public SortedDictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
 
         public string GetTituloLeilao(int idLeilao);
 

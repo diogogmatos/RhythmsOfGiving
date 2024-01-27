@@ -75,7 +75,7 @@ public interface IRhythmsLn
     //Historiais
     public Dictionary<int, Licitacao> SaberLeiloesParticipa_Licitacao(int idLicitador);
 
-    public Dictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
+    public SortedDictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações);
 
     public SortedSet<Licitacao> PesquisarLicitacoes (int idLicitador, int idLeilao);
 
@@ -127,6 +127,6 @@ public interface IRhythmsLn
 
     public Licitador GetLicitadorById(int idLicitador);
 
-    public Dictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador);
+    public SortedDictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador);
 
 }

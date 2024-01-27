@@ -7,7 +7,7 @@ using RhythmsOfGiving.Controller.Leiloes;
 
 namespace RhythmsOfGiving.Controller.Leiloes
 {
-    public abstract class Leilao
+    public abstract class Leilao : IComparable<Leilao>
     {
         // Atributos privados
         private int idLeilao;
@@ -372,6 +372,11 @@ namespace RhythmsOfGiving.Controller.Leiloes
             }
 
             return anterior;
+        }
+        
+        public int CompareTo(Leilao other)
+        {
+            return other.dataHoraFinal.CompareTo(this.dataHoraFinal);
         }
     }
 }

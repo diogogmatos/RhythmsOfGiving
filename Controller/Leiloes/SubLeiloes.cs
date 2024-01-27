@@ -194,9 +194,9 @@ namespace RhythmsOfGiving.Controller.Leiloes
             return (leilao.Titulo);
         }
 
-        public Dictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
+        public SortedDictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
         {
-            Dictionary<Leilao, Licitacao> resultado = new Dictionary<Leilao, Licitacao>();
+            SortedDictionary<Leilao, Licitacao> resultado = new SortedDictionary<Leilao, Licitacao>();
 
             foreach (int idLeilao in ultimasLicitações.Keys)
             {

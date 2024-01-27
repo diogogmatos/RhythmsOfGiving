@@ -125,7 +125,7 @@ public class RhythmsLn : IRhythmsLn
         return subLeiloes.ApresentarInstituicoes();
     }
 
-    public Dictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
+    public SortedDictionary<Leilao, Licitacao> InfoLeiloesLicitacoes(Dictionary<int, Licitacao> ultimasLicitações)
     {
         return subLeiloes.InfoLeiloesLicitacoes(ultimasLicitações);
     }
@@ -268,10 +268,10 @@ public class RhythmsLn : IRhythmsLn
     }
 
     //Leilão e ultima licitação do licitador 
-    public Dictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador)
+    public SortedDictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador)
     {
         Dictionary<int, Licitacao> licitacaos = this.subUtilizadores.saberLeiloesParticipa_Licitacao(idLicitador);
-        Dictionary<Leilao, Licitacao> resultado = this.subLeiloes.InfoLeiloesLicitacoes(licitacaos);
+        SortedDictionary<Leilao, Licitacao> resultado = this.subLeiloes.InfoLeiloesLicitacoes(licitacaos);
 
         return resultado;
     }
