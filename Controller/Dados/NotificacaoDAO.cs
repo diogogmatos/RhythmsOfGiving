@@ -28,7 +28,7 @@ namespace RhythmsOfGiving.Controller.Dados{
         {
             int rowCount = 0;
 
-            string query = "SELECT COUNT(*) FROM Notificação";
+            string query = "SELECT COUNT(*) FROM Notificacao";
 
             using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -49,7 +49,7 @@ namespace RhythmsOfGiving.Controller.Dados{
                 try
                 {
 
-                    string query = "SELECT * FROM Notificação WHERE idNotificacao = @Id";
+                    string query = "SELECT * FROM Notificacao WHERE idNotificacao = @Id";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -96,7 +96,7 @@ namespace RhythmsOfGiving.Controller.Dados{
                     if (recordExists)
                     {
                         // Update the existing record
-                        query = "UPDATE Notificação " +
+                        query = "UPDATE Notificacao " +
                                 "SET titulo = @Titulo, mensagem = @Mensagem, " +
                                 "idLicitador = @IdLicitador, dataHora = @DataHora, tipo = @Tipo, idLeilao = @IdLeilao " +
                                 "WHERE idNotificacao = @Id";
@@ -105,7 +105,7 @@ namespace RhythmsOfGiving.Controller.Dados{
                     {
                         // Insert a new record if the record with the specified id does not exist
                         query =
-                            "INSERT INTO Notificação (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo, idLeilao) " +
+                            "INSERT INTO Notificacao (idNotificacao, titulo, mensagem, idLicitador, dataHora, tipo, idLeilao) " +
                             "VALUES (@Id, @Titulo, @Mensagem, @IdLicitador, @DataHora, @Tipo, @IdLeilao)";
                     }
 
@@ -133,7 +133,7 @@ namespace RhythmsOfGiving.Controller.Dados{
         private bool Exite(int id, SqlConnection connection)
         {
             // Check if the record with the specified id exists in the database
-            string checkQuery = "SELECT COUNT(*) FROM Notificação WHERE idNotificacao = @Id";
+            string checkQuery = "SELECT COUNT(*) FROM Notificacao WHERE idNotificacao = @Id";
             using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
             {
                 checkCommand.Parameters.AddWithValue("@Id", id);

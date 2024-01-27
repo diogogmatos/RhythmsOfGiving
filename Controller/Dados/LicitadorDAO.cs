@@ -309,7 +309,6 @@ namespace RhythmsOfGiving.Controller.Dados
             int totalRows = 0;
             using (SqlConnection connection = new SqlConnection(DAOconfig.GetConnectionString()))
             {
-                Console.WriteLine("depois conexao");
                 try
                 {
                     connection.Open();
@@ -355,7 +354,7 @@ namespace RhythmsOfGiving.Controller.Dados
                                     string palavraPasse = reader.GetString(reader.GetOrdinal("palavraPasse"));
                                     string email = reader.GetString(reader.GetOrdinal("email"));
                                     
-                                    a = new Administrador(id, palavraPasse, email);
+                                    a = new Administrador(id, email, palavraPasse);
                                     // Preencha outros campos do objeto GeneroMusical conforme necessário
                                 };
                             }
@@ -378,9 +377,7 @@ namespace RhythmsOfGiving.Controller.Dados
         //DUVIDA:SABER SE O ID COMEÇA POR ZERO OU NÃO
         public Dictionary<int, Administrador> preencherAdmins()
         {
-            Console.WriteLine("entrou no preencher");
             int tamanho = SizeAdmin();
-            Console.WriteLine("Tamanho: " + tamanho);
             Dictionary<int, Administrador> resultado = new Dictionary<int, Administrador>();
 
             for (int i = 0; i < tamanho; i++)
