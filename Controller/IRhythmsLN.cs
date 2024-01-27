@@ -127,6 +127,6 @@ public interface IRhythmsLn
 
     public Licitador GetLicitadorById(int idLicitador);
 
-    public Dictionary<Leilao, Licitacao> HistorialLeilos(int idLicitador);
+    public Dictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador);
 
 }

@@ -268,7 +268,7 @@ public class RhythmsLn : IRhythmsLn
     }
 
     //Leilão e ultima licitação do licitador 
-    public Dictionary<Leilao, Licitacao> HistorialLeilos(int idLicitador)
+    public Dictionary<Leilao, Licitacao> HistorialLeiloes(int idLicitador)
     {
         Dictionary<int, Licitacao> licitacaos = this.subUtilizadores.saberLeiloesParticipa_Licitacao(idLicitador);
         Dictionary<Leilao, Licitacao> resultado = this.subLeiloes.InfoLeiloesLicitacoes(licitacaos);
