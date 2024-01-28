@@ -450,5 +450,11 @@ namespace RhythmsOfGiving.Controller.Leiloes
             return l.GetUltimaLicitacao();
         }
 
+        public string GetInstituicaoById(int idInstituicao)
+        {
+            Instituicao i = this.instituicaoDao.Get(idInstituicao);
+            return i.GetNome();
+        }
+
     }
 }

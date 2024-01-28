@@ -287,8 +287,11 @@ public class RhythmsLn : IRhythmsLn
         Dictionary<int, Licitacao> leiloes = this.subUtilizadores.saberLeiloesParticipa_Licitacao(idLicitador);
         return this.subLeiloes.GetLeiloesAtivosInfos(leiloes);
     }
-    
-    
+
+    public string GetInstituicaoById(int idInstituicao)
+    {
+        return subLeiloes.GetInstituicaoById(idInstituicao);
+    }
     
     
 }

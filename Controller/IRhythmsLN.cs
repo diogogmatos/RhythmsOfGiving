@@ -133,4 +133,6 @@ public interface IRhythmsLn
 
     public Dictionary<Leilao, Licitacao> GetLeiloesAtivosLicitador(int idLicitador);
 
+    public string GetInstituicaoById(int idInstituicao);
+
 }
