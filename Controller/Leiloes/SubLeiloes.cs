@@ -388,34 +388,35 @@ namespace RhythmsOfGiving.Controller.Leiloes
             return leilaoArtista;
         }
 
-        public List<string> GetNomesGenerosMusicais()
+        public Dictionary<int, string> GetNomesGenerosMusicais()
         {
-            List<string> nomes = new List<string>();
+            Dictionary<int, string> nomes = new Dictionary<int, string>();
 
             foreach (GeneroMusical genero in generos.Values)
             {
+                int idGenero = genero.GetIdGenero();
                 string nomeDoGenero = genero.GetNome();
-                nomes.Add(nomeDoGenero);
+                nomes.Add(idGenero, nomeDoGenero);
             }
 
             return nomes;
         }
 
-        public List<string> GetNomesArtistasMusicais()
+
+        public Dictionary<int, string> GetNomesArtistasMusicais()
         {
-            
-            List<string> nomes = new List<string>();
+            Dictionary<int, string> nomes = new Dictionary<int, string>();
 
-            foreach (int idartista in artistaDao.keySet())
+            foreach (int idArtista in artistaDao.keySet())
             {
-                Artista artista = this.artistaDao.Get(idartista);
+                Artista artista = this.artistaDao.Get(idArtista);
                 string nome = artista.GetNome();
-                nomes.Add(nome);
+                nomes.Add(artista.GetIdArtista(), nome);
             }
 
             return nomes;
-            
         }
+
 
         public List<Leilao> LeiloesAtivosParaTerminados()
         {
