@@ -102,7 +102,7 @@ public interface IRhythmsLn
     //Novas funções
 
     //SubUtilizadores
-    public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
+    public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
 
     public string GetNomeUtilizador(int idLicitador);
 

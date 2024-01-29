@@ -52,7 +52,8 @@ public class UiService
         }
     }
     
-    public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
+    // TODO: Verificar utilização desta função (passou de float para Licitacao)
+    public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
     {
         try
         {
@@ -60,7 +61,7 @@ public class UiService
         }
         catch (Exception e)
         {
-            return 0;
+            return null;
         }
     }
     

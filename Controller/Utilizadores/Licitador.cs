@@ -310,9 +310,10 @@ public class Licitador{
         }
 
 
-        public float GetUltimaLicitacao (int idLeilao)
+        public Licitacao GetUltimaLicitacao (int idLeilao)
         {
             float valor = -1;
+            Licitacao licitacao;
             
             foreach (int idLicitacao in this.minhasLicitacoes)
             {
@@ -321,6 +322,7 @@ public class Licitador{
                 {
                     if (atual.GetValor() > valor)
                     {
+                        licitacao = atual:
                         valor = atual.GetValor();
                     }
                 }
@@ -331,7 +333,7 @@ public class Licitador{
             }
             else
             {
-                return valor;
+                return licitacao;
             }
         }
 

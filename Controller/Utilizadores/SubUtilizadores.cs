@@ -185,7 +185,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
             //throw new NotImplementedException();
         }
 
-        public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
+        public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
         {
             Licitador l = this.licitadores.get(idLicitador);
             return l.GetUltimaLicitacao(idLeilao);
