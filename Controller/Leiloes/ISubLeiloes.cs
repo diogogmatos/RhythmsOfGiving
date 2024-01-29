@@ -2,9 +2,9 @@ namespace RhythmsOfGiving.Controller.Leiloes
 {
     public interface ISubLeiloes
     {
-        public bool RegistarArtista(string nome,String imagem, int idAdmin);
-        public bool RegistarGeneroMusical(string nome,int idAdmin );
-        public bool RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin);
+        public void RegistarArtista(string nome,String imagem, int idAdmin);
+        public void RegistarGeneroMusical(string nome,int idAdmin );
+        public void RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin);
 
         public void RegistarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao,
             string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao);

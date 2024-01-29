@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="RhythmsOfGiving@localhost" uuid="8c7f0893-2ac4-4bd2-8073-f19c8ca6c8c4">
+    <data-source source="LOCAL" name="Microsoft SQL Server (JetBrains)" uuid="8c7f0893-2ac4-4bd2-8073-f19c8ca6c8c4">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>Server=localhost;Database=RhythmsOfGiving</jdbc-url>
+      <jdbc-url>Server=localhost\LAPTOP-NCULN058\manse;Database=RhythmsOfGiving</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="RhythmsOfGiving@localhost" uuid="0df20f1d-c756-4348-aa3a-d7c89073e166">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=localhost\MSSQLSERVER02;Database=RhythmsOfGiving</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

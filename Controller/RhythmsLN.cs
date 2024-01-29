@@ -75,19 +75,19 @@ public class RhythmsLn : IRhythmsLn
         return subUtilizadores.PesquisarLicitacoes(idLicitador, idLeilao);
     }
 
-    public bool RegistarArtista(string nome, string imagem, int idAdmin)
+    public void RegistarArtista(string nome, string imagem, int idAdmin)
     {
-        return subLeiloes.RegistarArtista(nome, imagem, idAdmin);
+        subLeiloes.RegistarArtista(nome, imagem, idAdmin);
     }
 
-    public bool RegistarGeneroMusical(string nome, int idAdmin)
+    public void RegistarGeneroMusical(string nome, int idAdmin)
     {
-        return subLeiloes.RegistarGeneroMusical(nome, idAdmin);
+        subLeiloes.RegistarGeneroMusical(nome, idAdmin);
     }
 
-    public bool RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin)
+    public void RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban, int idAdmin)
     {
-        return subLeiloes.RegistarInstituicao(nome, descricao, logoPath, link, iban, idAdmin);
+         subLeiloes.RegistarInstituicao(nome, descricao, logoPath, link, iban, idAdmin);
     }
 
     public void RegistarLeilao(float valorBase, DateTime dataHoraFinal, string titulo, string descricao, string imagem, string localizacao, int idArtista, int idGenero, int idAdmin, int tipoLeilao)

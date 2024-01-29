@@ -28,27 +28,28 @@ namespace RhythmsOfGiving.Controller.Leiloes
         }
 
 
-        public bool RegistarArtista(string nome, string imagem, int idAdmin)
+        public void RegistarArtista(string nome, string imagem, int idAdmin)
         {
             bool existe = artistaDao.ExisteArtista(nome);
             if (!existe)
             {
                 Artista artista = new Artista(nome, imagem, idAdmin);
                 artistaDao.Put(artista.GetIdArtista(), artista);
+                return;
             }
 
-            return existe;
+            throw new ArtistaJaExisteException("O artista com o nome " + nome + " já existe");
 
         }
 
 
-        public bool RegistarGeneroMusical(string nome, int idAdmin)
+        public void RegistarGeneroMusical(string nome, int idAdmin)
         {
             foreach (var generoExistente in generos.Values)
             {
                 if (generoExistente.GetNome().Equals(nome, StringComparison.OrdinalIgnoreCase))
                 {
-                    return false;
+                    throw new GeneroMusicalJaExisteException("O genero musical com o nome " + nome + " já existe");
                 }
             }
 
@@ -58,11 +59,10 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
             generos.Add(novoGenero.GetIdGenero(), novoGenero);
             this.leilaoDao.putGeneroMusical(novoGenero.GetIdGenero(), novoGenero);
-
-            return true;
+            
         }
 
-        public bool RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban,
+        public void RegistarInstituicao(string nome, string descricao, string logoPath, string link, string iban,
             int idAdmin)
         {
             bool existe = instituicaoDao.ExisteInstituicao(nome);
@@ -70,9 +70,10 @@ namespace RhythmsOfGiving.Controller.Leiloes
             {
                 Instituicao instituicao = new Instituicao(nome, descricao, logoPath, link, iban, idAdmin);
                 instituicaoDao.Put(instituicao.GetId(), instituicao);
+                return;
             }
 
-            return existe;
+            throw new InstituicaoJaExisteException("A instituição com o nome " + nome + " já existe");
 
         }
 
