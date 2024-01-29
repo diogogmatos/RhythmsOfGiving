@@ -10,7 +10,7 @@ namespace RhythmsOfGiving.Controller.Dados
         public const string DATABASE = "RhythmsOfGiving";*/
         public const string USER = "RhythmsOfGiving";
         public const string PASSWORD = "RhythmsOfGiving";
-        public const string MACHINE = "LAPTOP-N09LPQI4"; // Coloque o nome do servidor SQL Server aqui
+        public const string MACHINE = "LAPTOP-N09LPQI4";
         public const string DATABASE = "RhythmsOfGiving";
       
         public static string GetConnectionString()
@@ -20,7 +20,7 @@ namespace RhythmsOfGiving.Controller.Dados
             builder.UserID = USER;
             builder.Password = PASSWORD;
             builder.InitialCatalog = DATABASE;
-             builder.IntegratedSecurity = true;
+            builder.IntegratedSecurity = true;
             return builder.ConnectionString;
         }
     }
