@@ -202,7 +202,7 @@ namespace RhythmsOfGiving.Controller.Leiloes
             foreach (int idLeilao in ultimasLicitações.Keys)
             {
                 Leilao leilao = leilaoDao.get(idLeilao);
-                if (leilao.Ativo == false)
+                if (leilao.Ativo == false && leilao.IdInstituicao != -1)
                 {
                     resultado.Add(leilaoDao.get(idLeilao), ultimasLicitações[idLeilao]);
                 }
