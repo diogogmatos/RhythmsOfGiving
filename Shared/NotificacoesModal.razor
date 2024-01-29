@@ -55,6 +55,7 @@
         var authState = await AuthenticationState;
         int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
         notificacoes = UiService.GetNotificacoesUtilizador(idLicitador);
+        notificacoes.Reverse();
         StateHasChanged();
         
         infoHubConnection = new HubConnectionBuilder()
@@ -66,6 +67,7 @@
             if (idsLicitador.Contains(idLicitador))
             {
                 notificacoes = UiService.GetNotificacoesUtilizador(idLicitador);
+                notificacoes.Reverse();
                 InvokeAsync(StateHasChanged);
             }
         });

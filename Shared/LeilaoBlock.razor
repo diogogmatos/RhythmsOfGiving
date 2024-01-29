@@ -163,6 +163,11 @@
             ownLicitacao = 0;
             return;
         }
+        if (authState.User.IsInRole("Admin"))
+        {
+            ownLicitacao = 0;
+            return;
+        }
 
         int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
         try

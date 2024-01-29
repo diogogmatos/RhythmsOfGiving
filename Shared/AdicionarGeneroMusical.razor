@@ -31,11 +31,11 @@
         try
         {
             UiService.AdicionarGeneroMusical(Nome, IdAdmin);
+            await js.InvokeVoidAsync("alert", "Género musical adicionado com sucesso!");
         }
         catch (Exception e)
         {
             await js.InvokeVoidAsync("alert", e.Message);
         }
-        await js.InvokeVoidAsync("alert", "Género musical adicionado com sucesso!");
     }
 }

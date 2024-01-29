@@ -55,6 +55,14 @@
 
         IdLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        Leiloes = UiService.GetHistorial(IdLicitador);
+        try
+        {
+
+            Leiloes = UiService.GetHistorial(IdLicitador);
+        }
+        catch
+        {
+            Leiloes = new SortedDictionary<LeilaoUi, Licitacao>();
+        }
     }
 }

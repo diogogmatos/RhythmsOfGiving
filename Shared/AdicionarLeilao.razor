@@ -118,18 +118,18 @@
 
     private async Task Adicionar()
     {
-        int idArtista = int.Parse(Artista[0].ToString());
-        int idGeneroMusical = int.Parse(GeneroMusical[0].ToString());
+        int idArtista = int.Parse(Artista.Split(" ")[0]);
+        int idGeneroMusical = int.Parse(GeneroMusical.Split(" ")[0]);
         int idTipo = Tipo == "Inglês" ? 1 : 0;
         try
         {
             UiService.AdicionarLeilao(IdAdmin, Titulo, Descricao, idArtista, idTipo, idGeneroMusical, Localizacao, Fim, ImagemUrl, ValorBase);
+            await js.InvokeVoidAsync("alert", "Leilão adicionado com sucesso!");
         }
         catch (Exception e)
         {
             await js.InvokeVoidAsync("alert", e.Message);
         }
-        await js.InvokeVoidAsync("alert", "Leilão adicionado com sucesso!");
     }
     
     private void OnChangeArtista(ChangeEventArgs e)
@@ -151,5 +151,8 @@
     {
         Artistas = UiService.GetArtistas();
         GenerosMusicais = UiService.GetGenerosMusicais();
+        Artista = Artistas.First().Key + " - " + Artistas.First().Value;
+        GeneroMusical = GenerosMusicais.First().Key + " - " + GenerosMusicais.First().Value;
+        Tipo = "Inglês";
     }
 }
