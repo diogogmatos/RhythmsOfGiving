@@ -1,5 +1,6 @@
 @using RhythmsOfGiving.Controller.UI
 @using Microsoft.AspNetCore.SignalR.Client
+@using RhythmsOfGiving.Controller.Leiloes
 @implements IAsyncDisposable
 @inject UiService UiService
 
@@ -48,7 +49,7 @@
                             @ownLicitacao.ToString("0.00€")
                         </p>
                         <p class="text-sm text-gray-400 font-medium">
-                            10/10/2024 08:30
+                            @ownLicitacaoDate.ToString("dd/MM/yyyy hh:mm")
                         </p>
                     </div>
                 }
@@ -62,7 +63,7 @@
                             @ownLicitacao.ToString("0.00€")
                         </p>
                         <p class="text-sm text-gray-400 font-medium">
-                            10/10/2024 08:30
+                            @ownLicitacaoDate.ToString("dd/MM/yyyy hh:mm")
                         </p>
                     </div>
                 }
@@ -87,7 +88,7 @@
                         </p>
                     }
                     <p class="text-sm text-gray-400 font-medium">
-                        10/10/2024 08:30
+                        @lastLicitacaoDate.ToString("dd/MM/yyyy hh:mm")
                     </p>
                 }
                 else
@@ -107,9 +108,6 @@
                             @Leilao.GetValorBase().ToString("0.00€")
                         </p>
                     }
-                    <p class="text-sm text-gray-400 font-medium">
-                        10/10/2024 08:30
-                    </p>
                 }
             </div>
         </div>
@@ -130,6 +128,8 @@
 
     private float ownLicitacao;
     private float lastLicitacao;
+    private DateTime ownLicitacaoDate;
+    private DateTime lastLicitacaoDate;
 
     private HubConnection? infoHubConnection;
 
@@ -169,12 +169,16 @@
 
     private void GetOwnLicitacao()
     {
-        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(IdLicitador, Leilao.GetId());
+        Licitacao l = UiService.GetUltimaLicitacaoUtilizador(IdLicitador, Leilao.GetId());
+        ownLicitacao = l.GetValor();
+        ownLicitacaoDate = l.GetDataHora();
     }
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(Leilao.GetId());
+        Licitacao l = UiService.GetUltimaLicitacaoLeilao(Leilao.GetId());
+        lastLicitacao = l.GetValor();
+        lastLicitacaoDate = l.GetDataHora();
     }
     
     // Timer

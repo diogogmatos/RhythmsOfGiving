@@ -1,4 +1,5 @@
 @page "/adicionar/{Tipo}"
+@using System.Security.Claims
 
 @inject NavigationManager NavManager
 
@@ -8,7 +9,7 @@
             <h1 class="text-2xl font-medium">Adicionar @TipoNome</h1>
             @if (Tipo == "leilao")
             {
-                <AdicionarLeilao/>
+                <AdicionarLeilao IdAdmin="IdAdmin" />
             }
             @if (Tipo == "instituicao")
             {
@@ -37,10 +38,34 @@
         "genero-musical" => "Género Musical",
         _ => "Erro"
     };
+    
+    private int IdAdmin { get; set; }
 
     protected override void OnInitialized()
     {
         if (Tipo == null || (Tipo != "leilao" && Tipo != "instituicao" && Tipo != "artista" && Tipo != "genero-musical"))
             NavManager.NavigateTo("404");
+    }
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState is null)
+        {
+            NavManager.NavigateTo("404");
+            return;
+        }
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            NavManager.NavigateTo("404");
+            return;
+        }
+
+        IdAdmin = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        await InvokeAsync(StateHasChanged);
     }
 }

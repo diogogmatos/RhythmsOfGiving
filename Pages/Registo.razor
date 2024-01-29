@@ -93,10 +93,13 @@
     
     private async Task Authenticate()
     {
-        int idLicitador;
+        int idLicitador = 0;
+        bool isAdmin = false;
         try
         {
-            idLicitador = UiService.Login(Email, Password);
+            Dictionary<int, bool> d = UiService.Login(Email, Password);
+            idLicitador = d.Keys.First();
+            isAdmin = d.Values.First();
         }
         catch (Exception e)
         {
@@ -105,7 +108,7 @@
         }
 
         RhythmsAuthStateProvider rhythmsAuthStateProvider = (RhythmsAuthStateProvider) AuthStateProvider;
-        UserUI infoUser = UiService.GetInformacaoUtilizador(idLicitador, Email);
+        UserUI infoUser = UiService.GetInformacaoUtilizador(idLicitador, Email, isAdmin);
         await rhythmsAuthStateProvider.UpdateAuthenticationState(new UserSession
         {
             Email = Email,

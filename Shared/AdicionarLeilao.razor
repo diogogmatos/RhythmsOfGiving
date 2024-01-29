@@ -99,6 +99,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public int IdAdmin { get; set; }
+    
     private List<string> Artistas { get; set; }
     private List<string> GenerosMusicais { get; set; }
 
@@ -114,7 +117,7 @@
 
     private void Adicionar()
     {
-        ;
+        int idArtista = Artistas.
     }
 
     protected override void OnInitialized()

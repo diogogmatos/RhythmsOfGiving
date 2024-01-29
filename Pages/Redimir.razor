@@ -79,7 +79,7 @@
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao));
+        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
     }
 
     protected override void OnInitialized()

@@ -83,8 +83,14 @@ namespace RhythmsOfGiving.Controller.Utilizadores
 
         public float GetValor()
         {
-            Licitacao l = this.licitacaoDao.Get(this.idLicitacao);
-            return (l.GetValor());
+            Licitacao l = licitacaoDao.Get(idLicitacao);
+            return l.GetValor();
+        }
+
+        public int GetIdLeilao()
+        {
+            Licitacao l = licitacaoDao.Get(idLicitacao);
+            return l.GetIdLeilao();
         }
         
         public override string ToString()

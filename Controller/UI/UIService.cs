@@ -52,22 +52,15 @@ public class UiService
         }
     }
     
-    // TODO: Verificar utilização desta função (passou de float para Licitacao)
     public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
     {
-        try
-        {
-            return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
+        return rhythmsLn.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
     }
     
-    public float GetUltimaLicitacaoLeilao(int idLeilao)
+    public Licitacao GetUltimaLicitacaoLeilao(int idLeilao)
     {
-        return rhythmsLn.GetValorFimLeilao(idLeilao);
+
+        return rhythmsLn.GetUltimaLicitacao(idLeilao);
     }
     
     public List<LeilaoUi> GetLeiloesDisponiveis()
@@ -192,7 +185,7 @@ public class UiService
     
     // autenticação
     
-    public int Login(string email, string password)
+    public Dictionary<int, bool> Login(string email, string password)
     {
         return rhythmsLn.ValidarAutenticacao(email, password);
     }
@@ -203,10 +196,10 @@ public class UiService
         rhythmsLn.RegistarLicitador(nome, email, password, nrCc, nif, dataNascimento, cartaoDebitoCredito);
     }
     
-    public UserUI GetInformacaoUtilizador(int idLicitador, string email)
+    public UserUI GetInformacaoUtilizador(int idLicitador, string email, bool isAdmin)
     {
-        string nome = idLicitador == -1 ? "Admin" : rhythmsLn.GetNomeUtilizador(idLicitador);
-        return new UserUI(email, nome, idLicitador == -1 ? "Admin" : "User");
+        string nome = isAdmin ? "Admin" : rhythmsLn.GetNomeUtilizador(idLicitador);
+        return new UserUI(email, nome, isAdmin ? "Admin" : "User");
     }
     
     // licitador
