@@ -252,29 +252,42 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
         public Dictionary<Instituicao, float> GetValoresInstituicoes()
         {
+            Dictionary<int, float> valoresid = new Dictionary<int, float>();
             Dictionary<Instituicao, float> valoresInstituicoes = new Dictionary<Instituicao, float>();
 
-            foreach (int idLeilao in leilaoDao.keySet())
+            HashSet<int> set = leilaoDao.keySet();
+            foreach (int idLeilao in set)
             {
+                
                 Leilao leilao = leilaoDao.get(idLeilao);
 
                 if (leilao.Ativo == false)
                 {
+                    Console.WriteLine("Adiconar a um existente" + leilao);
+
+                    
                     if (leilao.IdInstituicao != -1)
                     {
                         Instituicao analisarInstituicao = instituicaoDao.Get(leilao.IdInstituicao);
-
-                        if (valoresInstituicoes.ContainsKey(analisarInstituicao))
+                        if (valoresid.ContainsKey(analisarInstituicao.GetId()))
                         {
-                            valoresInstituicoes[analisarInstituicao] += leilao.ValorAtual;
+                            valoresid[analisarInstituicao.GetId()] += leilao.ValorAtual;
+                            
                         }
                         else
                         {
-                            valoresInstituicoes[analisarInstituicao] = leilao.ValorAtual;
+                            valoresid[analisarInstituicao.GetId()] = leilao.ValorAtual;
                         }
                     }
                 }
             }
+
+            foreach (var var in valoresid)
+            {
+                valoresInstituicoes.Add( instituicaoDao.Get(var.Key),var.Value);
+            }
+            
+            Console.WriteLine(valoresInstituicoes);
             // Se estiver a dar erro é aqui:
             if (valoresInstituicoes.Any())
             {

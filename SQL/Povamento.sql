@@ -62,7 +62,7 @@ VALUES
 'https://assets.teenvogue.com/photos/641b2a23912ddccbabf80f80/16:9/w_2560%2Cc_limit/GettyImages-1474459622.jpg', 1, 1, 1),
 (2, 'Love On Tour: Exclusive Meet-Up', 1100.00, 900.00, '2024-02-20 20:00:00', 'Porto', 1, 'asCegas', 'Viva uma experiência única e exclusiva num espetáculo de um dos maiores nomes na indústria musical. Tenha acesso a uma visão total e desobstruída para o palco e ainda um encontro exclusivo com o artista pós-espetáculo.',
 'https://images.impresa.pt/expresso/2023-02-12-harry-styles.jpg-62d6c4d8/original', 2, 14, 1),
-(3, 'One Night Only: Private Concert', 959.00, 600.00, '2024-01-10 21:00:00', 'Porto', 0, 'ingles',
+(3, 'One Night Only: Private Concert', 959.00, 600.00, '2024-03-10 21:00:00', 'Porto', 1, 'ingles',
 'Viva um momento inesquecível, tenha acesso a um espetáculo privado com a incrível Adele. A oferta inclui um luxuoso almoço e jantar. Traga até 10 amigos ou familiares.',
 'https://hips.hearstapps.com/hmg-prod/images/revealed-an-extended-preview-and-first-look-of-the-news-photo-1636947501.jpg?crop=0.668xw:1.00xh;0.209xw,0&resize=640:*',
 3, 1, 1);

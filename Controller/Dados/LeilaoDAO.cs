@@ -712,7 +712,9 @@ namespace RhythmsOfGiving.Controller.Dados
                         {
                             while (reader.Read())
                             {
+                                
                                 int leilaoId = Convert.ToInt32(reader["id"]);
+                                Console.WriteLine("Adicionei" + leilaoId);
                                 leilaoIds.Add(leilaoId);
                             }
                         }
@@ -724,7 +726,10 @@ namespace RhythmsOfGiving.Controller.Dados
                     Console.WriteLine("Error: " + ex.Message);
                 }
             }
-
+            
+            
+            Console.WriteLine("Terminou o " + leilaoIds);
+            Console.WriteLine(leilaoIds.ToString());
             return leilaoIds;
         }
         /*
