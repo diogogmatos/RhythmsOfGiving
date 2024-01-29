@@ -312,7 +312,7 @@ public class Licitador{
         public Licitacao GetUltimaLicitacao(int idLeilao)
         {
             float valor = -1;
-            Licitacao licitacao;
+            Licitacao licitacao = null;
 
             foreach (int idLicitacao in this.minhasLicitacoes)
             {
@@ -327,7 +327,13 @@ public class Licitador{
                 }
             }
 
+            if (valor != -1)
+            {
+                return licitacao;
+            }
+
             throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+
         }
 
 
