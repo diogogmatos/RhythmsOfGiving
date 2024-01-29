@@ -68,21 +68,21 @@ VALUES
 3, 1, 1);
 
 -- Notificação
-INSERT INTO [Notificacao] (idNotificacao, mensagem, titulo, dataHora, tipo, idLicitador, idLeilao)
-VALUES
-(1, 'O pagamento para "One Night Only: Private Concert" foi processado com sucesso.', 'A sua licitação venceu!', '2024-01-10 21:30:00', 1, 1 , 3);
+-- INSERT INTO [Notificacao] (idNotificacao, mensagem, titulo, dataHora, tipo, idLicitador, idLeilao)
+-- VALUES
+-- (1, 'O pagamento para "One Night Only: Private Concert" foi processado com sucesso.', 'A sua licitação venceu!', '2024-01-10 21:30:00', 1, 1 , 3);
 
 -- Licitacao
-INSERT INTO [Licitacao] (id, dataHora, valor, idLicitador, idLeilao)
-VALUES
-(1, '2024-02-10 12:30:00', 800.00, 1, 1),
-(2, '2024-01-10 20:30:00', 959.00, 1, 3),
-(3, '2024-02-11 14:21:00', 1100.00, 2, 2);
+-- INSERT INTO [Licitacao] (id, dataHora, valor, idLicitador, idLeilao)
+-- VALUES
+-- (1, '2024-02-10 12:30:00', 800.00, 1, 1),
+-- (2, '2024-01-10 20:30:00', 959.00, 1, 3),
+-- (3, '2024-02-11 14:21:00', 1100.00, 2, 2);
 
 -- Fatura
-INSERT INTO [Fatura] (id, dataHora, idLicitador, idLicitacao, idInstituicao)
-VALUES
-(1, '2024-01-10 22:00:00', 1, 2, 1);
+-- INSERT INTO [Fatura] (id, dataHora, idLicitador, idLicitacao, idInstituicao)
+-- VALUES
+-- (1, '2024-01-10 22:00:00', 1, 2, 1);
 
 -- SELECT * FROM [Licitador]
 -- SELECT * FROM [Administrador]
@@ -91,6 +91,7 @@ VALUES
 -- SELECT * FROM Leilao
 -- SELECT * FROM Instituicao
 
+/*
 CREATE PROCEDURE CriarAdmin
     @email varchar(100),
     @palavraPasse varchar(45)
@@ -108,3 +109,4 @@ BEGIN
     VALUES (@novoAdministradorID, @email, @palavraPasse)
 
 END;
+*/

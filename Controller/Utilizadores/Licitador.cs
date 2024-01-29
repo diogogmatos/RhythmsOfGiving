@@ -208,9 +208,8 @@ public class Licitador{
         public Notificacao CriarNotificacaoUltrapassada(string titulo, int idLeilao)
         {
             DateTime data = DateTime.Now;
-            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada!", titulo, this.idLicitador,data, 0, idLeilao);
+            Notificacao ultrapassada = new Notificacao("A sua licitação foi ultrapassada!", "'" + titulo + "'", this.idLicitador,data, 0, idLeilao);
             this.notificacaoDao.Put(ultrapassada.GetId(), ultrapassada);
-            //  Fazer put do licitador
 
             return ultrapassada;
         }
@@ -227,14 +226,13 @@ public class Licitador{
              return perdedora;
         }
         
-        public Notificacao CriarNotificacaoVencedora(int idLeilao, string titulo, float valor)
+        public Notificacao CriarNotificacaoVencedora(int idLeilao, string tituloLeilao, float valor)
         {
             DateTime data = DateTime.Now;
-            string mensagem = "Parabéns! Você ganhou o leilão " + idLeilao + ". " +
-                              "Obrigado por participar e por sua oferta de " + valor + ".";
+            string titulo = "A sua licitação venceu!";
 
-            string tituloNotificacao = "Você é o Vencedor - " + titulo;
-            Notificacao vencedora = new Notificacao(mensagem, tituloNotificacao, this.idLicitador,data, 1, idLeilao);
+            string mensagem = "O pagamento para '" + tituloLeilao + "' foi processado com sucesso.";
+            Notificacao vencedora = new Notificacao(titulo, mensagem, this.idLicitador,data, 1, idLeilao);
             this.notificacaoDao.Put(vencedora.GetId(), vencedora);
             return vencedora;
         }
