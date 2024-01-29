@@ -204,7 +204,10 @@ namespace RhythmsOfGiving.Controller.Leiloes
                 Leilao leilao = leilaoDao.get(idLeilao);
                 if (leilao.Ativo == false && leilao.IdInstituicao != -1)
                 {
-                    resultado.Add(leilaoDao.get(idLeilao), ultimasLicitações[idLeilao]);
+                    if (leilao.IdInstituicao != -1)
+                    {
+                        resultado.Add(leilaoDao.get(idLeilao), ultimasLicitações[idLeilao]);
+                    }
                 }
             }
 
