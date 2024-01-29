@@ -206,12 +206,12 @@ public class RhythmsLn : IRhythmsLn
         return subUtilizadores.GetNotificacoesUtilizador(idLicitador);
     }
 
-    public List<string> GetNomesGenerosMusicais()
+    public  Dictionary<int, string>  GetNomesGenerosMusicais()
     {
         return subLeiloes.GetNomesGenerosMusicais();
     }
 
-    public List<string> GetNomesArtistasMusicais()
+    public Dictionary<int, string> GetNomesArtistasMusicais()
     {
         return subLeiloes.GetNomesArtistasMusicais();
     }

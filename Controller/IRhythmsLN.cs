@@ -111,10 +111,9 @@ public interface IRhythmsLn
     //SubLeilões
     public Leilao GetLeilaoById(int id);
 
-    public List<string> GetNomesGenerosMusicais();
+    public Dictionary<int, string> GetNomesGenerosMusicais();
 
-    public List<string> GetNomesArtistasMusicais();
-    
+    public Dictionary<int, string> GetNomesArtistasMusicais();
     //Verifica os leilões que terminaram e cria as respetivas notificações
     public List<int> CriarNotificacoesFimLeilao();
 
