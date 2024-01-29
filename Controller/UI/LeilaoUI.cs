@@ -2,7 +2,7 @@
 
 namespace RhythmsOfGiving.Controller.UI;
 
-public class LeilaoUi
+public class LeilaoUi : IComparable<LeilaoUi>
 {
     private static readonly int shortDescSize = 300;
     
@@ -127,4 +127,10 @@ public class LeilaoUi
     public int GetInstituicao() {
         return instituicao;
     }
+    
+    public int CompareTo(LeilaoUi other)
+    {
+        return other.fim.CompareTo(this.fim);
+    }
+
 }
