@@ -440,7 +440,7 @@ namespace RhythmsOfGiving.Controller.Leiloes
 
             foreach (Leilao l in leiloesArtistaAtivos.Keys)
             {
-                if (l.DataHoraFinal < atual && l.DataHoraContador < atual)
+                if (l.DataHoraFinal < atual)
                 {
                     l.SetAtivo(false);
                     this.leilaoDao.put(l.IdLeilao, l);
