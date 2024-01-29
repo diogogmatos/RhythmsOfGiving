@@ -1,6 +1,7 @@
 @page "/leiloes/redimir/{IdLeilao}"
 
 @using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Controller.Leiloes
 @using RhythmsOfGiving.Authentication
 @using System.Security.Claims
 @inject UiService UiService
@@ -70,8 +71,15 @@
 </AuthorizeView>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+    
     [Parameter]
     public string? IdLeilao { get; set; }
+    
+    private int IdLicitador { get; set; }
+    
+    private int IdLicitacao { get; set; }
 
     private LeilaoUi? leilao;
     private int idLicitadorGanhador;
@@ -79,7 +87,9 @@
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
+        Licitacao l = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao));
+        lastLicitacao = l.GetValor();
+        IdLicitacao = l.GetIdLicitacao();
     }
 
     protected override void OnInitialized()
@@ -100,6 +110,23 @@
         }
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState is null)
+        {
+            return;
+        }
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            return;
+        }
+
+        IdLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        await InvokeAsync(StateHasChanged);
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         RhythmsAuthStateProvider rhythmsAuthStateProvider = (RhythmsAuthStateProvider) AuthStateProvider;
@@ -113,7 +140,7 @@
     
     private void RedimirExperiencia(InstituicaoUi instituicao)
     {
-        UiService.RedimirExperiencia(int.Parse(IdLeilao), instituicao.GetId());
+        UiService.RedimirExperiencia(int.Parse(IdLeilao), instituicao.GetId(), IdLicitacao, IdLicitador);
         js.InvokeVoidAsync("alert", "Experiência redimida com sucesso!");
         NavigationManager.NavigateTo("leiloes");
     }

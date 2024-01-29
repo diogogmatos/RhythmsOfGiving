@@ -1,8 +1,9 @@
 @using RhythmsOfGiving.Controller.UI
 @inject UiService UiService
+@inject IJSRuntime js
 
 <div class="bg-white rounded-lg p-4 border shadow-sm">
-    <form class="space-y-4">
+    <form class="space-y-4" @onsubmit="Adicionar">
         <div>
             <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Nome</label>
             <div class="mt-2">
@@ -30,11 +31,22 @@
 </div>
 
 @code {
+    [Parameter]
+    public int IdAdmin { get; set; }
+    
     private string Nome { get; set; }
     private string ImagemUrl { get; set; }
     
-    private void Adicionar()
+    private async Task Adicionar()
     {
-        ;
+        try
+        {
+            UiService.AdicionarArtista(Nome, ImagemUrl, IdAdmin);
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+        await js.InvokeVoidAsync("alert", "Artista adicionado com sucesso!");
     }
 }

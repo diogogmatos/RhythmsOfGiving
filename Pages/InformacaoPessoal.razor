@@ -28,7 +28,7 @@
                     <span class="text-gray-900 font-medium mr-8">NIF</span>@Licitador.GetNif()
                 </p>
                 <p class="flex place-content-between">
-                    <span class="text-gray-900 font-medium mr-8">Data de Nascimento</span>@Licitador.GetDataNascimento().ToString("dd/MM/yy")
+                    <span class="text-gray-900 font-medium mr-8">Data de Nascimento</span>@Licitador.GetDataNascimento().ToString("dd/MM/yyyy")
                 </p>
                 <p class="flex place-content-between">
                     <span class="text-gray-900 font-medium mr-8">Nº Cartão Débito/Crédito</span>@Licitador.GetNrCartao()
@@ -107,16 +107,17 @@
         try
         {
             UiService.EditarInformacoes(Nome, DataNascimento, CartaoDebitoCredito, Email, Password);
+            
+            await js.InvokeVoidAsync("alert", "Informação alterada com sucesso!");
+        
+            ToggleEditar();
+            await UpdateInfo();
+            StateHasChanged();
         }
         catch (Exception e)
         {
             await js.InvokeVoidAsync("alert", e.Message);
         }
-        await js.InvokeVoidAsync("alert", "Informação alterada com sucesso!");
-        
-        ToggleEditar();
-        await UpdateInfo();
-        StateHasChanged();
     }
 
     private async Task UpdateInfo()

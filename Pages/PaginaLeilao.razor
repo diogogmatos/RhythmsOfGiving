@@ -10,8 +10,8 @@
 <div class="space-y-6">
     @* Capa *@
     <img class="object-cover w-full h-[30rem]" src="@GetImagePath()"/>
-    <div class="flex space-x-8">
-        <div class="space-y-6">
+    <div class="flex space-x-8 place-content-between">
+        <div class="space-y-6 w-full">
             @* Nome Artista *@
             <div class="flex space-x-2 items-center select-none">
                 <img class="object-cover w-10 h-10 rounded-full" src="@GetAuthorImagePath()">
@@ -220,7 +220,7 @@
         {
             ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, int.Parse((IdLeilao))).GetValor();
         }
-        catch
+        catch (Exception e)
         {
             ownLicitacao = 0;
         }
@@ -232,7 +232,7 @@
         {
             lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
         }
-        catch
+        catch (Exception e)
         {
             lastLicitacao = 0;
         }

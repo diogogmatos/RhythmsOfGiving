@@ -68,8 +68,15 @@ public class UiService
         // terminar leilões que já acabaram, notificar licitadores
         new Thread(async () =>
         {
-            List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
-            await BroadcastNotificationUpdate(idsLicitador);
+            try
+            {
+                List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
+                await BroadcastNotificationUpdate(idsLicitador);
+            }
+            catch
+            {
+                return;
+            }
         }).Start();
         
         List<LeilaoUi> leiloes = new List<LeilaoUi>();
@@ -129,9 +136,10 @@ public class UiService
         ; // TODO
     }
 
-    public void RedimirExperiencia(int idLeilao, int idInstituicao)
+    public void RedimirExperiencia(int idLeilao, int idInstituicao, int idLicitacao, int idLicitador)
     {
         rhythmsLn.PreencherInstituicaoLeilao(idLeilao, idInstituicao);
+        rhythmsLn.CriarFatura(idInstituicao, idLicitacao, idLicitador);
     }
     
     public Dictionary<int, String> GetGenerosMusicais()
@@ -264,5 +272,20 @@ public class UiService
     public void AdicionarLeilao(int idAdmin, string titulo, string descricao, int idArtista, int idTipo, int idGeneroMusical, string localizacao, DateTime fim, string imageUrl, float valorBase)
     {
         rhythmsLn.RegistarLeilao(valorBase, fim, titulo, descricao, imageUrl, localizacao, idArtista, idGeneroMusical, idAdmin, idTipo);
+    }
+
+    public void AdicionarInstituicao(string nome, string descricao, string imageurl, string url, string iban, int idAdmin)
+    {
+        rhythmsLn.RegistarInstituicao(nome, descricao, imageurl, url, iban, idAdmin);
+    }
+
+    public void AdicionarGeneroMusical(string nome, int idAdmin)
+    {
+        rhythmsLn.RegistarGeneroMusical(nome, idAdmin);
+    }
+
+    public void AdicionarArtista(string nome, string imageurl, int idAdmin)
+    {
+        rhythmsLn.RegistarArtista(nome, imageurl, idAdmin);
     }
 }

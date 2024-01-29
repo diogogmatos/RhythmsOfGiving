@@ -56,7 +56,14 @@ public class LeilaoUi
         this.authorImagePath = artista.GetImagem();
         this.asCegas = leilao.GetTipo() == 0;
         this.valorBase = leilao.ValorBase;
-        this.valorFinal = leilao.GetValorUltimaLicitacao();
+        try
+        {
+            this.valorFinal = leilao.GetValorUltimaLicitacao();
+        }
+        catch
+        {
+            this.valorFinal = 0;
+        }
         this.instituicao = leilao.IdInstituicao;
     }
 

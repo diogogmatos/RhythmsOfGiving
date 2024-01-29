@@ -10,7 +10,7 @@
             <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Género Musical</label>
             <select @onchange="@OnSelectedGeneroMusicalChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
                 <option>Todos</option>
-                @foreach (var option in UiService.GetGenerosMusicais())
+                @foreach (var option in UiService.GetGenerosMusicais().Values)
                 {
                     <option>@option</option>
                 }
@@ -28,7 +28,7 @@
             <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Artista</label>
             <select @onchange="@OnSelectedArtistaChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
                 <option>Todos</option>
-                @foreach (var option in UiService.GetArtistas())
+                @foreach (var option in UiService.GetArtistas().Values)
                 {
                     <option>@option</option>
                 }
