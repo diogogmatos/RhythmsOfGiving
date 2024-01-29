@@ -15,10 +15,6 @@ public class UiService
         this.context = context;
     }
     
-    // TODO: método de gerar notificação de ultrapassagem quando é feita licitação
-    
-    // TODO: página redimir para escolher instituição de leilão terminado
-    
     // leilões
     
     private async Task BroadcastAuctionUpdate(int idLeilao)
@@ -62,22 +58,20 @@ public class UiService
 
         return rhythmsLn.GetUltimaLicitacao(idLeilao);
     }
-    
-    public List<LeilaoUi> GetLeiloesDisponiveis()
+
+    private void AtualizarLeiloes()
     {
         // terminar leilões que já acabaram, notificar licitadores
         new Thread(async () =>
         {
-            try
-            {
-                List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
-                await BroadcastNotificationUpdate(idsLicitador);
-            }
-            catch
-            {
-                return;
-            }
+            List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
+            await BroadcastNotificationUpdate(idsLicitador);
         }).Start();
+    }
+    
+    public List<LeilaoUi> GetLeiloesDisponiveis()
+    {
+        AtualizarLeiloes();
         
         List<LeilaoUi> leiloes = new List<LeilaoUi>();
         try
@@ -97,12 +91,7 @@ public class UiService
     
     public LeilaoUi GetLeilaoById(int idLeilao)
     {
-        // terminar leilões que já acabaram, notificar licitadores
-        new Thread(async () =>
-        {
-            List<int> idsLicitador = rhythmsLn.CriarNotificacoesFimLeilao();
-            await BroadcastNotificationUpdate(idsLicitador);
-        }).Start();
+        AtualizarLeiloes();
         
         Dictionary<Leilao, Artista> leilaoInfo = rhythmsLn.GetLeilaoArtistaById(idLeilao);
         foreach (var leilao in leilaoInfo)
@@ -133,7 +122,8 @@ public class UiService
 
     public void TerminarLeilao(int idLeilao)
     {
-        ; // TODO
+        rhythmsLn.DesativarLeilao(idLeilao);
+        AtualizarLeiloes();
     }
 
     public void RedimirExperiencia(int idLeilao, int idInstituicao, int idLicitacao, int idLicitador)

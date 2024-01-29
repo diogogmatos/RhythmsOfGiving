@@ -90,7 +90,7 @@
             </div>
             @* Licitar *@
             <EditForm Model="@Valor" class="flex w-full space-x-2">
-                <AuthorizeView>
+                <AuthorizeView Roles="User">
                     <Authorized Context="rhythmscontext">
                         <button type="submit" @onclick="@Licitar" class="ml-0 m-auto min-w-44 hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
                             Licitar
@@ -214,13 +214,18 @@
             ownLicitacao = 0;
             return;
         }
-
+        if (authState.User.IsInRole("Admin"))
+        {
+            ownLicitacao = 0;
+            return;
+        }
+        
         int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
         try
         {
             ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, int.Parse((IdLeilao))).GetValor();
         }
-        catch (Exception e)
+        catch
         {
             ownLicitacao = 0;
         }
@@ -232,13 +237,12 @@
         {
             lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
         }
-        catch (Exception e)
+        catch
         {
             lastLicitacao = 0;
         }
     }
     
-    // TODO
     private async void Licitar() {
         try
         {
@@ -248,7 +252,7 @@
         }
         catch (Exception e)
         {
-            await js.InvokeVoidAsync("alert", e.ToString());
+            await js.InvokeVoidAsync("alert", e.Message);
         }
     }
     
@@ -313,6 +317,7 @@
             timer.Enabled = false;
             timer.Dispose();
             UiService.TerminarLeilao(int.Parse(IdLeilao));
+            NavManager.NavigateTo("404");
         }
         InvokeAsync(StateHasChanged);
     }
