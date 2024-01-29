@@ -309,11 +309,11 @@ public class Licitador{
         }
 
 
-        public Licitacao GetUltimaLicitacao (int idLeilao)
+        public Licitacao GetUltimaLicitacao(int idLeilao)
         {
             float valor = -1;
             Licitacao licitacao = null;
-            
+
             foreach (int idLicitacao in this.minhasLicitacoes)
             {
                 Licitacao atual = this.licitacaoDao.Get(idLicitacao);
@@ -326,12 +326,16 @@ public class Licitador{
                     }
                 }
             }
-            if (valor == -1)
+
+            if (valor != -1)
             {
-                throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+                return licitacao;
             }
-            return licitacao;
+
+            throw new NaoExistemLicitacoesException("O leilão não teve qualquer licitação");
+
         }
+
 
         public List<Notificacao> GetNotificacoes()
         {

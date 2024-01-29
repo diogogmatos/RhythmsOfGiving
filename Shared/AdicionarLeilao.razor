@@ -1,8 +1,9 @@
 @using RhythmsOfGiving.Controller.UI
 @inject UiService UiService
+@inject IJSRuntime js
 
 <div class="bg-white rounded-lg p-4 border shadow-sm">
-    <form class="space-y-4">
+    <form class="space-y-4" @onsubmit="Adicionar">
         <div>
             <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Título</label>
             <div class="mt-2">
@@ -26,10 +27,10 @@
         <div>
             <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Artista</label>
             <div class="mt-2">
-                <select @bind="Artista" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <select @onchange="OnChangeArtista" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
                     @foreach (var option in Artistas)
                     {
-                        <option>@option</option>
+                        <option>@option.Key - @option.Value</option>
                     }
                 </select>
             </div>
@@ -37,7 +38,7 @@
         <div>
             <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Tipo</label>
             <div class="mt-2">
-                <select @bind="Tipo" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <select @onchange="OnChangeTipo" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
                     <option>Inglês</option>
                     <option>Ás Cegas</option>
                 </select>
@@ -46,10 +47,10 @@
         <div>
             <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Género Musical</label>
             <div class="mt-2">
-                <select @bind="GeneroMusical" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
-                    @foreach (string genero in GenerosMusicais)
+                <select @onchange="OnChangeGeneroMusical" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                    @foreach (var genero in GenerosMusicais)
                     {
-                        <option>@genero</option>
+                        <option>@genero.Key - @genero.Value</option>
                     }
                 </select>
             </div>
@@ -102,8 +103,8 @@
     [Parameter]
     public int IdAdmin { get; set; }
     
-    private List<string> Artistas { get; set; }
-    private List<string> GenerosMusicais { get; set; }
+    private Dictionary<int, string> Artistas { get; set; }
+    private Dictionary<int, string> GenerosMusicais { get; set; }
 
     private string Titulo { get; set; }
     private string Descricao { get; set; }
@@ -115,9 +116,35 @@
     private float ValorBase { get; set; }
     private string ImagemUrl { get; set; }
 
-    private void Adicionar()
+    private async Task Adicionar()
     {
-        int idArtista = Artistas.
+        int idArtista = int.Parse(Artista[0].ToString());
+        int idGeneroMusical = int.Parse(GeneroMusical[0].ToString());
+        int idTipo = Tipo == "Inglês" ? 1 : 0;
+        try
+        {
+            UiService.AdicionarLeilao(IdAdmin, Titulo, Descricao, idArtista, idTipo, idGeneroMusical, Localizacao, Fim, ImagemUrl, ValorBase);
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+        await js.InvokeVoidAsync("alert", "Leilão adicionado com sucesso!");
+    }
+    
+    private void OnChangeArtista(ChangeEventArgs e)
+    {
+        Artista = e.Value.ToString();
+    }
+    
+    private void OnChangeGeneroMusical(ChangeEventArgs e)
+    {
+        GeneroMusical = e.Value.ToString();
+    }
+    
+    private void OnChangeTipo(ChangeEventArgs e)
+    {
+        Tipo = e.Value.ToString();
     }
 
     protected override void OnInitialized()

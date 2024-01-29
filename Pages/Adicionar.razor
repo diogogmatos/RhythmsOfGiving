@@ -54,13 +54,11 @@
     {
         if (AuthenticationState is null)
         {
-            NavManager.NavigateTo("404");
             return;
         }
         var authState = await AuthenticationState;
         if (!authState.User.Identity.IsAuthenticated)
         {
-            NavManager.NavigateTo("404");
             return;
         }
 

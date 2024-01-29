@@ -147,6 +147,7 @@
         }
         catch (Exception e)
         {
+            Console.WriteLine("Excecao em getleilao" + e.ToString());
             NavManager.NavigateTo("404");
         }
     }
@@ -163,6 +164,7 @@
         GetLeilao();
         if (!UiService.IsLeilaoAtivo(int.Parse(IdLeilao)))
         {
+            Console.WriteLine("não está ativo");
             NavManager.NavigateTo("404");
         }
         GetOwnLicitacao();
@@ -214,12 +216,26 @@
         }
 
         int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
-        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, int.Parse((IdLeilao))).GetValor();
+        try
+        {
+            ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, int.Parse((IdLeilao))).GetValor();
+        }
+        catch
+        {
+            ownLicitacao = 0;
+        }
     }
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
+        try
+        {
+            lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
+        }
+        catch
+        {
+            lastLicitacao = 0;
+        }
     }
     
     // TODO

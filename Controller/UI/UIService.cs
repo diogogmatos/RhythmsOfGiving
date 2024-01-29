@@ -134,12 +134,12 @@ public class UiService
         rhythmsLn.PreencherInstituicaoLeilao(idLeilao, idInstituicao);
     }
     
-    public List<String> GetGenerosMusicais()
+    public Dictionary<int, String> GetGenerosMusicais()
     {
         return rhythmsLn.GetNomesGenerosMusicais();
     }
 
-    public List<String> GetArtistas()
+    public Dictionary<int, String> GetArtistas()
     {
         return rhythmsLn.GetNomesArtistasMusicais();
     }

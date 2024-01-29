@@ -165,12 +165,26 @@
         }
 
         int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
-        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, GetId()).GetValor();
+        try
+        {
+            ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, GetId()).GetValor();
+        }
+        catch
+        {
+            ownLicitacao = 0;
+        }
     }
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(GetId()).GetValor();
+        try
+        {
+            lastLicitacao = UiService.GetUltimaLicitacaoLeilao(GetId()).GetValor();
+        }
+        catch
+        {
+            lastLicitacao = 0;
+        }
     }
     
     // info
