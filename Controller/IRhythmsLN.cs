@@ -19,8 +19,7 @@ public interface IRhythmsLn
 
     
     //Autenticação
-    public int ValidarAutenticacao(string email, string palavraPasse);
-
+    public Dictionary<int, Boolean> ValidarAutenticacao(string email, string palavraPasse);
     
     //Alterar  informações pessoais
     public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int nrCredito, string novaPalavraPasse);
