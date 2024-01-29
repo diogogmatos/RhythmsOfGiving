@@ -31,19 +31,30 @@ namespace RhythmsOfGiving.Controller.Utilizadores
             return l.GetIdLicitador();
         }
         
-        public int ValidarAutenticacao(string email, string palavraPasse)
+        public Dictionary<int,Boolean> ValidarAutenticacao(string email, string palavraPasse)
         {
             foreach(Administrador admin in administradores.Values)
             {
                 if (admin.GetEmail().Equals(email) && admin.GetPalavraPasse().Equals(palavraPasse))
-                    return -1;
+                {
+                    Dictionary<int, bool> result = new Dictionary<int, bool>
+                    {
+                        { admin.GetIdAdmin(), true }
+                    };
+                    return result;
+                }
+                    
             }
             
             Licitador l = licitadores.Get(email);
 
             if (l.GetPalavraPasse().Equals(palavraPasse))
             {
-                return l.GetIdLicitador();
+                Dictionary<int, bool> result = new Dictionary<int, bool>
+                {
+                    { l.GetIdLicitador(), false }
+                };
+                return result;
             }
 
             throw new ErroAutenticacaoException("Email e/ou palavra-passe incorretas.");
@@ -185,7 +196,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
             //throw new NotImplementedException();
         }
 
-        public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
+        public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
         {
             Licitador l = this.licitadores.get(idLicitador);
             return l.GetUltimaLicitacao(idLeilao);

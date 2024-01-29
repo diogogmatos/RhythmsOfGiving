@@ -20,7 +20,7 @@ public class RhythmsLn : IRhythmsLn
         return subUtilizadores.RegistarLicitador(nome, email, palavraPasse, nCc, nif, dataNascimento, nrCartao);
     }
 
-    public int ValidarAutenticacao(string email, string palavraPasse)
+    public Dictionary<int,Boolean> ValidarAutenticacao(string email, string palavraPasse)
     {
         return subUtilizadores.ValidarAutenticacao(email, palavraPasse);
     }
@@ -186,7 +186,7 @@ public class RhythmsLn : IRhythmsLn
         return subLeiloes.GetTotalValorDoado();
     }
 
-    public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
+    public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao)
     {
         return subUtilizadores.GetUltimaLicitacaoUtilizador(idLicitador, idLeilao);
     }

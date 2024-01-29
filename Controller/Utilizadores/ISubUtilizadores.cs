@@ -7,7 +7,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
     {
         public int RegistarLicitador (string nome, string email, string palavraPasse, int nCc, int nif, DateOnly dataNascimento, int nrCartao);
 
-        public int ValidarAutenticacao(string email, string palavraPasse);
+        public Dictionary<int, Boolean> ValidarAutenticacao(string email, string palavraPasse);
 
         public void AlterarInfosPessoais(string email, string novoNome, DateOnly novaDataNascimento, int nrCredito, string novaPalavraPasse);
 
@@ -30,7 +30,7 @@ namespace RhythmsOfGiving.Controller.Utilizadores
         
         public SortedSet<Licitacao> PesquisarLicitacoes (int idLicitador, int idLeilao);
 
-        public float GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
+        public Licitacao GetUltimaLicitacaoUtilizador(int idLicitador, int idLeilao);
 
         public string GetNomeUtilizador(int idLicitador);
 
