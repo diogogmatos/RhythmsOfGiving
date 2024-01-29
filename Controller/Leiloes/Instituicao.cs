@@ -119,7 +119,12 @@ namespace RhythmsOfGiving.Controller.Leiloes
             Instituicao other = (Instituicao)obj;
 
             // Verifica a igualdade dos atributos
-            return (this.id == other.GetId());
+            return (this.id == other.GetId() &&
+                    this.nome.Equals(other.GetNome()) &&
+                    this.descricao.Equals(other.GetDescricao()) &&
+                    this.link.Equals(other.link) &&
+                    this.iban.Equals(other.iban) &&
+                    this.idAdmin == other.GetIdAdmin());
         }
     }
 }
