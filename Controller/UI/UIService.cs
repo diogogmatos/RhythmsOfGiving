@@ -164,10 +164,18 @@ public class UiService
         return notificacoes;
     }
 
-    // public Dictionary<LeilaoUi, Licitacao> GetLeilaoLicitacoes(int idLeilao)
-    // {
-    //     rhythmsLn.InfoLeiloesLicitacoes()
-    // }
+    public Dictionary<LeilaoUi, Licitacao> GetLeiloesAtivos(int idLicitador)
+    {
+        Dictionary<LeilaoUi, Licitacao> leiloes = new Dictionary<LeilaoUi, Licitacao>();
+        Dictionary<Leilao, Licitacao> leiloesLn = rhythmsLn.GetLeiloesAtivosLicitador(idLicitador);
+        foreach (KeyValuePair<Leilao, Licitacao> leilao in leiloesLn)
+        {
+            Dictionary<Leilao, Artista> la = rhythmsLn.GetLeilaoArtistaById(leilao.Key.IdLeilao);
+            LeilaoUi lui = new LeilaoUi(la.Keys.First(), la.Values.First());
+            leiloes.Add(lui, leilao.Value);
+        }
+        return leiloes;
+    }
     
     // instituições
     
@@ -199,5 +207,69 @@ public class UiService
     {
         string nome = idLicitador == -1 ? "Admin" : rhythmsLn.GetNomeUtilizador(idLicitador);
         return new UserUI(email, nome, idLicitador == -1 ? "Admin" : "User");
+    }
+    
+    // licitador
+
+    public Licitador GetLicitadorById(int idLicitador)
+    {
+        return rhythmsLn.GetLicitadorById(idLicitador);
+    }
+
+    public void EditarInformacoes(string nome, DateOnly dataNascimento, int nrCartao, string email,
+        string password)
+    {
+        rhythmsLn.AlterarInfosPessoais(email, nome, dataNascimento, nrCartao, password);
+    }
+    
+    public SortedDictionary<LeilaoUi, Licitacao> GetHistorial(int idLicitador)
+    {
+        SortedDictionary<LeilaoUi, Licitacao> historial = new SortedDictionary<LeilaoUi, Licitacao>();
+        foreach (var leilao in rhythmsLn.HistorialLeiloes(idLicitador))
+        {
+            Dictionary<Leilao, Artista> la = rhythmsLn.GetLeilaoArtistaById(leilao.Key.IdLeilao);
+            LeilaoUi lui = new LeilaoUi(la.Keys.First(), la.Values.First());
+            historial.Add(lui, leilao.Value);
+        }
+        return historial;
+    }
+
+    public SortedSet<Licitacao> GetLicitacoesLicitadorLeilao(int idLicitador, int idLeilao)
+    {
+        return rhythmsLn.PesquisarLicitacoes(idLicitador, idLeilao);
+    }
+
+    public SortedSet<Fatura> GetFaturasLicitador(int idLicitador)
+    {
+        return rhythmsLn.MinhasFaturas(idLicitador);
+    }
+
+    public string GetNomeInstituicao(int idInstituicao)
+    {
+        return rhythmsLn.GetInstituicaoById(idInstituicao);
+    }
+    
+    // estatísticas
+
+    public float GetValorTotalDoado()
+    {
+        return rhythmsLn.GetTotalValorDoado();
+    }
+
+    public Dictionary<Instituicao, float> GetValorTotalDoadoInstituicoes()
+    {
+        return rhythmsLn.GetValoresInstituicoes();
+    }
+
+    public Dictionary<Licitador, float> GetTop10Licitadores()
+    {
+        return rhythmsLn.LicitadoresTop10();
+    }
+    
+    // admin
+
+    public void AdicionarLeilao(int idAdmin, string titulo, string descricao, int idArtista, int idTipo, int idGeneroMusical, string localizacao, DateTime fim, string imageUrl, float valorBase)
+    {
+        rhythmsLn.RegistarLeilao(valorBase, fim, titulo, descricao, imageUrl, localizacao, idArtista, idGeneroMusical, idAdmin, idTipo);
     }
 }

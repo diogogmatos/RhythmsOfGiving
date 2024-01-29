@@ -1,41 +1,44 @@
 @using RhythmsOfGiving.Controller.UI
 @using Microsoft.AspNetCore.SignalR.Client
-@using System.Security.Claims
-@inject UiService UiService
 @implements IAsyncDisposable
+@inject UiService UiService
 
-<div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden bg-white">
+<div class="grid grid-cols-3 border h-[30rem] rounded-2xl shadow-sm overflow-hidden bg-white">
     @* Informações *@
     <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
         <div class="space-y-4">
             @* Nome Artista *@
             <div class="flex space-x-2 items-center select-none">
-                <img class="object-cover w-8 h-8 rounded-full" src=@GetAuthorImagePath()/>
-                <p class="font-[600]">@GetArtista()</p>
+                <img class="object-cover w-8 h-8 rounded-full" src=@Leilao.GetAuthorImagePath()/>
+                <p class="font-[600]">@Leilao.GetArtista()</p>
             </div>
             @* Titulo Leilao *@
             <p class="font-[600] text-2xl">
-                @GetTitle()
+                @Leilao.GetTitle()
             </p>
             @* Detalhes *@
             <div class="flex text-gray-400 select-none">
-                <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
-                <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
-                <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+                <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@Leilao.GetGenero()</text></p>
+                <p class="w-fit m-auto">Tipo - <text class="font-medium">@Leilao.GetTipo()</text></p>
+                <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@Leilao.GetFim().ToString("dd/MM/yyyy hh:mm")</text></p>
             </div>
         </div>
         @* Descrição *@
         <p class="text-justify">
-            @GetDescricao()
+            @Leilao.GetDescricao()
         </p>
-        @* Botão e Preço *@
         <div class="flex space-x-4 select-none place-content-between items-center">
-            <button onclick="location.href='/leiloes/@GetId()';" class="min-w-80 w-full hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-2 font-medium rounded-xl transition-all">
-                Licitar ->
-            </button>
+            <div class="text-center min-w-fit">
+                <p class="text-sm text-gray-400 font-medium">
+                    tempo restante:
+                </p>
+                <p class="text-xl font-[600] text-rhythms">
+                    @ConvertSecondsToTimeString(counter)
+                </p>
+            </div>
             @if (ownLicitacao != 0)
             {
-                @if (ownLicitacao >= lastLicitacao || (ownLicitacao > GetValorBase() && IsAsCegas()))
+                @if (ownLicitacao >= lastLicitacao || (ownLicitacao > Leilao.GetValorBase() && Leilao.IsAsCegas()))
                 {
                     <div class="text-center min-w-fit">
                         <p class="text-sm text-gray-400 font-medium">
@@ -43,6 +46,9 @@
                         </p>
                         <p class="text-xl font-[600] text-rhythms">
                             @ownLicitacao.ToString("0.00€")
+                        </p>
+                        <p class="text-sm text-gray-400 font-medium">
+                            10/10/2024 08:30
                         </p>
                     </div>
                 }
@@ -55,18 +61,21 @@
                         <p class="text-xl font-[600] text-rhythms/50">
                             @ownLicitacao.ToString("0.00€")
                         </p>
+                        <p class="text-sm text-gray-400 font-medium">
+                            10/10/2024 08:30
+                        </p>
                     </div>
                 }
             }
             <div class="text-center min-w-fit">
-                @if (lastLicitacao != 0 && !IsAsCegas() && ownLicitacao != lastLicitacao)
+                @if (lastLicitacao != 0 && !Leilao.IsAsCegas() && ownLicitacao != lastLicitacao)
                 {
                     <p class="text-sm text-gray-400 font-medium">
                         última licitação:
                     </p>
                     @if (lastLicitacao > ownLicitacao)
                     {
-                        
+
                         <p class="text-xl font-[600] text-rhythms">
                             @lastLicitacao.ToString("0.00€")
                         </p>
@@ -77,42 +86,46 @@
                             @lastLicitacao.ToString("0.00€")
                         </p>
                     }
+                    <p class="text-sm text-gray-400 font-medium">
+                        10/10/2024 08:30
+                    </p>
                 }
                 else
                 {
                     <p class="text-sm text-gray-400 font-medium">
                         valor base:
                     </p>
-                    @if (GetValorBase() > ownLicitacao)
+                    @if (Leilao.GetValorBase() > ownLicitacao)
                     {
                         <p class="text-xl font-[600] text-rhythms">
-                            @GetValorBase().ToString("0.00€")
+                            @Leilao.GetValorBase().ToString("0.00€")
                         </p>
                     }
                     else
                     {
                         <p class="text-xl font-[600] text-rhythms/50">
-                            @GetValorBase().ToString("0.00€")
+                            @Leilao.GetValorBase().ToString("0.00€")
                         </p>
                     }
+                    <p class="text-sm text-gray-400 font-medium">
+                        10/10/2024 08:30
+                    </p>
                 }
             </div>
         </div>
     </div>
     @* Imagem *@
-    <div class="min-w-[25rem] h-96 bg-gray-300 hidden xl:block">
-        <img class="object-cover h-full w-full" src=@GetImagePath()/>
+    <div class="min-w-[25rem] h-[30rem] bg-gray-300 hidden xl:block">
+        <img class="object-cover h-full w-full" src=@Leilao.GetImagePath()/>
     </div>
 </div>
 
 @code {
-    [CascadingParameter]
-    private Task<AuthenticationState> AuthenticationState { get; set; }
-    
-    [EditorRequired]
     [Parameter]
     public LeilaoUi Leilao { get; set; }
-    
+    [Parameter]
+    public int IdLicitador { get; set; }
+
     // licitações
 
     private float ownLicitacao;
@@ -122,6 +135,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        TimeSpan ts = Leilao.GetFim() - DateTime.Now;
+        counter = (int) ts.TotalSeconds;
+        StartTimer();
+        
         GetOwnLicitacao();
         GetLastLicitacao();
         
@@ -150,70 +167,69 @@
         }
     }
 
-    private async void GetOwnLicitacao()
+    private void GetOwnLicitacao()
     {
-        if (AuthenticationState is null)
-        {
-            ownLicitacao = 0;
-            return;
-        }
-        var authState = await AuthenticationState;
-        if (!authState.User.Identity.IsAuthenticated)
-        {
-            ownLicitacao = 0;
-            return;
-        }
-
-        int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
-        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, GetId());
+        ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(IdLicitador, Leilao.GetId());
     }
     
     private void GetLastLicitacao()
     {
-        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(GetId());
+        lastLicitacao = UiService.GetUltimaLicitacaoLeilao(Leilao.GetId());
     }
     
-    // info
+    // Timer
+    
+    private static System.Timers.Timer timer;
+    private int counter;
 
-    private int GetId() {
-        return Leilao.GetId();
-    }
-    private string GetArtista() {
-        return Leilao.GetArtista();
-    }
-    private string GetTitle() {
-        return Leilao.GetTitle();
-    }
-    private string GetLocalizacao() {
-        return Leilao.GetLocalizacao();
-    }
-    private string GetGenero() {
-        return Leilao.GetGenero();
-    }
-    private string GetTipo() {
-        return Leilao.GetTipo();
-    }
-    private string GetFim() {
-        return Leilao.GetFim().ToString("dd/MM/yy HH:mm");
-    }
-    private string GetDescricao() {
-        return Leilao.GetShortDescricao();
-    }
-
-    private float GetValorBase()
+    public void StartTimer()
     {
-        return Leilao.GetValorBase();
+        timer = new System.Timers.Timer(60000);
+        timer.Elapsed += CountDownTimer;
+        timer.Enabled = true;
     }
 
-    private string GetImagePath() {
-        return Leilao.GetImagePath();
+    public void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 60;
+        }
+        else
+        {
+            timer.Enabled = false;
+            timer.Dispose();
+            UiService.TerminarLeilao(Leilao.GetId());
+        }
+        InvokeAsync(StateHasChanged);
     }
 
-    private string GetAuthorImagePath() {
-        return Leilao.GetAuthorImagePath();
-    }
+    static string ConvertSecondsToTimeString(int totalSeconds)
+    {
+        int days = totalSeconds / (24 * 3600);
+        int remainingSeconds = totalSeconds % (24 * 3600);
+        int hours = remainingSeconds / 3600;
+        remainingSeconds %= 3600;
+        int minutes = remainingSeconds / 60;
+        int seconds = remainingSeconds % 60;
 
-    private bool IsAsCegas() {
-        return Leilao.IsAsCegas();
+        string result = "";
+
+        if (days > 0)
+        {
+            result += $"{days:D2}:";
+        }
+
+        if (hours > 0)
+        {
+            result += $"{hours:D2}:";
+        }
+
+        if (minutes > 0)
+        {
+            result += $"{minutes:D2}";
+        }
+
+        return result.Trim();
     }
 }

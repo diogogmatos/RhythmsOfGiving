@@ -19,6 +19,8 @@ public class LeilaoUi
     private readonly string authorImagePath;
     private readonly bool asCegas;
     private readonly float valorBase;
+    private readonly float valorFinal;
+    private readonly int instituicao;
 
     public LeilaoUi(int id, string artista, string title, string localizacao, string genero, string tipo, DateTime fim,
         string shortDescricao, string descricao, string imagePath, string authorImagePath, bool asCegas, float valorBase)
@@ -54,6 +56,8 @@ public class LeilaoUi
         this.authorImagePath = artista.GetImagem();
         this.asCegas = leilao.GetTipo() == 0;
         this.valorBase = leilao.ValorBase;
+        this.valorFinal = leilao.GetValorUltimaLicitacao();
+        this.instituicao = leilao.IdInstituicao;
     }
 
     public int GetId() {
@@ -107,5 +111,13 @@ public class LeilaoUi
     
     public float GetValorBase() {
         return valorBase;
+    }
+    
+    public float GetValorFinal() {
+        return valorFinal;
+    }
+    
+    public int GetInstituicao() {
+        return instituicao;
     }
 }

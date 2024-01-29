@@ -12,7 +12,10 @@
     <AuthorizeView>
         <Authorized>
             <div class="space-x-2 text-xl w-fit m-auto mr-0">
-                <button class="@NotButtonColor()" @onclick="@ToggleNotificacoesCall"><i class="bi bi-bell-fill"></i></button>
+                @if (!context.User.IsInRole("Admin"))
+                {
+                    <button class="@NotButtonColor()" @onclick="@ToggleNotificacoesCall"><i class="bi bi-bell-fill"></i></button>
+                }
                 <button class="@ProfileButtonColor()" @onclick="@ToggleProfileCall"><i class="bi bi-person-circle"></i></button>
             </div>
         </Authorized>

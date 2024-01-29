@@ -1,19 +1,156 @@
 @page "/informacao-pessoal"
 @using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Controller.Utilizadores
+@using System.Security.Claims
 @inject UiService UiService
+@inject IJSRuntime js
+@inject NavigationManager NavManager
 
 <PageTitle>Informação Pessoal</PageTitle>
 
-<AuthorizeView>
-    <Authorized Role="User">
-        <div>
-            hello
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="py-8 space-y-4 w-[40rem] m-auto">
+            <h1 class="text-3xl font-[600]">
+                Olá, @Licitador.GetNome() 👋
+            </h1>
+            <p class="flex place-content-between text-xl text-rhythms">
+                <span class="text-gray-900 font-medium mr-8">Valor Total Doado</span><span class="font-bold">@Licitador.ValorTotalDoado().ToString("0.00€")</span>
+            </p>
+            <div class="bg-white w-full border rounded-lg p-4 space-y-2 text-gray-400">
+                <p class="flex place-content-between">
+                    <span class="text-gray-900 font-medium mr-8">Email</span>@Licitador.GetEmail()
+                </p>
+                <p class="flex place-content-between">
+                    <span class="text-gray-900 font-medium mr-8">Nº Cartão Cidadão</span>@Licitador.GetNcc()
+                </p>
+                <p class="flex place-content-between">
+                    <span class="text-gray-900 font-medium mr-8">NIF</span>@Licitador.GetNif()
+                </p>
+                <p class="flex place-content-between">
+                    <span class="text-gray-900 font-medium mr-8">Data de Nascimento</span>@Licitador.GetDataNascimento().ToString("dd/MM/yy")
+                </p>
+                <p class="flex place-content-between">
+                    <span class="text-gray-900 font-medium mr-8">Nº Cartão Débito/Crédito</span>@Licitador.GetNrCartao()
+                </p>
+            </div>
+            <button @onclick="ToggleEditar" class="w-full p-2 bg-rhythms/20 font-medium hover:bg-rhythms hover:text-white transition-colors text-rhythms rounded-xl">
+                Editar Informações <i class="bi bi-pencil-square"></i>
+            </button>
+            @if (EditarInformacoes)
+            {
+                <div class="bg-white w-full border rounded-lg p-4 space-y-2 text-gray-400">
+                    <i class="bi bi-info-circle-fill"></i> Modifique apenas os campos que pretende alterar.
+                    <form class="space-y-4" @onsubmit="Atualizar">
+                        <div>
+                            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Nome</label>
+                            <div class="mt-2">
+                                <InputText @bind-Value="@Nome" placeholder=@Licitador.GetNome() type="text" name="text" id="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Data Nascimento</label>
+                            <div class="mt-2">
+                                <InputDate Type="InputDateType.Date" placeholder=@Licitador.GetDataNascimento() @bind-Value="@DataNascimento" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="number2" class="block text-sm font-medium leading-6 text-gray-900">Nº Cartão Débito/Crédito</label>
+                            <div class="mt-2">
+                                <InputNumber placeholder=@Licitador.GetNrCartao() @bind-Value="@CartaoDebitoCredito" type="number" name="number" id="number2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+                            <div class="mt-2">
+                                <InputText @bind-Value="@Email" type="email" name="email" id="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4" placeholder=@Licitador.GetEmail()/>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                            <div class="mt-2">
+                                <InputText @bind-Value="@Password" type="password" name="password" id="password" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"/>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-rhythms/10 text-rhythms rounded-lg py-2 font-medium hover:bg-rhythms hover:text-white transition-colors">
+                            Atualizar ->
+                        </button>
+                    </form>
+                </div>
+            }
         </div>
     </Authorized>
 </AuthorizeView>
 
 @code {
- 
-    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
 
+    private Licitador Licitador { get; set; }
+    
+    private bool EditarInformacoes { get; set; }
+
+    private void ToggleEditar()
+    {
+        EditarInformacoes = !EditarInformacoes;
+    }
+    
+    private string Nome { get; set; }
+    private DateOnly DataNascimento { get; set; }
+    private int CartaoDebitoCredito { get; set; }
+    private string Email { get; set; }
+    private string Password { get; set; }
+    
+    private async Task Atualizar()
+    {
+        Console.WriteLine(Nome + DataNascimento + CartaoDebitoCredito + Email + Password);
+        try
+        {
+            UiService.EditarInformacoes(Nome, DataNascimento, CartaoDebitoCredito, Email, Password);
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+        await js.InvokeVoidAsync("alert", "Informação alterada com sucesso!");
+        
+        ToggleEditar();
+        await UpdateInfo();
+        StateHasChanged();
+    }
+
+    private async Task UpdateInfo()
+    {
+        if (AuthenticationState is null)
+        {
+            return;
+        }
+
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            return;
+        }
+
+        int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        if (idLicitador == -1)
+        {
+            NavManager.NavigateTo("404");
+            return;
+        }
+
+        Licitador = UiService.GetLicitadorById(idLicitador);
+        
+        Licitador = UiService.GetLicitadorById(idLicitador);
+        Nome = Licitador.GetNome();
+        DataNascimento = Licitador.GetDataNascimento();
+        CartaoDebitoCredito = Licitador.GetNrCartao();
+        Email = Licitador.GetEmail();
+        Password = Licitador.GetPalavraPasse();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateInfo();
+    }
 }

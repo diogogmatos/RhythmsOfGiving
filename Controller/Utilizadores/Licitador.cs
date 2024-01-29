@@ -218,12 +218,11 @@ public class Licitador{
         public Notificacao CriarNotificacaoPerdedora(int idLeilao, string titulo, float valor)
         {
             DateTime data = DateTime.Now;
-            string mensagem = "Leilão " + idLeilao + " terminado! Infelizmente não ganhou. Obrigado por ter participado.";
-            string titulo2 = titulo + " foi vendido por " + valor;
+            string mensagem = "Leilão Terminado!";
+            string titulo2 = "'" + titulo + "' foi vendido por " + valor.ToString("0.00€");
             Notificacao perdedora = new Notificacao(mensagem, titulo2,this.idLicitador, data, 2, idLeilao);
             this.notificacaoDao.Put(perdedora.GetId(), perdedora);
             //  Fazer put do licitador
-
 
              return perdedora;
         }

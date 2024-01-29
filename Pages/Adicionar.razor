@@ -1,0 +1,46 @@
+@page "/adicionar/{Tipo}"
+
+@inject NavigationManager NavManager
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <div class="py-8 space-y-8 w-[40rem] m-auto">
+            <h1 class="text-2xl font-medium">Adicionar @TipoNome</h1>
+            @if (Tipo == "leilao")
+            {
+                <AdicionarLeilao/>
+            }
+            @if (Tipo == "instituicao")
+            {
+                <AdicionarInstituicao/>
+            }
+            @if (Tipo == "artista")
+            {
+                <AdicionarArtista/>
+            }
+            @if (Tipo == "genero-musical")
+            {
+                <AdicionarGeneroMusical/>
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [Parameter]
+    public string? Tipo { get; set; }
+    private string TipoNome => Tipo switch
+    {
+        "leilao" => "Leilão",
+        "instituicao" => "Instituição",
+        "artista" => "Artista",
+        "genero-musical" => "Género Musical",
+        _ => "Erro"
+    };
+
+    protected override void OnInitialized()
+    {
+        if (Tipo == null || (Tipo != "leilao" && Tipo != "instituicao" && Tipo != "artista" && Tipo != "genero-musical"))
+            NavManager.NavigateTo("404");
+    }
+}

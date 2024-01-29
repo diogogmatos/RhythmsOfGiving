@@ -10,16 +10,16 @@
             <h1 class="font-[600] text-2xl pb-2 select-none">Olá, @context.User.Identity.Name</h1>
             <div class="text-gray-400 space-y-1">
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Informação Pessoal -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/informacao-pessoal">Informação Pessoal -></a>
                 </p>
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Historial de Leilões -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/historial-leiloes">Historial de Leilões -></a>
                 </p>
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Leilões Ativos -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/leiloes-ativos">Leilões Ativos -></a>
                 </p>
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Faturas -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/faturas">Faturas -></a>
                 </p>
                 <p>
                     <button @onclick="Logout" class="text-red-400 underline decoration-red-400 hover:text-red-600 transition-all">Terminar Sessão</button>
@@ -34,16 +34,16 @@
             <h1 class="font-[600] text-2xl pb-2 select-none">Olá, @context.User.Identity.Name.Split(" ")[0]</h1>
             <div class="text-gray-400 space-y-1">
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Adicionar Leilão -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/leilao">Adicionar Leilão -></a>
                 </p>
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Adicionar Instituição -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/instituicao">Adicionar Instituição -></a>
                 </p>
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Adicionar Artista -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/artista">Adicionar Artista -></a>
                 </p>
                 <p>
-                    <a class="hover:text-gray-900 transition-all" href="#">Adicionar Género Musical -></a>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/genero-musical">Adicionar Género Musical -></a>
                 </p>
                 <p>
                     <button @onclick="Logout" class="text-red-400 underline decoration-red-400 hover:text-red-600 transition-all">Terminar Sessão</button>

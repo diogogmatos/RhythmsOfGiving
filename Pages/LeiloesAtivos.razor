@@ -1,31 +1,32 @@
-@page "/historial-leiloes"
+@page "/leiloes-ativos"
 @using RhythmsOfGiving.Controller.UI
-@using RhythmsOfGiving.Controller.Leiloes
+@using RhythmsOfGiving.Controller.Utilizadores
 @using System.Security.Claims
+@using RhythmsOfGiving.Controller.Leiloes
 @inject UiService UiService
 
-<PageTitle>Historial Leilões</PageTitle>
+<PageTitle>Leilões Ativos</PageTitle>
 
-<AuthorizeView>
+<AuthorizeView Roles="User">
     <Authorized>
         <div class="py-8 space-y-8">
             <div class="space-y-3">
                 <h1 class="text-3xl font-medium">
-                    <i class="bi bi-clock-fill"></i> Historial de Leilões
+                    <i class="bi bi-hourglass-split"></i> Leilões Ativos
                 </h1>
-                <h2 class="text-gray-500">Consulte os leilões terminados nos quais já participou.</h2>
+                <h2 class="text-gray-500">Consulte os leilões ativos em que está a participar.</h2>
             </div>
-            @if (Leiloes.Count != 0)
+            @if (LeiloesAtivosList.Count != 0)
             {
-                @foreach (var leilao in Leiloes)
+                @foreach (var l in LeiloesAtivosList)
                 {
-                    <HistoricoLeilaoBlock Leilao="@leilao.Key" Licitacao="@leilao.Value" IdLicitador="IdLicitador" />
+                    <LeilaoAtivoBlock Leilao="l.Key" IdLicitador="IdLicitador" />
                 }
             }
             else
             {
                 <p>
-                    Histórico vazio. Comece a licitar!
+                    De momento, não está a participar em qualquer leilão.
                 </p>
             }
         </div>
@@ -33,12 +34,12 @@
 </AuthorizeView>
 
 @code {
-    private SortedDictionary<LeilaoUi, Licitacao> Leiloes { get; set; }
-    
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationState { get; set; }
-    
+
     private int IdLicitador { get; set; }
+    
+    private Dictionary<LeilaoUi, Licitacao> LeiloesAtivosList { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,6 +56,15 @@
 
         IdLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        Leiloes = UiService.GetHistorial(IdLicitador);
+        try
+        {
+            LeiloesAtivosList = UiService.GetLeiloesAtivos(IdLicitador);
+        }
+        catch
+        {
+            LeiloesAtivosList = new Dictionary<LeilaoUi, Licitacao>();
+        }
+        
+        StateHasChanged();
     }
 }
