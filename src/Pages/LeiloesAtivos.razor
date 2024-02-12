@@ -1,0 +1,70 @@
+@page "/leiloes-ativos"
+@using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Controller.Utilizadores
+@using System.Security.Claims
+@using RhythmsOfGiving.Controller.Leiloes
+@inject UiService UiService
+
+<PageTitle>Leilões Ativos</PageTitle>
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="py-8 space-y-8">
+            <div class="space-y-3">
+                <h1 class="text-3xl font-medium">
+                    <i class="bi bi-hourglass-split"></i> Leilões Ativos
+                </h1>
+                <h2 class="text-gray-500">Consulte os leilões ativos em que está a participar.</h2>
+            </div>
+            @if (LeiloesAtivosList.Count != 0)
+            {
+                @foreach (var l in LeiloesAtivosList)
+                {
+                    <LeilaoAtivoBlock Leilao="l.Key" IdLicitador="IdLicitador" />
+                }
+            }
+            else
+            {
+                <p>
+                    De momento, não está a participar em qualquer leilão.
+                </p>
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+
+    private int IdLicitador { get; set; }
+    
+    private Dictionary<LeilaoUi, Licitacao> LeiloesAtivosList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState is null)
+        {
+            return;
+        }
+
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            return;
+        }
+
+        IdLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        try
+        {
+            LeiloesAtivosList = UiService.GetLeiloesAtivos(IdLicitador);
+        }
+        catch
+        {
+            LeiloesAtivosList = new Dictionary<LeilaoUi, Licitacao>();
+        }
+        
+        StateHasChanged();
+    }
+}

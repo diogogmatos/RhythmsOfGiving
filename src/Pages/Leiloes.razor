@@ -1,0 +1,115 @@
+@page "/leiloes"
+@using RhythmsOfGiving.Controller.UI
+@inject UiService UiService
+
+<PageTitle>Leilões</PageTitle>
+
+<div class="space-y-6 py-8">
+    <div class="flex space-x-4">
+        <div>
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Género Musical</label>
+            <select @onchange="@OnSelectedGeneroMusicalChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Todos</option>
+                @foreach (var option in UiService.GetGenerosMusicais().Values)
+                {
+                    <option>@option</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Tipo Leilão</label>
+            <select @onchange="@OnSelectedTipoLeilaoChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Todos</option>
+                <option>Inglês</option>
+                <option>Ás Cegas</option>
+            </select>
+        </div>
+        <div>
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Artista</label>
+            <select @onchange="@OnSelectedArtistaChanged" id="location" name="location" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                <option>Todos</option>
+                @foreach (var option in UiService.GetArtistas().Values)
+                {
+                    <option>@option</option>
+                }
+            </select>
+        </div>
+    </div>
+    @if (leiloesApresentados.Count == 0)
+    {
+        <p class="py-12 text-center text-xl">
+            <i class="bi bi-exclamation-circle-fill text-rhythms"></i>
+            Sem correspondências para os filtros selecionados.
+        </p>
+    }
+    @foreach (LeilaoUi leilao in leiloesApresentados)
+    {
+        <LeilaoBlock Leilao="leilao"/>
+    }
+</div>
+
+@code {
+    List<LeilaoUi> leiloesApresentados;
+    List<LeilaoUi> leiloesDisponiveis;
+    private string SelectedGeneroMusical { get; set; }
+    private string SelectedTipoLeilao { get; set; }
+    private string SelectedArtista { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SelectedGeneroMusical = "Todos";
+        SelectedTipoLeilao = "Todos";
+        SelectedArtista = "Todos";
+        leiloesDisponiveis = UiService.GetLeiloesDisponiveis();
+        leiloesApresentados = CloneLeiloes();
+    }
+    
+    private List<LeilaoUi> CloneLeiloes()
+    {
+        List<LeilaoUi> clone = new List<LeilaoUi>();
+        foreach (LeilaoUi leilao in leiloesDisponiveis)
+        {
+            clone.Add(leilao);
+        }
+        return clone;
+    }
+    
+    private void OnSelectedGeneroMusicalChanged(ChangeEventArgs args)
+    {
+        SelectedGeneroMusical = args.Value.ToString();
+        leiloesApresentados = CloneLeiloes();
+        if (SelectedGeneroMusical != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetGenero() != SelectedGeneroMusical);
+        if (SelectedTipoLeilao != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetTipo() != SelectedTipoLeilao);
+        if (SelectedArtista != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetArtista() != SelectedArtista);
+        StateHasChanged();
+    }
+
+    private void OnSelectedTipoLeilaoChanged(ChangeEventArgs args)
+    {
+        SelectedTipoLeilao = args.Value.ToString();
+        leiloesApresentados = CloneLeiloes();
+        if (SelectedTipoLeilao != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetTipo() != SelectedTipoLeilao);
+        if (SelectedGeneroMusical != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetGenero() != SelectedGeneroMusical);
+        if (SelectedArtista != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetArtista() != SelectedArtista);
+        StateHasChanged();
+    }
+    
+    private void OnSelectedArtistaChanged(ChangeEventArgs args)
+    {
+        SelectedArtista = args.Value.ToString();
+        leiloesApresentados = CloneLeiloes();
+        if (SelectedArtista != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetArtista() != SelectedArtista);
+        if (SelectedGeneroMusical != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetGenero() != SelectedGeneroMusical);
+        if (SelectedTipoLeilao != "Todos")
+            leiloesApresentados.RemoveAll(leilao => leilao.GetTipo() != SelectedTipoLeilao);
+        StateHasChanged();
+    }
+}

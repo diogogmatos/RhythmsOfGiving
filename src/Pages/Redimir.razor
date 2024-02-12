@@ -1,0 +1,177 @@
+@page "/leiloes/redimir/{IdLeilao}"
+
+@using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Controller.Leiloes
+@using RhythmsOfGiving.Authentication
+@using System.Security.Claims
+@inject UiService UiService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime js
+
+<AuthorizeView>
+    <Authorized>
+        <div class="py-8 space-y-8">
+            <div class="grid grid-cols-3 border h-96 rounded-2xl shadow-sm overflow-hidden bg-white">
+                @* Informações *@
+                <div class="xl:col-span-2 col-span-3 h-full grid grid-cols-1 gap-4 content-between p-8">
+                    <div class="space-y-4">
+                        @* Nome Artista *@
+                        <div class="flex space-x-2 items-center select-none">
+                            <img class="object-cover w-8 h-8 rounded-full" src=@GetAuthorImagePath()/>
+                            <p class="font-[600]">@GetArtista()</p>
+                        </div>
+                        @* Titulo Leilao *@
+                        <p class="font-[600] text-2xl">
+                            @GetTitle()
+                        </p>
+                        @* Detalhes *@
+                        <div class="flex text-gray-400 select-none">
+                            <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
+                            <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
+                            <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+                        </div>
+                    </div>
+                    @* Descrição *@
+                    <p class="text-justify">
+                        @GetDescricao()
+                    </p>
+                    <div class="flex space-x-3 font-[500] text-xl items-center">
+                        <p class="">
+                            Licitação final:
+                        </p>
+                        <p class="font-bold text-rhythms text-2xl">
+                            @lastLicitacao.ToString("0.00€")
+                        </p>
+                    </div>
+                    
+                </div>
+                @* Imagem *@
+                <div class="min-w-[25rem] h-96 bg-gray-300 hidden xl:block">
+                    <img class="object-cover h-full w-full" src=@GetImagePath()/>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-[500]"><b class="font-[600]">@context.User.Identity.Name.Split(" ")[0]</b>, a sua licitação venceu!</h1>
+                <p>
+                    O pagamento para '@GetTitle()' foi efetuado com sucesso.
+                </p>
+            </div>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-[500]">-> Redimir Experiência</h1>
+                <p>
+                    Tome os próximos passos para redimir a sua experiência, por favor selecione a instituição de caridade que deseja apoiar.
+                </p>
+            </div>
+            @foreach (InstituicaoUi instituicao in UiService.GetInstituicoes()) {
+                <InstituicaoBlock Instituicao="instituicao" IsSelectingMenu="true" Selecionar="RedimirExperiencia" />
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+    
+    [Parameter]
+    public string? IdLeilao { get; set; }
+    
+    private int IdLicitador { get; set; }
+    
+    private int IdLicitacao { get; set; }
+
+    private LeilaoUi? leilao;
+    private int idLicitadorGanhador;
+    private float lastLicitacao;
+    
+    private void GetLastLicitacao()
+    {
+        Licitacao l = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao));
+        lastLicitacao = l.GetValor();
+        IdLicitacao = l.GetIdLicitacao();
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            leilao = UiService.GetLeilaoById(Int32.Parse(IdLeilao));
+            if (UiService.IsLeilaoFinalizado(Int32.Parse(IdLeilao)))
+            {
+                NavigationManager.NavigateTo("404");
+            }
+            idLicitadorGanhador = UiService.GetLicitadorGanhador(Int32.Parse(IdLeilao));
+            GetLastLicitacao();
+        }
+        catch
+        {
+            NavigationManager.NavigateTo("404");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState is null)
+        {
+            return;
+        }
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            return;
+        }
+
+        IdLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        RhythmsAuthStateProvider rhythmsAuthStateProvider = (RhythmsAuthStateProvider) AuthStateProvider;
+        UserSession user = await rhythmsAuthStateProvider.GetUserSession();
+        
+        if (leilao == null || idLicitadorGanhador != user.IdLicitador)
+        {
+            NavigationManager.NavigateTo("404");
+        }
+    }
+    
+    private void RedimirExperiencia(InstituicaoUi instituicao)
+    {
+        UiService.RedimirExperiencia(int.Parse(IdLeilao), instituicao.GetId(), IdLicitacao, IdLicitador);
+        js.InvokeVoidAsync("alert", "Experiência redimida com sucesso!");
+        NavigationManager.NavigateTo("leiloes");
+    }
+
+    // info
+    
+    private string GetArtista() {
+        return leilao.GetArtista();
+    }
+    private string GetTitle() {
+        return leilao.GetTitle();
+    }
+    private string GetLocalizacao() {
+        return leilao.GetLocalizacao();
+    }
+    private string GetGenero() {
+        return leilao.GetGenero();
+    }
+    private string GetTipo() {
+        return leilao.GetTipo();
+    }
+    private string GetFim() {
+        return leilao.GetFim().ToString("dd/MM/yy HH:mm");
+    }
+    private string GetDescricao() {
+        return leilao.GetDescricao();
+    }
+    private string GetImagePath() {
+        return leilao.GetImagePath();
+    }
+    private string GetAuthorImagePath() {
+        return leilao.GetAuthorImagePath();
+    }
+}

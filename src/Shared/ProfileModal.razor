@@ -1,0 +1,63 @@
+@using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Authentication
+@inject UiService UiService
+@inject AuthenticationStateProvider AuthProvider
+@inject NavigationManager NavManager
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="absolute right-4 top-20 w-72 h-fit max-h-96 border p-4 rounded-xl shadow-md transition-all bg-white space-y-2">
+            <h1 class="font-[600] text-2xl pb-2 select-none">Olá, @context.User.Identity.Name</h1>
+            <div class="text-gray-400 space-y-1">
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/informacao-pessoal">Informação Pessoal -></a>
+                </p>
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/historial-leiloes">Historial de Leilões -></a>
+                </p>
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/leiloes-ativos">Leilões Ativos -></a>
+                </p>
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/faturas">Faturas -></a>
+                </p>
+                <p>
+                    <button @onclick="Logout" class="text-red-400 underline decoration-red-400 hover:text-red-600 transition-all">Terminar Sessão</button>
+                </p>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <div class="absolute right-4 top-20 w-72 h-fit max-h-96 border p-4 rounded-xl shadow-md transition-all bg-white space-y-2">
+            <h1 class="font-[600] text-2xl pb-2 select-none">Olá, @context.User.Identity.Name.Split(" ")[0]</h1>
+            <div class="text-gray-400 space-y-1">
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/leilao">Adicionar Leilão -></a>
+                </p>
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/instituicao">Adicionar Instituição -></a>
+                </p>
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/artista">Adicionar Artista -></a>
+                </p>
+                <p>
+                    <a class="hover:text-gray-900 transition-all" href="/adicionar/genero-musical">Adicionar Género Musical -></a>
+                </p>
+                <p>
+                    <button @onclick="Logout" class="text-red-400 underline decoration-red-400 hover:text-red-600 transition-all">Terminar Sessão</button>
+                </p>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private async Task Logout()
+    {
+        RhythmsAuthStateProvider rhythmsAuthStateProvider = (RhythmsAuthStateProvider)AuthProvider;
+        await rhythmsAuthStateProvider.UpdateAuthenticationState(null);
+        NavManager.NavigateTo("/", true);
+    }
+}

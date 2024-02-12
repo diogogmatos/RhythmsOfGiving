@@ -1,0 +1,52 @@
+@using RhythmsOfGiving.Controller.UI
+@inject UiService UiService
+@inject IJSRuntime js
+
+<div class="bg-white rounded-lg p-4 border shadow-sm">
+    <form class="space-y-4" @onsubmit="Adicionar">
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Nome</label>
+            <div class="mt-2">
+                <InputText
+                    @bind-Value="Nome"
+                    type="text" name="text" id="text"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"
+                />
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">URL Imagem</label>
+            <div class="mt-2">
+                <InputText
+                    @bind-Value="ImagemUrl"
+                    type="text" name="text" id="text"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"
+                />
+            </div>
+        </div>
+        <button class="bg-rhythms/10 text-rhythms w-full rounded-xl p-2 font-medium hover:bg-rhythms hover:text-white transition-colors">
+            Adicionar ->
+        </button>
+    </form>
+</div>
+
+@code {
+    [Parameter]
+    public int IdAdmin { get; set; }
+    
+    private string Nome { get; set; }
+    private string ImagemUrl { get; set; }
+    
+    private async Task Adicionar()
+    {
+        try
+        {
+            UiService.AdicionarArtista(Nome, ImagemUrl, IdAdmin);
+            await js.InvokeVoidAsync("alert", "Artista adicionado com sucesso!");
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+    }
+}

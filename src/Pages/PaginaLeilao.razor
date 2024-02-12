@@ -1,0 +1,353 @@
+@page "/leiloes/{IdLeilao}"
+@using RhythmsOfGiving.Controller.UI
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Security.Claims
+@inject UiService UiService
+@implements IAsyncDisposable
+@inject IJSRuntime js
+@inject NavigationManager NavManager
+
+<div class="space-y-6">
+    @* Capa *@
+    <img class="object-cover w-full h-[30rem]" src="@GetImagePath()"/>
+    <div class="flex space-x-8 place-content-between">
+        <div class="space-y-6 w-full">
+            @* Nome Artista *@
+            <div class="flex space-x-2 items-center select-none">
+                <img class="object-cover w-10 h-10 rounded-full" src="@GetAuthorImagePath()">
+                <p class="font-[600] text-xl">@GetArtista()</p>
+            </div>
+            @* Título *@
+            <p class="font-[700] text-4xl">@GetTitle()</p>
+            @* Informações *@
+            <div class="flex text-gray-400 select-none">
+                <p class="w-fit m-auto ml-0">Localização - <text class="font-medium">@GetLocalizacao()</text></p>
+                <p class="w-fit m-auto ml-0">Género - <text class="font-medium">@GetGenero()</text></p>
+                <p class="w-fit m-auto">Tipo - <text class="font-medium">@GetTipo()</text></p>
+                <p class="w-fit m-auto mr-0">Fim - <text class="font-medium">@GetFim()</text></p>
+            </div>
+            @* Descrição *@
+            <p class="text-justify">
+                @GetDescricao()
+            </p>
+        </div>
+        @* Área de Interação *@
+        <div class="min-w-[25rem] h-full rounded-xl border p-6 space-y-4 m-auto bg-white">
+            @* Título *@
+            <div class="pb-4 border-b space-y-2">
+                <h1 class="font-[600] text-3xl">Leilão</h1>
+                <div class="flex place-content-between">
+                    <h2 class="font-[500] text-xl">Termina em:</h2>
+                    <h2 class="font-[500] text-xl text-rhythms">@ConvertSecondsToTimeString(counter)</h2>
+                </div>
+            </div>
+            @* Licitações *@
+            <div class="space-y-2 text-xl">
+                <p class="flex text-gray-400 font-[600] items-center">
+                    <text class="w-fit ml-0 m-auto">Valor base: </text>
+                    <text class="w-fit mr-0 m-auto text-2xl">@GetValorBase().ToString("0.00€")</text>
+                </p>
+                @if (!@ExisteLicitacoes() && !IsAsCegas())
+                {
+                    <p class="text-rhythms font-[600]">
+                        Faça a primeira licitação!
+                    </p>
+                }
+                else
+                {
+                    @if (@IsAsCegas() && ownLicitacao != 0)
+                    {
+                        <p class="flex font-medium items-center">
+                            <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
+                        </p>
+                    }
+                    else if (ownLicitacao < lastLicitacao)
+                    {
+                        @if (ownLicitacao != 0)
+                        {
+                            <p class="flex text-gray-400 font-medium items-center">
+                                <text class="w-fit ml-0 m-auto">A sua licitação: </text>
+                                <text class="w-fit mr-0 m-auto text-2xl">@ownLicitacao.ToString("0.00€")</text>
+                            </p>
+                        }
+                        @if (!IsAsCegas())
+                        {
+                            <p class="flex font-medium items-center">
+                                <text class="w-fit ml-0 m-auto font-[600]">Última licitação: </text>
+                                <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@lastLicitacao.ToString("0.00€")</text>
+                            </p>
+                        }
+                    }
+                    else if (ownLicitacao != 0)
+                    {
+                        <p class="flex font-medium items-center">
+                            <text class="w-fit ml-0 m-auto font-[600]">A sua licitação: </text>
+                            <text class="w-fit mr-0 m-auto text-3xl font-bold text-rhythms">@ownLicitacao.ToString("0.00€")</text>
+                        </p>
+                    }
+                }
+            </div>
+            @* Licitar *@
+            <EditForm Model="@Valor" class="flex w-full space-x-2">
+                <AuthorizeView Roles="User">
+                    <Authorized Context="rhythmscontext">
+                        <button type="submit" @onclick="@Licitar" class="ml-0 m-auto min-w-44 hover:bg-rhythms hover:text-white bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
+                            Licitar
+                        </button>
+                        <div class="relative rounded-lg shadow-sm mr-0 m-auto w-fit">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="text-gray-500 sm:text-sm">€</span>
+                            </div>
+                            <InputNumber @bind-Value="Valor" class="block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency"/>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                            </div>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized Context="rhythmscontext">
+                        <button disabled type="submit" @onclick="@Licitar" class="cursor-not-allowed ml-0 m-auto min-w-44 bg-rhythms/10 text-rhythms py-1.5 font-medium rounded-lg transition-all">
+                            Licitar
+                        </button>
+                        <div class="relative rounded-lg shadow-sm mr-0 m-auto w-fit">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="text-gray-500 sm:text-sm">€</span>
+                            </div>
+                            <input disabled class="cursor-not-allowed block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                            </div>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+    
+    [Parameter]
+    public string? IdLeilao { get; set; }
+
+    private float Valor { get; set; }
+    
+    private LeilaoUi Leilao { get; set; }
+
+    private static System.Timers.Timer timer;
+    private int counter;
+
+    private void GetLeilao()
+    {
+        try
+        {
+            Leilao = UiService.GetLeilaoById(Int32.Parse(IdLeilao));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Excecao em getleilao" + e.ToString());
+            NavManager.NavigateTo("404");
+        }
+    }
+    
+    // licitações
+
+    private float ownLicitacao;
+    private float lastLicitacao;
+
+    private HubConnection? infoHubConnection;
+
+    protected override void OnInitialized()
+    {
+        GetLeilao();
+        if (!UiService.IsLeilaoAtivo(int.Parse(IdLeilao)))
+        {
+            Console.WriteLine("não está ativo");
+            NavManager.NavigateTo("404");
+        }
+        GetOwnLicitacao();
+        GetLastLicitacao();
+        TimeSpan ts = Leilao.GetFim() - DateTime.Now;
+        counter = (int) ts.TotalSeconds;
+        StartTimer();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        infoHubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5269/infohub")
+            .Build();
+
+        infoHubConnection.On("UpdateAuctionInfo", (int idLeilao) =>
+        {
+            if (int.Parse(IdLeilao) == idLeilao)
+            {
+                GetOwnLicitacao(); // atualizar própria licitação
+                GetLastLicitacao(); // atualizar última licitação
+                InvokeAsync(StateHasChanged);
+            }       
+        });
+        
+        await infoHubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (infoHubConnection is not null)
+        {
+            await infoHubConnection.DisposeAsync();
+        }
+    }
+
+    private async void GetOwnLicitacao()
+    {
+        if (AuthenticationState is null)
+        {
+            ownLicitacao = 0;
+            return;
+        }
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            ownLicitacao = 0;
+            return;
+        }
+        if (authState.User.IsInRole("Admin"))
+        {
+            ownLicitacao = 0;
+            return;
+        }
+        
+        int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        try
+        {
+            ownLicitacao = UiService.GetUltimaLicitacaoUtilizador(idLicitador, int.Parse((IdLeilao))).GetValor();
+        }
+        catch
+        {
+            ownLicitacao = 0;
+        }
+    }
+    
+    private void GetLastLicitacao()
+    {
+        try
+        {
+            lastLicitacao = UiService.GetUltimaLicitacaoLeilao(int.Parse(IdLeilao)).GetValor();
+        }
+        catch
+        {
+            lastLicitacao = 0;
+        }
+    }
+    
+    private async void Licitar() {
+        try
+        {
+            var authState = await AuthenticationState;
+            int idLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await UiService.Licitar(int.Parse(IdLeilao), idLicitador, Valor);
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+    }
+    
+    private bool ExisteLicitacoes()
+    {
+        return ! (ownLicitacao == 0 && lastLicitacao == 0);
+    }
+    
+    // info
+    
+    private string GetArtista() {
+        return Leilao.GetArtista();
+    }
+    private string GetTitle() {
+        return Leilao.GetTitle();
+    }
+    private string GetLocalizacao() {
+        return Leilao.GetLocalizacao();
+    }
+    private string GetGenero() {
+        return Leilao.GetGenero();
+    }
+    private string GetTipo() {
+        return Leilao.GetTipo();
+    }
+    private string GetFim() {
+        return Leilao.GetFim().ToString("dd/MM/yy HH:mm");
+    }
+    private string GetDescricao() {
+        return Leilao.GetDescricao();
+    }
+    private float GetValorBase() {
+        return Leilao.GetValorBase();
+    }
+    private string GetImagePath() {
+        return Leilao.GetImagePath();
+    }
+    private string GetAuthorImagePath() {
+        return Leilao.GetAuthorImagePath();
+    }
+    private bool IsAsCegas() {
+        return Leilao.IsAsCegas();
+    }
+    
+    // Timer
+
+    public void StartTimer()
+    {
+        timer = new System.Timers.Timer(60000);
+        timer.Elapsed += CountDownTimer;
+        timer.Enabled = true;
+    }
+
+    public void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 60;
+        }
+        else
+        {
+            timer.Enabled = false;
+            timer.Dispose();
+            UiService.TerminarLeilao(int.Parse(IdLeilao));
+            NavManager.NavigateTo("404");
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    static string ConvertSecondsToTimeString(int totalSeconds)
+    {
+        int days = totalSeconds / (24 * 3600);
+        int remainingSeconds = totalSeconds % (24 * 3600);
+        int hours = remainingSeconds / 3600;
+        remainingSeconds %= 3600;
+        int minutes = remainingSeconds / 60;
+        int seconds = remainingSeconds % 60;
+
+        string result = "";
+
+        if (days > 0)
+        {
+            result += $"{days:D2}:";
+        }
+
+        if (hours > 0)
+        {
+            result += $"{hours:D2}:";
+        }
+
+        if (minutes > 0)
+        {
+            result += $"{minutes:D2}";
+        }
+
+        return result.Trim();
+    }
+}

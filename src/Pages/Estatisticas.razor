@@ -1,0 +1,77 @@
+@page "/estatisticas"
+@using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Controller.Leiloes
+@using RhythmsOfGiving.Controller.Utilizadores
+@inject UiService UiService
+
+<PageTitle>Estatísticas</PageTitle>
+
+<div class="py-8 space-y-8">
+    <div class="bg-gradient-to-tl from-purple-900 to-indigo-500 text-white rounded-2xl p-8 text-center w-full m-auto shadow-sm">
+        <p class="text-xl font-medium">
+            A Rhythms Of Giving já doou
+        </p>
+        <p class="text-[10rem] font-bold">
+            <i class="bi bi-balloon-heart-fill"></i> @ValorTotal.ToString("0.00€")
+        </p>
+    </div>
+    <div class="grid lg:grid-cols-4 grid-cols-2 gap-4">
+        @foreach (var i in Instituicoes)
+        {
+            <div class="w-full rounded-2xl text-center bg-white border shadow-sm p-4">
+                <div class="flex space-x-2 items-center m-auto w-fit">
+                    <img class="object-cover w-12 h-12 rounded-full border" src=@i.Key.GetLogoPath()/>
+                    <p class="font-medium text-xl">
+                        @i.Key.GetNome()
+                    </p>
+                </div>
+                <p class="text-[3rem] text-rhythms font-bold">
+                    @i.Value.ToString("0.00€")
+                </p>
+            </div>
+        }
+    </div>
+    <div class="bg-white border rounded-2xl p-6 shadow-sm space-y-6">
+        <div class="border-b pb-6">
+            <h1 class="w-fit m-auto font-medium text-3xl"><i class="bi bi-person-lines-fill"></i> Top Contribuidores</h1>  
+        </div>
+        <div class="space-y-4">
+            @foreach (var l in Licitadores)
+            {
+                @if (l.Value != 0)
+                {
+                    <div class="flex place-content-between text-xl font-medium items-center">
+                        <p>
+                            @l.Key.GetNome()
+                        </p>
+                        <p class="text-rhythms text-2xl">
+                            @l.Value.ToString("0.00€")
+                        </p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private float ValorTotal { get; set; }
+    private Dictionary<Instituicao, float> Instituicoes { get; set; }
+    private Dictionary<Licitador, float> Licitadores { get; set; }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            Instituicoes = UiService.GetValorTotalDoadoInstituicoes();
+            Licitadores = UiService.GetTop10Licitadores();
+            ValorTotal = UiService.GetValorTotalDoado();
+        }
+        catch
+        {
+            Instituicoes = new Dictionary<Instituicao, float>();
+            Licitadores = new Dictionary<Licitador, float>();
+            ValorTotal = 0f;
+        }
+    }
+}

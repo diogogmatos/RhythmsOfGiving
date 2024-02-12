@@ -1,0 +1,158 @@
+@using RhythmsOfGiving.Controller.UI
+@inject UiService UiService
+@inject IJSRuntime js
+
+<div class="bg-white rounded-lg p-4 border shadow-sm">
+    <form class="space-y-4" @onsubmit="Adicionar">
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Título</label>
+            <div class="mt-2">
+                <InputText
+                    @bind-Value="Titulo"
+                    type="text" name="text" id="text"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"
+                />
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Descrição</label>
+            <div class="mt-2">
+                <InputText
+                    @bind-Value="Descricao"
+                    type="text" name="text" id="text"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"
+                />
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Artista</label>
+            <div class="mt-2">
+                <select @onchange="OnChangeArtista" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                    @foreach (var option in Artistas)
+                    {
+                        <option>@option.Key - @option.Value</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Tipo</label>
+            <div class="mt-2">
+                <select @onchange="OnChangeTipo" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                    <option>Inglês</option>
+                    <option>Ás Cegas</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Género Musical</label>
+            <div class="mt-2">
+                <select @onchange="OnChangeGeneroMusical" class="mt-2 bg-white block w-full rounded-lg border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-rhythms sm:text-sm sm:leading-6">
+                    @foreach (var genero in GenerosMusicais)
+                    {
+                        <option>@genero.Key - @genero.Value</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Localização</label>
+            <div class="mt-2">
+                <InputText
+                    @bind-Value="Localizacao"
+                    type="text" name="text" id="text"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"
+                />
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Fim</label>
+            <div class="mt-2">
+                <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="@Fim" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"/>
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">URL Imagem</label>
+            <div class="mt-2">
+                <InputText
+                    @bind-Value="ImagemUrl"
+                    type="text" name="text" id="text"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rhythms sm:text-sm sm:leading-6 px-4"
+                />
+            </div>
+        </div>
+        <div>
+            <label for="text" class="block text-sm font-medium leading-6 text-gray-900">Valor Base</label>
+            <div class="relative rounded-lg shadow-sm mr-0 m-auto w-full mt-2">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span class="text-gray-500 sm:text-sm">€</span>
+                </div>
+                <InputNumber @bind-Value="ValorBase" class="block w-full rounded-lg border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00" aria-describedby="price-currency"/>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                    <span class="text-gray-500 sm:text-sm" id="price-currency">EUR</span>
+                </div>
+            </div>
+        </div>
+        <button class="bg-rhythms/10 text-rhythms w-full rounded-xl p-2 font-medium hover:bg-rhythms hover:text-white transition-colors">
+            Adicionar ->
+        </button>
+    </form>
+</div>
+
+@code {
+    [Parameter]
+    public int IdAdmin { get; set; }
+    
+    private Dictionary<int, string> Artistas { get; set; }
+    private Dictionary<int, string> GenerosMusicais { get; set; }
+
+    private string Titulo { get; set; }
+    private string Descricao { get; set; }
+    private string Artista { get; set; }
+    private string Tipo { get; set; }
+    private string GeneroMusical { get; set; }
+    private string Localizacao { get; set; }
+    private DateTime Fim { get; set; }
+    private float ValorBase { get; set; }
+    private string ImagemUrl { get; set; }
+
+    private async Task Adicionar()
+    {
+        int idArtista = int.Parse(Artista.Split(" ")[0]);
+        int idGeneroMusical = int.Parse(GeneroMusical.Split(" ")[0]);
+        int idTipo = Tipo == "Inglês" ? 1 : 0;
+        try
+        {
+            UiService.AdicionarLeilao(IdAdmin, Titulo, Descricao, idArtista, idTipo, idGeneroMusical, Localizacao, Fim, ImagemUrl, ValorBase);
+            await js.InvokeVoidAsync("alert", "Leilão adicionado com sucesso!");
+        }
+        catch (Exception e)
+        {
+            await js.InvokeVoidAsync("alert", e.Message);
+        }
+    }
+    
+    private void OnChangeArtista(ChangeEventArgs e)
+    {
+        Artista = e.Value.ToString();
+    }
+    
+    private void OnChangeGeneroMusical(ChangeEventArgs e)
+    {
+        GeneroMusical = e.Value.ToString();
+    }
+    
+    private void OnChangeTipo(ChangeEventArgs e)
+    {
+        Tipo = e.Value.ToString();
+    }
+
+    protected override void OnInitialized()
+    {
+        Artistas = UiService.GetArtistas();
+        GenerosMusicais = UiService.GetGenerosMusicais();
+        Artista = Artistas.First().Key + " - " + Artistas.First().Value;
+        GeneroMusical = GenerosMusicais.First().Key + " - " + GenerosMusicais.First().Value;
+        Tipo = "Inglês";
+    }
+}

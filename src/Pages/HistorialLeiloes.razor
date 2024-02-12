@@ -1,0 +1,68 @@
+@page "/historial-leiloes"
+@using RhythmsOfGiving.Controller.UI
+@using RhythmsOfGiving.Controller.Leiloes
+@using System.Security.Claims
+@inject UiService UiService
+
+<PageTitle>Historial Leilões</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="py-8 space-y-8">
+            <div class="space-y-3">
+                <h1 class="text-3xl font-medium">
+                    <i class="bi bi-clock-fill"></i> Historial de Leilões
+                </h1>
+                <h2 class="text-gray-500">Consulte os leilões terminados nos quais já participou.</h2>
+            </div>
+            @if (Leiloes.Count != 0)
+            {
+                @foreach (var leilao in Leiloes)
+                {
+                    <HistoricoLeilaoBlock Leilao="@leilao.Key" Licitacao="@leilao.Value" IdLicitador="IdLicitador" />
+                }
+            }
+            else
+            {
+                <p>
+                    Histórico vazio. Comece a licitar!
+                </p>
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private SortedDictionary<LeilaoUi, Licitacao> Leiloes { get; set; }
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+    
+    private int IdLicitador { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState is null)
+        {
+            return;
+        }
+
+        var authState = await AuthenticationState;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            return;
+        }
+
+        IdLicitador = int.Parse(authState.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        try
+        {
+
+            Leiloes = UiService.GetHistorial(IdLicitador);
+        }
+        catch
+        {
+            Leiloes = new SortedDictionary<LeilaoUi, Licitacao>();
+        }
+    }
+}
