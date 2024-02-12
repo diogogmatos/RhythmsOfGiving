@@ -1,6 +1,6 @@
 # RhythmsOfGiving
 
-> Full-stack online auctioning platform, developed with .NET Blazor and C#
+> Full-stack online auctioning platform, developed with .NET Blazor C# and SQL
 
 This project was developed as a part of the Laboratórios de Informática IV (LI4) subject, during the first semester of the Software Engineering Bachelors degree at University of Minho.
 
