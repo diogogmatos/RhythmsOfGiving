@@ -2,7 +2,7 @@
 
 > Full-stack online auctioning platform, developed with .NET Blazor C# and SQL
 
-This project was developed as a part of the Laboratórios de Informática IV (LI4) subject, during the first semester of the Software Engineering Bachelor's degree at the University of Minho.
+This project was developed as a part of the Laboratórios de Informática IV (LI4) subject, during the first semester of the final year of the Software Engineering Bachelor's degree at the University of Minho.
 
 Our take on the assignment was to create a platform for the *made-up* nonprofit organization _Rhythms Of Giving_, which auctions exclusive musical experiences, donating all profits to its partner institutions.
 
